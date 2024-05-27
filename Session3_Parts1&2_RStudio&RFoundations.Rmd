@@ -1,7 +1,8 @@
 ---
-title: "Session 3"
+title: "Review of R Studio & R Foundations"
+subtitle: "Session 3"
 author: "Kristin Porter"
-date: "`r Sys.Date()`"
+date: "May 29, 2024"
 output:
    xaringan::moon_reader:
  #   css: ["default"]
@@ -18,12 +19,27 @@ output:
 }
 </style>
 
+<style>
+  .centered {
+    display: flex;
+    justify-content: center; /* Horizontal centering */
+    align-items: center;    /* Vertical centering */
+    height: 100vh;         /* Full height of the viewport */
+  }
+</style>
+
+
 ```{r setup, include=FALSE}
 library(knitr)
 library(xaringan)
 library(xaringanExtra)
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+---
+<div class="centered">
+  <h1>Review of R Studio</h1>
+</div>
 
 ## Navigating R Studio - Left Side
 
@@ -123,10 +139,10 @@ Hit "Apply" then "OK"
   - RStudio's R Markdown resources: [R Markdown Documentation](https://rmarkdown.rstudio.com/)
   
 ---
-## Questions? 
 
----
-# Review of R Foundations
+<div class="centered">
+  <h1>Review of R Foundations</h1>
+</div>
 
 ---
 ## R Objects
@@ -213,15 +229,17 @@ my.char.vector <- c("walk","bus","bike","drive")
 my.logical.vector <- c(TRUE,FALSE,TRUE)
 ```
 
+```{r vectorElement}
+# To refer to an element, use []
+my.vector[1]
+```
 ---
 ## R data structures: MATRICES
 
 2.  **Matrices**: A matrix is a 2-dimensional data structure with rows and columns, where every element is of the **same data type**. It can be considered as a collection of vectors of equal length in a rectangular layout. 
 
 ```{r matrixEx}
-# my.matrix is a numeric matrix, which I create by combining two vectors. 
-# Each vector is a column of the matrix. 
-# I combine the vectors using function cbind(). 
+# I combine two vectors as columns using cbind(). 
 a <- c(1,2,3)
 b <- c(4,5,6)
 my.matrix <- cbind(a,b)
@@ -229,7 +247,9 @@ print(my.matrix)
 
 # We can look at the dimensions of the matrix with the function dim(). This will return the number of rows, followed by the number of columns. 
 dim(my.matrix)
-
+```
+---
+```{r matrixCont}
 # We can zoom in on sub-parts of the matrix by putting square brackets[] after a matrix object name.
 # entries before the comma refer to rows
 my.matrix[1:2,] # the first two rows
@@ -237,6 +257,10 @@ my.matrix[1:2,] # the first two rows
 my.matrix[,1] # the first column
 # entries before and after column narrow into cells of the matrix
 my.matrix[1,1] # value in the first row and first column
+# We can also refer to rows and columns by their names
+# This is a coding best practice to avoid hard coding
+colnames(my.matrix) <- c("ColA","ColB")
+my.matrix[,"ColB"]
 ```
 
 ---
@@ -255,6 +279,12 @@ names(mtcars)
 
 ---
 ```{r dataframes2}
+# We can refer to rows and columns just like a matrix
+mtcars[1:2,c("mpg","cyl")]
+
+# Or we can refer to columns with $ or [[]]
+mean(mtcars$mpg) # same as mean(mtcars[["mpg"]])
+
 # We can quickly look at the structure of the data frame
 str(mtcars)
 ```
@@ -304,19 +334,23 @@ summary(mtcars)
   
 ---
 ## Using Evaluation Operators with Vectors
-c(1, 2, 3) == c(1, 2, 4)  # c(TRUE, TRUE, FALSE)
+```{r evalVectors}
+c(1, 2, 3) == c(1, 2, 4) 
 
-c(1, 2, 3) > 2            # c(FALSE, FALSE, TRUE)
+c(1, 2, 3) > 2           
 
 vec <- c(10, 20, 30)
-vec[vec > 15]             # c(20, 30)
+vec[vec > 15]            
 
-b <- c(1, 2)
-b %in% c                  # c(TRUE, TRUE)
-
+1 %in% c(1, 2, 3)                
+1 == c(1, 2, 3)         
+```
+---
 ## Using Evaluation Operators with Data Frames
+```{r evalDF}
 df <- data.frame(a = c(1, 2, 3), b = c(4, 5, 6))
-df$a == 2                 # c(FALSE, TRUE, FALSE)
-df[df$a == 2, ]           # Returns the second row
-df[df$b > 4, ]            # Returns rows where b > 4
-
+df
+df$a == 2                
+df[df$a == 2, ]          
+df[df$b > 4, ]           
+```
