@@ -1,0 +1,128 @@
+---
+title: "Smoking Cessation Toy Data Set"
+output: pdf_document
+---
+
+# Effect of a Smoking Cessation Program on Quitting Rates
+
+**Outcome:** Smoking Cessation: Binary variable indicating whether the participant quit smoking for at least six months (0 = No, 1 = Yes).
+
+**Covariates:**
+
+Age: Continuous variable (years).
+sex: Binary variable (0 = Female, 1 = Male).
+Smoking Intensity: Continuous variable (cigarettes per day).
+Nicotine Dependence: Continuous variable (score on a standardized dependence scale).
+Previous Quit Attempts: Binary variable (0 = No, 1 = Yes).
+Support for Quitting: Likert scale (1 = Very Low, 2 = Low, 3 = Moderate, 4 = High, 5 = Very High).
+Mental Health Status: Binary variable (0 = No issues, 1 = Issues such as anxiety or depression).
+Motivation to Quit: Likert scale (1 = Very Low, 2 = Low, 3 = Moderate, 4 = High, 5 = Very High).
+Socioeconomic Status: Ordinal variable (1 = Low, 2 = Lower-Middle, 3 = Middle, 4 = Upper-Middle, 5 = High).
+Hospital: Categorical variable representing different hospitals where the randomization is blocked.
+
+```{r simulate, echo=FALSE}
+# Define the baseline covariates
+def <- defData(varname = "age", dist = "normal", formula = 45, variance = 12)
+def <- defData(def, varname = "sex", dist = "binary", formula = 0.5)
+def <- defData(def, varname = "smoking_intensity", dist = "normal", formula = 20, variance = 5)
+def <- defData(def, varname = "previous_quit_attempts", dist = "binary", formula = 0.4)
+def <- defData(def, varname = "support_for_quitting", dist = "uniform", formula = "1;5")
+def <- defData(def, varname = "mental_health_status", dist = "binary", formula = 0.3)
+def <- defData(def, varname = "motivation_to_quit", dist = "uniform", formula = "1;5")
+def <- defData(def, varname = "socioeconomic_status", dist = "uniformInt", formula = "1;5")
+def <- defData(def, varname = "hospital", dist = "categorical", formula = "0.25;0.25;0.25;0.25")
+
+# Add FTND score based on a normal distribution as a proxy
+def <- defData(def, varname = "nicotine_dependence", dist = "normal", formula = 5, variance = 2)
+
+# Define the treatment group (randomized within hospitals)
+def <- defData(def, varname = "treatment", dist = "binary", formula = 0.5, id = "hospital")
+
+# Define the binary outcome with a treatment effect
+def <- defData(def, varname = "smoking_cessation_6months", dist = "binary",
+               formula = "-2 + 0.05*age + 0.4*sex - 0.2*smoking_intensity - 0.2*nicotine_dependence + 0.3*previous_quit_attempts + 0.3*support_for_quitting + 0.2*motivation_to_quit + 0.1*socioeconomic_status - 0.5*mental_health_status + 1.5*treatment",
+               link = "logit")
+
+# Generate the data
+set.seed(123)  
+N <- 1000
+data <- genData(N, def)
+
+def2 <- defDataAdd(varname = "smoking_cessation_1year", dist = "binary",
+                   formula = "-2 + 0.1*smoking_cessation_6months + 0.05*age + 0.4*sex - 0.2*smoking_intensity - 0.2*nicotine_dependence + 0.2*previous_quit_attempts + 0.3*support_for_quitting + 0.2*motivation_to_quit + 0.1*socioeconomic_status - 0.5*mental_health_status",
+                   link = "logit")
+data <- addColumns(def2,data)
+print(head(data))
+```
+
+```{r messdata}
+
+# CREATE SOME MISSINGNESS
+data[sample(1:N,0.01*N),"smoking_cessation_1year"] <- NA
+data[sample(1:N,0.02*N),"nicotine_dependence"] <- NA
+
+# CREATE WEIRD VALUES
+data[45,"age"] <- 7
+data[500,"age"] <- 99
+data[104,"age"] <- 11
+data[300,"age"] <- 1
+data[599,"age"] <- 1
+
+data[sample(1:N,0.015*N),"support_for_quitting"] <- 0
+
+# TURN SEX INTO CHARACTER
+data <- data %>%
+  mutate(sex = ifelse(sex == 1, "male", "female"))
+num_to_change <- ceiling(0.10 * nrow(data))
+indices_to_change <- sample(1:nrow(data), num_to_change)
+
+# Function to capitalize first letter
+capitalize_first <- function(x) {
+  paste0(toupper(substr(x, 1, 1)), substr(x, 2, nchar(x)))
+}
+
+# Apply the function to the selected rows
+data$sex[indices_to_change] <- sapply(data$sex[indices_to_change], capitalize_first)
+
+# View the updated data
+print(head(data))
+```
+
+```{r separate}
+
+# BREAK INTO TWO DATASETS FOR MERGING
+
+RA_meas <- c("id","age","sex","hospital","treatment","smoking_cessation_6months","smoking_cessation_1year")
+SU_meas <- c("id","nicotine_dependence","previous_quit_attempts","support_for_quitting","mental_health_status","motivation_to_quit","socioeconomic_status","hospital")
+
+RA_data <- data %>% select(all_of(RA_meas))
+SU_data <- data %>% select(all_of(SU_meas))
+
+# CREATE SOME DUPLICATES IN SURVEY DATA
+  # full duplicates
+rows.full.dupIDs <- SU_data[sample(1:N, 5),]
+  # just duplicate IDs 
+rows.part.dupIDs <- SU_data[sample(1:N, 2),]
+rows.part.dupIDs$id <- sample(rows.part.dupIDs$id,2) # permuting the id
+SU_data <- rbind(SU_data,rows.full.dupIDs,rows.part.dupIDs)
+
+# MAKE RA DATA LONG (ONE ROW EACH TIME POINT)
+# Convert from wide to long format
+RA_data_long <- RA_data %>%
+  pivot_longer(
+    cols = c(smoking_cessation_6months, smoking_cessation_1year),
+    names_to = 'follow_up',
+    values_to = 'smoking_cessation'
+  )
+
+# View the resulting data frame
+head(RA_data_long)
+
+RA_data<- as.tibble(RA_data_long)
+SU_data <- as.tibble(SU_data)
+
+save(RA_data,file="SmokingCessation_RA_data.Rda")
+save(SU_data,file="SmokingCessation_SU_data.Rda")
+
+
+```

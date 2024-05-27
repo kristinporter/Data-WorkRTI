@@ -1,0 +1,322 @@
+---
+title: "Session 3"
+author: "Kristin Porter"
+date: "`r Sys.Date()`"
+output:
+   xaringan::moon_reader:
+ #   css: ["default"]
+---
+
+<!-- Add CSS in a style block -->
+<style>
+.two-columns {
+  display: flex;
+}
+.column {
+  flex: 1;
+  padding: 10px;
+}
+</style>
+
+```{r setup, include=FALSE}
+library(knitr)
+library(xaringan)
+library(xaringanExtra)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Navigating R Studio - Left Side
+
+**Console**
+- Primary interface for running R commands interactively
+- Displays output and error messages
+- Supports direct command execution and script running
+
+**Code View Pane**
+- Area for writing and editing R scripts
+- Syntax highlighting and code completion features
+- Multiple script tabs can be opened simultaneously
+
+
+<span style="color: blue;">Exercise: Let's create an R script.</span>
+
+---
+## Navigating R Studio - Lower Right
+
+- **Files**: Manage project files and directories
+
+- **Plots**: Display and manage generated plots and graphics
+
+- **Packages**: Install, update, and load R packages
+
+- **Help**: Access R documentation and search help topics
+
+- <span style="color: gray;">**Viewer**: Render and preview HTML content and interactive visualizations</span>
+
+- <span style="color: gray;">**Presentation**: Display R Markdown presentations</span>
+
+
+<span style="color: blue;">Exercise: Let's see if `dplyr` is installed and if not, then install it.</span>
+
+<span style="color: blue;">Exercise: Let's pull up documentation for `dplyr`.</span>
+
+---
+## Navigating R Studio - Upper Right
+
+- **Environment**: View and manage workspace variables and data
+
+- **History**: Track and recall previously executed commands
+
+- <span style="color: gray;">**Connections**: Connect to databases and manage connections</span>
+
+- <span style="color: gray;">**Git**: Version control integration for project collaboration</span>
+
+- <span style="color: gray;">**Tutorial**: Access interactive tutorials and learning resources</span>
+
+---
+## Set-up: Tip 1 - Don't worry about "workspace"
+
+In R Studio, go to: 
+- "Edit" then
+- "Settings
+
+1. Uncheck "Restore.Rdata into workspace at start-up"
+
+2. For "Save workspace to .Rdata on exit" switch to "Never." 
+
+Hit "Apply" then "OK"
+
+---
+## Set-up: Tip 2 - Create an R project
+
+### The RStudio project file:
+- Sits in root directory with extension .Rproj
+- When your RStudio session is running through the .Rproj, the current working directory points to the root folder where the .Rproj is saved
+
+### Steps:
+- Create a folder called "NCSU_DSA".
+- Within RStudio, to File > New Project
+- Select “New Directory”
+- Select “New Project”
+- For “Directory name:” enter “NCSU_DSA”. 
+- Select subdirectory. 
+- Click “Create Project”
+- Navigate to "NCSU_DSA" folder in RStudio and confirm you see “NCSU_DSA.Rproj”
+- Save your script here. 
+
+---
+## Quick overview of R Markdown
+- **Combines Code and Text**
+  - Integrates R code with narrative text, equations, and visualizations
+  - Supports reproducible research and dynamic reports
+- **Flexible Output Formats**
+  - Can generate HTML, PDF, Word documents, slideshows, and more
+  - Easily customizable templates and themes
+- **Code Chunks**
+  - Embed executable R code in chunks
+  - Display code output inline with text
+  - Supports multiple languages (Python, SQL, etc.)
+- **R Notebooks**
+  - A type of R Markdown that provides a more interactive experience
+- **Learning Resources**
+  - Comprehensive guide and reference: [R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/)
+  - RStudio's R Markdown resources: [R Markdown Documentation](https://rmarkdown.rstudio.com/)
+  
+---
+## Questions? 
+
+---
+# Review of R Foundations
+
+---
+## R Objects
+
+In R, the term "object" refers to...
+- anything you can manipulate
+- anything assigned to a variable
+- a wide range of data structures (e.g., numbers, strings vectors, lists, matrices, data frames, and functions).
+
+Objects have:
+
+1.  **Attributes**: These are "metadata" about the object, like its dimensions (for matrices), names (for elements in a vector or columns in a data frame), or class (which defines how the object should behave in different contexts).
+
+2.  **Types and Structures**: The type of an object refers to its basic data type (numeric, integer, character, etc.), while the structure refers to how these types are organized (like vectors, lists, matrices).
+
+3.  **Classes and Methods**: Objects can have specific classes, and there are methods designed to work with objects of these classes. For instance, the **`print(x)`** function behaves differently for object `x` depending on whether `x` is a numeric vector, a data frame, or a model object.
+
+
+---
+## R Data Types
+
+<div class="two-columns">
+  <div class="column">
+    <!-- First column with text -->
+1.  **Numeric**: Default data type for numbers in R. 
+
+2.  **Character**: Strings of text. Any data enclosed in single or double quotes is considered a character type, e.g., "Raleigh".
+
+3.  **Logical**: Boolean values, which take values of **`TRUE`** or **`FALSE`**.
+
+4. **Factors**: Used to store ordered or unordered categorical data efficiently by using. Different functions handle factors in different ways - e.g. many regression functions automatically create dummy variables for each level.
+
+  </div>
+  <div class="column">
+    <!-- Second column with code chunk -->
+```{r}
+# Here we have a numerical vector
+a <- c(1,2,3)
+class(a)
+
+# If we add a string
+b <- c(a,"cat")
+print(b)
+
+# We can create a Boolean
+a_is1 <- a==1
+a_is1
+
+# We can turn a into a factor
+factor.a <- as.factor(a)
+```
+  </div>
+</div>
+```
+```
+```
+---
+## R object names
+
+1.  **Syntax Rules**: Valid object names must start with a letter, followed by a combination of letters, numbers, the period (`.`), and the underscore (`_`). They cannot start with a number or an underscore, nor can they contain special characters like `^`, `!`, `@`, `#`, `$`, `%`, `&`, `*`, `(`, `)`, `-`, `+`, `=`, `{`, `}`, `[`, `]`, `|`, `\`, `:`, `;`, `'`, `"`, `<`, `>`, `,`, `?`, `/`, or space. Avoid `.` at end of name (reserved for other purposes).
+
+2.  **Reserved Words**: R has a set of reserved words that cannot be used as object names. These include function names, keywords, and other built-in identifiers like `if`, `else`, `repeat`, `while`, `function`, `for`, `in`, `next`, and `break`.
+
+3.  **Case Sensitivity**: R is case-sensitive, which means that `Object`, `object`, and `OBJECT` would be considered different objects.
+ and avoiding the use of periods at the end, as they are conventionally used for other purposes. 
+
+4.  **Global Environment**: Object names in the global environment should not conflict with object names in attached packages. If a name conflict occurs, R will use the object from the most recently attached package or environment.
+
+---
+## R data structures: VECTORS
+
+Central to R's flexibility for data analysis are its diverse data structures, which enable users to handle and manipulate data in a variety of ways. Primary data structures used in R:
+
+1.  **Vectors**: The simplest and most common data structure in R, vectors are one-dimensional arrays that hold elements of the same type. They can be of various types themselves, such as numeric, integer, complex, logical, character, or raw.
+
+```{r vectorEx}
+# The object my.numeric.vector is a numeric vector:
+my.vector <- c(1,2,3,4,5) # note that c() combines elements into a vector
+
+# The object my.char.vector is a character vector:
+my.char.vector <- c("walk","bus","bike","drive")
+
+# The object my.logical.vector is a logical vector
+my.logical.vector <- c(TRUE,FALSE,TRUE)
+```
+
+---
+## R data structures: MATRICES
+
+2.  **Matrices**: A matrix is a 2-dimensional data structure with rows and columns, where every element is of the **same data type**. It can be considered as a collection of vectors of equal length in a rectangular layout. 
+
+```{r matrixEx}
+# my.matrix is a numeric matrix, which I create by combining two vectors. 
+# Each vector is a column of the matrix. 
+# I combine the vectors using function cbind(). 
+a <- c(1,2,3)
+b <- c(4,5,6)
+my.matrix <- cbind(a,b)
+print(my.matrix)
+
+# We can look at the dimensions of the matrix with the function dim(). This will return the number of rows, followed by the number of columns. 
+dim(my.matrix)
+
+# We can zoom in on sub-parts of the matrix by putting square brackets[] after a matrix object name.
+# entries before the comma refer to rows
+my.matrix[1:2,] # the first two rows
+# entries after the comma refer the columns
+my.matrix[,1] # the first column
+# entries before and after column narrow into cells of the matrix
+my.matrix[1,1] # value in the first row and first column
+```
+
+---
+## R data structures: DATA FRAMES
+
+3.  **Data Frames**: A data frame is a two-dimensional table-like structure that can hold columns of different types (e.g., numeric, character, and logical). Each column in a data frame can be thought of as a vector, and the length of each vector (number of rows) must be the same across all columns.
+
+```{r dataframes}
+# The `datasets` package has multiple toy data sets (data frames)
+# We can look at the first five rows of the data set mtcars
+head(mtcars)
+
+# We can look at the names of the columns
+names(mtcars)
+```
+
+---
+```{r dataframes2}
+# We can quickly look at the structure of the data frame
+str(mtcars)
+```
+
+---
+```{r dataframes3}
+# We can get a summary of all the variables
+summary(mtcars)
+```
+
+---
+# Evaluations in R
+
+- **Equals** (`==`)
+  - `5 == 5` returns `TRUE`
+  - `5 == 4` returns `FALSE`
+
+- **Not Equals** (`!=`)
+  - `5 != 4` returns `TRUE`
+  - `5 != 5` returns `FALSE`
+
+- **Greater Than (or Equal To)** (`>`, `>=`)
+  - `5 > 4` returns `TRUE`
+  - `4 >= 5` returns `FALSE`
+
+- **Less Than (or Equal To)** (`<`,`<=`)
+  - `4 < 5` returns `TRUE`
+  - `5 <= 4` returns `FALSE`
+
+---
+# Logical Operators
+
+- **And** (`&`)
+  - `TRUE & TRUE` returns `TRUE`
+  
+  - `TRUE & FALSE` returns `FALSE`
+
+- **Or** (`|`)
+  - `TRUE | FALSE` returns `TRUE`
+  
+  - `FALSE | FALSE` returns `FALSE`
+
+- **Not** (`!`)
+  - `!TRUE` returns `FALSE`
+  
+  - `!FALSE` returns `TRUE`
+  
+---
+## Using Evaluation Operators with Vectors
+c(1, 2, 3) == c(1, 2, 4)  # c(TRUE, TRUE, FALSE)
+
+c(1, 2, 3) > 2            # c(FALSE, FALSE, TRUE)
+
+vec <- c(10, 20, 30)
+vec[vec > 15]             # c(20, 30)
+
+b <- c(1, 2)
+b %in% c                  # c(TRUE, TRUE)
+
+## Using Evaluation Operators with Data Frames
+df <- data.frame(a = c(1, 2, 3), b = c(4, 5, 6))
+df$a == 2                 # c(FALSE, TRUE, FALSE)
+df[df$a == 2, ]           # Returns the second row
+df[df$b > 4, ]            # Returns rows where b > 4
+

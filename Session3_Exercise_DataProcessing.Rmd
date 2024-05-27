@@ -1,0 +1,207 @@
+---
+title: "Data Processing Notebook"
+output: html_notebook
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(tidyr)
+library(purrr)
+```
+
+# Load both data sets
+
+```{r load-data}
+# Load the RA_data and SU_data
+loaded_objectsRA <- load("SmokingCessation_RA_data.Rda")
+RA_data <- get(loaded_objectsRA)
+
+loaded_objectsSU <- load("SmokingCessation_SU_data.Rda")
+SU_data <- get(loaded_objectsSU)
+
+# Get dimensions
+dim(RA_data)
+dim(SU_data)
+
+# Preview the data
+head(RA_data)
+head(SU_data)
+
+# Glimpse the data
+glimpse(RA_data)
+glimpse(SU_data)
+```
+
+# RA_data
+
+## Convert from Long to Wide
+
+```{r ra-convert-long-to-wide}
+# Convert from long to wide format
+RA_data_wide <- RA_data %>%
+  pivot_wider(names_from = follow_up, values_from = smoking_cessation)
+
+# View the transformed data
+head(RA_data_wide)
+
+# Check dimensions
+dim(RA_data_wide)
+
+# Check means in long vs. wide format
+outcome_means_long <- RA_data %>%
+  group_by(follow_up) %>%
+  summarise(mean=mean(smoking_cessation,na.rm=TRUE))
+outcome_means_long
+
+outcome_means_wide <- RA_data_wide %>%
+  summarise(across(c("smoking_cessation_6months","smoking_cessation_1year"), \(x) mean(x, na.rm = TRUE)))
+outcome_means_wide
+```
+
+## Check for and Address Duplicates
+
+```{r ra-check-duplicates}
+# Check for duplicates
+ra_duplicates <- RA_data_wide %>% 
+  group_by(id) %>% 
+  filter(n() > 1)
+ra_duplicates
+```
+
+## Create Dummy for Female
+
+```{r ra-create-female-dummy}
+# Create dummy for female
+RA_data_wide <- RA_data_wide %>%
+  mutate(female = ifelse(tolower(sex) == "female", 1, 0))
+
+# Verify creation
+head(RA_data_wide[,c("id","sex","female")])
+```
+
+# SU_data
+
+## Check for and Address Duplicates
+
+```{r su-check-duplicates}
+# Check for duplicates
+su_duplicates <- SU_data %>% 
+  group_by(id) %>% 
+  filter(n() > 1) %>%
+  arrange(id)
+su_duplicates
+```
+
+```{r su-remove-duplicates}
+# Remove duplicates
+SU_data <- SU_data %>% distinct()
+
+# Check for duplicates after removal
+su_duplicates_after <- SU_data %>% 
+  group_by(id) %>% 
+  filter(n() > 1)
+su_duplicates_after
+```
+
+# Merge RA_data and SU_data
+
+```{r merge-datasets}
+# Merge RA_data_wide and SU_data on 'id'
+study_data <- RA_data_wide %>% inner_join(SU_data, by = "id")
+
+# View the merged data
+head(study_data)
+
+# Since hospital was in both data sets we merged, we have it twice
+# Let's fix
+study_data <- study_data %>%
+  mutate(hospital = hospital.x) %>%  # Create the new hospital variable
+  select(-hospital.x, -hospital.y)  # Remove the old hospital.x and hospital.y columns
+head(study_data)
+
+# Check dimensions
+dim(RA_data_wide)
+dim(SU_data)
+dim(study_data)
+
+# Glimpse merged data
+glimpse(study_data)
+```
+
+# Clean merged data
+
+## Check for Outliers and Missing Values
+
+```{r ra-check-outliers}
+# Check for outliers using summary statistics
+# With dplyr & purr: 
+summarize_column <- function(column) {
+  data.frame(
+    min = min(column, na.rm = TRUE),
+    Q1 = quantile(column, 0.25, na.rm = TRUE),
+    median = median(column, na.rm = TRUE),
+    Q3 = quantile(column, 0.75, na.rm = TRUE),
+    max = max(column, na.rm = TRUE),
+    mean = mean(column, na.rm = TRUE),
+    sd = sd(column, na.rm = TRUE),
+    n_missing = sum(is.na(column))
+  )
+}
+summary_stats <- study_data %>%
+  select(where(is.numeric)) %>%
+  map_dfr(~ summarize_column(.x), .id = "variable")
+summary_stats
+
+# With base R, summary is simple
+summary(study_data)
+```
+
+## Remove Rows with Missing Outcomes
+
+```{r su-remove-missing-outcomes}
+# Remove rows with missing `smoking_cessation_1year`
+study_data <- study_data %>% filter(!is.na(smoking_cessation_1year))
+
+# Verify removal
+sum(is.na(study_data$smoking_cessation_1year))
+dim(study_data)
+```
+
+## For baseline covariates with missing values, dummy impute
+
+```{r dummy_impute-missing-values}
+# Impute missing values with mean and create dummy variables
+
+# hard coding one at a time
+study_data <- study_data %>%
+  mutate(
+    age_imputed_dummy = if_else(is.na(age), 1, 0),
+    nicotine_dependence_imputed_dummy = if_else(is.na(nicotine_dependence), 1, 0),
+    age_imputed = if_else(is.na(age), mean(age, na.rm = TRUE), age),
+    nicotine_dependence_imputed = if_else(is.na(nicotine_dependence), mean(nicotine_dependence, na.rm = TRUE), nicotine_dependence)
+  )
+
+# A more elegant way for the imputation with `dplyr` - requires creating a function (not covered yet)
+#columns_to_impute <- c("nicotine_dependence", "age")
+#study_data <- study_data %>%
+#  mutate(across(all_of(columns_to_impute),~ ifelse(is.na(.), mean(., na.rm = TRUE), .)))
+  # overwrites missing values in "age"
+  # adding dummies with this approach gets more complicated
+
+# Check the imputation
+selected_columns <- study_data %>%
+  select(age, age_imputed, age_imputed_dummy, nicotine_dependence, nicotine_dependence_imputed, nicotine_dependence_imputed_dummy) %>%
+  filter(age_imputed_dummy == 1 | nicotine_dependence_imputed_dummy == 1) %>%
+  slice_head(n = 5)
+selected_columns
+summary(study_data)
+```
+
+# Final summary and checks of data
+
+```{r final_checks}
+head(study_data)
+glimpse(study_data)
+
+```

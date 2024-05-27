@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Session 3</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Kristin Porter" />
+    <meta name="date" content="2024-05-26" />
+    <script src="Session3_Parts1-2_RStudio-RFoundations_files/header-attrs-2.26/header-attrs.js"></script>
+    <link href="Session3_Parts1-2_RStudio-RFoundations_files/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="Session3_Parts1-2_RStudio-RFoundations_files/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Session 3
+]
+.author[
+### Kristin Porter
+]
+.date[
+### 2024-05-26
+]
+
+---
+
+
+&lt;!-- Add CSS in a style block --&gt;
+&lt;style&gt;
+.two-columns {
+  display: flex;
+}
+.column {
+  flex: 1;
+  padding: 10px;
+}
+&lt;/style&gt;
+
+
+
+## Navigating R Studio - Left Side
+
+**Console**
+- Primary interface for running R commands interactively
+- Displays output and error messages
+- Supports direct command execution and script running
+
+**Code View Pane**
+- Area for writing and editing R scripts
+- Syntax highlighting and code completion features
+- Multiple script tabs can be opened simultaneously
+
+
+&lt;span style="color: blue;"&gt;Exercise: Let's create an R script.&lt;/span&gt;
+
+---
+## Navigating R Studio - Lower Right
+
+- **Files**: Manage project files and directories
+
+- **Plots**: Display and manage generated plots and graphics
+
+- **Packages**: Install, update, and load R packages
+
+- **Help**: Access R documentation and search help topics
+
+- &lt;span style="color: gray;"&gt;**Viewer**: Render and preview HTML content and interactive visualizations&lt;/span&gt;
+
+- &lt;span style="color: gray;"&gt;**Presentation**: Display R Markdown presentations&lt;/span&gt;
+
+
+&lt;span style="color: blue;"&gt;Exercise: Let's see if `dplyr` is installed and if not, then install it.&lt;/span&gt;
+
+&lt;span style="color: blue;"&gt;Exercise: Let's pull up documentation for `dplyr`.&lt;/span&gt;
+
+---
+## Navigating R Studio - Upper Right
+
+- **Environment**: View and manage workspace variables and data
+
+- **History**: Track and recall previously executed commands
+
+- &lt;span style="color: gray;"&gt;**Connections**: Connect to databases and manage connections&lt;/span&gt;
+
+- &lt;span style="color: gray;"&gt;**Git**: Version control integration for project collaboration&lt;/span&gt;
+
+- &lt;span style="color: gray;"&gt;**Tutorial**: Access interactive tutorials and learning resources&lt;/span&gt;
+
+---
+## Set-up: Tip 1 - Don't worry about "workspace"
+
+In R Studio, go to: 
+- "Edit" then
+- "Settings
+
+1. Uncheck "Restore.Rdata into workspace at start-up"
+
+2. For "Save workspace to .Rdata on exit" switch to "Never." 
+
+Hit "Apply" then "OK"
+
+---
+## Set-up: Tip 2 - Create an R project
+
+### The RStudio project file:
+- Sits in root directory with extension .Rproj
+- When your RStudio session is running through the .Rproj, the current working directory points to the root folder where the .Rproj is saved
+
+### Steps:
+- Create a folder called "NCSU_DSA".
+- Within RStudio, to File &gt; New Project
+- Select “New Directory”
+- Select “New Project”
+- For “Directory name:” enter “NCSU_DSA”. 
+- Select subdirectory. 
+- Click “Create Project”
+- Navigate to "NCSU_DSA" folder in RStudio and confirm you see “NCSU_DSA.Rproj”
+- Save your script here. 
+
+---
+## Quick overview of R Markdown
+- **Combines Code and Text**
+  - Integrates R code with narrative text, equations, and visualizations
+  - Supports reproducible research and dynamic reports
+- **Flexible Output Formats**
+  - Can generate HTML, PDF, Word documents, slideshows, and more
+  - Easily customizable templates and themes
+- **Code Chunks**
+  - Embed executable R code in chunks
+  - Display code output inline with text
+  - Supports multiple languages (Python, SQL, etc.)
+- **R Notebooks**
+  - A type of R Markdown that provides a more interactive experience
+- **Learning Resources**
+  - Comprehensive guide and reference: [R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/)
+  - RStudio's R Markdown resources: [R Markdown Documentation](https://rmarkdown.rstudio.com/)
+  
+---
+## Questions? 
+
+---
+# Review of R Foundations
+
+---
+## R Objects
+
+In R, the term "object" refers to...
+- anything you can manipulate
+- anything assigned to a variable
+- a wide range of data structures (e.g., numbers, strings vectors, lists, matrices, data frames, and functions).
+
+Objects have:
+
+1.  **Attributes**: These are "metadata" about the object, like its dimensions (for matrices), names (for elements in a vector or columns in a data frame), or class (which defines how the object should behave in different contexts).
+
+2.  **Types and Structures**: The type of an object refers to its basic data type (numeric, integer, character, etc.), while the structure refers to how these types are organized (like vectors, lists, matrices).
+
+3.  **Classes and Methods**: Objects can have specific classes, and there are methods designed to work with objects of these classes. For instance, the **`print(x)`** function behaves differently for object `x` depending on whether `x` is a numeric vector, a data frame, or a model object.
+
+
+---
+## R Data Types
+
+&lt;div class="two-columns"&gt;
+  &lt;div class="column"&gt;
+    &lt;!-- First column with text --&gt;
+1.  **Numeric**: Default data type for numbers in R. 
+
+2.  **Character**: Strings of text. Any data enclosed in single or double quotes is considered a character type, e.g., "Raleigh".
+
+3.  **Logical**: Boolean values, which take values of **`TRUE`** or **`FALSE`**.
+
+4. **Factors**: Used to store ordered or unordered categorical data efficiently by using. Different functions handle factors in different ways - e.g. many regression functions automatically create dummy variables for each level.
+
+  &lt;/div&gt;
+  &lt;div class="column"&gt;
+    &lt;!-- Second column with code chunk --&gt;
+
+```r
+# Here we have a numerical vector
+a &lt;- c(1,2,3)
+class(a)
+```
+
+```
+## [1] "numeric"
+```
+
+```r
+# If we add a string
+b &lt;- c(a,"cat")
+print(b)
+```
+
+```
+## [1] "1"   "2"   "3"   "cat"
+```
+
+```r
+# We can create a Boolean
+a_is1 &lt;- a==1
+a_is1
+```
+
+```
+## [1]  TRUE FALSE FALSE
+```
+
+```r
+# We can turn a into a factor
+factor.a &lt;- as.factor(a)
+```
+  &lt;/div&gt;
+&lt;/div&gt;
+```
+```
+```
+---
+## R object names
+
+1.  **Syntax Rules**: Valid object names must start with a letter, followed by a combination of letters, numbers, the period (`.`), and the underscore (`_`). They cannot start with a number or an underscore, nor can they contain special characters like `^`, `!`, `@`, `#`, `$`, `%`, `&amp;`, `*`, `(`, `)`, `-`, `+`, `=`, `{`, `}`, `[`, `]`, `|`, `\`, `:`, `;`, `'`, `"`, `&lt;`, `&gt;`, `,`, `?`, `/`, or space. Avoid `.` at end of name (reserved for other purposes).
+
+2.  **Reserved Words**: R has a set of reserved words that cannot be used as object names. These include function names, keywords, and other built-in identifiers like `if`, `else`, `repeat`, `while`, `function`, `for`, `in`, `next`, and `break`.
+
+3.  **Case Sensitivity**: R is case-sensitive, which means that `Object`, `object`, and `OBJECT` would be considered different objects.
+ and avoiding the use of periods at the end, as they are conventionally used for other purposes. 
+
+4.  **Global Environment**: Object names in the global environment should not conflict with object names in attached packages. If a name conflict occurs, R will use the object from the most recently attached package or environment.
+
+---
+## R data structures: VECTORS
+
+Central to R's flexibility for data analysis are its diverse data structures, which enable users to handle and manipulate data in a variety of ways. Primary data structures used in R:
+
+1.  **Vectors**: The simplest and most common data structure in R, vectors are one-dimensional arrays that hold elements of the same type. They can be of various types themselves, such as numeric, integer, complex, logical, character, or raw.
+
+
+```r
+# The object my.numeric.vector is a numeric vector:
+my.vector &lt;- c(1,2,3,4,5) # note that c() combines elements into a vector
+
+# The object my.char.vector is a character vector:
+my.char.vector &lt;- c("walk","bus","bike","drive")
+
+# The object my.logical.vector is a logical vector
+my.logical.vector &lt;- c(TRUE,FALSE,TRUE)
+```
+
+---
+## R data structures: MATRICES
+
+2.  **Matrices**: A matrix is a 2-dimensional data structure with rows and columns, where every element is of the **same data type**. It can be considered as a collection of vectors of equal length in a rectangular layout. 
+
+
+```r
+# my.matrix is a numeric matrix, which I create by combining two vectors. 
+# Each vector is a column of the matrix. 
+# I combine the vectors using function cbind(). 
+a &lt;- c(1,2,3)
+b &lt;- c(4,5,6)
+my.matrix &lt;- cbind(a,b)
+print(my.matrix)
+```
+
+```
+##      a b
+## [1,] 1 4
+## [2,] 2 5
+## [3,] 3 6
+```
+
+```r
+# We can look at the dimensions of the matrix with the function dim(). This will return the number of rows, followed by the number of columns. 
+dim(my.matrix)
+```
+
+```
+## [1] 3 2
+```
+
+```r
+# We can zoom in on sub-parts of the matrix by putting square brackets[] after a matrix object name.
+# entries before the comma refer to rows
+my.matrix[1:2,] # the first two rows
+```
+
+```
+##      a b
+## [1,] 1 4
+## [2,] 2 5
+```
+
+```r
+# entries after the comma refer the columns
+my.matrix[,1] # the first column
+```
+
+```
+## [1] 1 2 3
+```
+
+```r
+# entries before and after column narrow into cells of the matrix
+my.matrix[1,1] # value in the first row and first column
+```
+
+```
+## a 
+## 1
+```
+
+---
+## R data structures: DATA FRAMES
+
+3.  **Data Frames**: A data frame is a two-dimensional table-like structure that can hold columns of different types (e.g., numeric, character, and logical). Each column in a data frame can be thought of as a vector, and the length of each vector (number of rows) must be the same across all columns.
+
+
+```r
+# The `datasets` package has multiple toy data sets (data frames)
+# We can look at the first five rows of the data set mtcars
+head(mtcars)
+```
+
+```
+##                    mpg cyl disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+## Datsun 710        22.8   4  108  93 3.85 2.320 18.61  1  1    4    1
+## Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
+## Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
+## Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1
+```
+
+```r
+# We can look at the names of the columns
+names(mtcars)
+```
+
+```
+##  [1] "mpg"  "cyl"  "disp" "hp"   "drat" "wt"   "qsec" "vs"   "am"   "gear"
+## [11] "carb"
+```
+
+---
+
+```r
+# We can quickly look at the structure of the data frame
+str(mtcars)
+```
+
+```
+## 'data.frame':	32 obs. of  11 variables:
+##  $ mpg : num  21 21 22.8 21.4 18.7 18.1 14.3 24.4 22.8 19.2 ...
+##  $ cyl : num  6 6 4 6 8 6 8 4 4 6 ...
+##  $ disp: num  160 160 108 258 360 ...
+##  $ hp  : num  110 110 93 110 175 105 245 62 95 123 ...
+##  $ drat: num  3.9 3.9 3.85 3.08 3.15 2.76 3.21 3.69 3.92 3.92 ...
+##  $ wt  : num  2.62 2.88 2.32 3.21 3.44 ...
+##  $ qsec: num  16.5 17 18.6 19.4 17 ...
+##  $ vs  : num  0 0 1 1 0 1 0 1 1 1 ...
+##  $ am  : num  1 1 1 0 0 0 0 0 0 0 ...
+##  $ gear: num  4 4 4 3 3 3 3 4 4 4 ...
+##  $ carb: num  4 4 1 1 2 1 4 2 2 4 ...
+```
+
+---
+
+```r
+# We can get a summary of all the variables
+summary(mtcars)
+```
+
+```
+##       mpg             cyl             disp             hp       
+##  Min.   :10.40   Min.   :4.000   Min.   : 71.1   Min.   : 52.0  
+##  1st Qu.:15.43   1st Qu.:4.000   1st Qu.:120.8   1st Qu.: 96.5  
+##  Median :19.20   Median :6.000   Median :196.3   Median :123.0  
+##  Mean   :20.09   Mean   :6.188   Mean   :230.7   Mean   :146.7  
+##  3rd Qu.:22.80   3rd Qu.:8.000   3rd Qu.:326.0   3rd Qu.:180.0  
+##  Max.   :33.90   Max.   :8.000   Max.   :472.0   Max.   :335.0  
+##       drat             wt             qsec             vs        
+##  Min.   :2.760   Min.   :1.513   Min.   :14.50   Min.   :0.0000  
+##  1st Qu.:3.080   1st Qu.:2.581   1st Qu.:16.89   1st Qu.:0.0000  
+##  Median :3.695   Median :3.325   Median :17.71   Median :0.0000  
+##  Mean   :3.597   Mean   :3.217   Mean   :17.85   Mean   :0.4375  
+##  3rd Qu.:3.920   3rd Qu.:3.610   3rd Qu.:18.90   3rd Qu.:1.0000  
+##  Max.   :4.930   Max.   :5.424   Max.   :22.90   Max.   :1.0000  
+##        am              gear            carb      
+##  Min.   :0.0000   Min.   :3.000   Min.   :1.000  
+##  1st Qu.:0.0000   1st Qu.:3.000   1st Qu.:2.000  
+##  Median :0.0000   Median :4.000   Median :2.000  
+##  Mean   :0.4062   Mean   :3.688   Mean   :2.812  
+##  3rd Qu.:1.0000   3rd Qu.:4.000   3rd Qu.:4.000  
+##  Max.   :1.0000   Max.   :5.000   Max.   :8.000
+```
+
+---
+# Evaluations in R
+
+- **Equals** (`==`)
+  - `5 == 5` returns `TRUE`
+  - `5 == 4` returns `FALSE`
+
+- **Not Equals** (`!=`)
+  - `5 != 4` returns `TRUE`
+  - `5 != 5` returns `FALSE`
+
+- **Greater Than (or Equal To)** (`&gt;`, `&gt;=`)
+  - `5 &gt; 4` returns `TRUE`
+  - `4 &gt;= 5` returns `FALSE`
+
+- **Less Than (or Equal To)** (`&lt;`,`&lt;=`)
+  - `4 &lt; 5` returns `TRUE`
+  - `5 &lt;= 4` returns `FALSE`
+
+---
+# Logical Operators
+
+- **And** (`&amp;`)
+  - `TRUE &amp; TRUE` returns `TRUE`
+  
+  - `TRUE &amp; FALSE` returns `FALSE`
+
+- **Or** (`|`)
+  - `TRUE | FALSE` returns `TRUE`
+  
+  - `FALSE | FALSE` returns `FALSE`
+
+- **Not** (`!`)
+  - `!TRUE` returns `FALSE`
+  
+  - `!FALSE` returns `TRUE`
+  
+---
+## Using Evaluation Operators with Vectors
+c(1, 2, 3) == c(1, 2, 4)  # c(TRUE, TRUE, FALSE)
+
+c(1, 2, 3) &gt; 2            # c(FALSE, FALSE, TRUE)
+
+vec &lt;- c(10, 20, 30)
+vec[vec &gt; 15]             # c(20, 30)
+
+b &lt;- c(1, 2)
+b %in% c                  # c(TRUE, TRUE)
+
+## Using Evaluation Operators with Data Frames
+df &lt;- data.frame(a = c(1, 2, 3), b = c(4, 5, 6))
+df$a == 2                 # c(FALSE, TRUE, FALSE)
+df[df$a == 2, ]           # Returns the second row
+df[df$b &gt; 4, ]            # Returns rows where b &gt; 4
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create();
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
