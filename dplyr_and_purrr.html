@@ -1,32 +1,34 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Session 3</title>
+    <title>Two key Tidyverse packages for data manipulation: dplyr &amp; purrr</title>
     <meta charset="utf-8" />
     <meta name="author" content="Kristin Porter" />
-    <meta name="date" content="2024-05-25" />
-    <script src="Session3_Part3TidyverseRevewAndExpansions_files/header-attrs-2.26/header-attrs.js"></script>
-    <link href="Session3_Part3TidyverseRevewAndExpansions_files/remark-css-0.0.1/default.css" rel="stylesheet" />
-    <link href="Session3_Part3TidyverseRevewAndExpansions_files/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
-    <link href="Session3_Part3TidyverseRevewAndExpansions_files/panelset-0.3.0/panelset.css" rel="stylesheet" />
-    <script src="Session3_Part3TidyverseRevewAndExpansions_files/panelset-0.3.0/panelset.js"></script>
+    <meta name="date" content="2024-05-29" />
+    <script src="dplyr_and_purrr_files/header-attrs-2.26/header-attrs.js"></script>
+    <link href="dplyr_and_purrr_files/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="dplyr_and_purrr_files/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+    <link href="dplyr_and_purrr_files/panelset-0.3.0/panelset.css" rel="stylesheet" />
+    <script src="dplyr_and_purrr_files/panelset-0.3.0/panelset.js"></script>
   </head>
   <body>
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
 .title[
-# Session 3
+# Two key Tidyverse packages for data manipulation: dplyr &amp; purrr
+]
+.subtitle[
+## Session 3
 ]
 .author[
 ### Kristin Porter
 ]
 .date[
-### 2024-05-25
+### May 29, 2024
 ]
 
 ---
-
 
 
 &lt;!-- Add CSS in a style block --&gt;
@@ -98,19 +100,29 @@ class: center, middle, inverse, title-slide
 -   Fast and consistent performance.
 -   Integrates well with other Tidyverse packages.
 
-### Working with tibbles
-
-Tibbles are a modern take on data frames, but they are tweaked to work better with the Tidyverse. Converting a data frame to a tibble is straightforward:
+See this online resource[https://dplyr.tidyverse.org/reference/index.html].
 
 ---
+## Basic dplyr functions
+
+The `dplyr` package has a wide range of functions (or "verbs") for manipulating data frames or "tibbles" in a user-friendly way.
+
+**What is a tibble?** Tibbles are data frames that are adjusted to work better with the Tidyverse. Most functions work seamlessly with both data frames and tibbles. However, there are some differences in behavior and output format between data frames and tibbles:
+
+- **Printing:** Tibbles have a more readable print method, showing only the first 10 rows and all the columns that fit on the screen, whereas data frames print all rows by default.
+- **Column Data Types:** Tibbles preserve column data types more consistently than data frames, which sometimes convert character vectors to factors by default.
+- **Subsetting:** Tibbles provide more consistent behavior when subsetting. For example, subsetting a single column of a tibble always returns a tibble, whereas for data frames, it returns a vector.
+- **Performance:** There might be slight performance differences due to the internal optimizations in tibbles, but these are generally negligible for most use cases.
+
+---
+Converting a data frame to a tibble is straightforward: 
 
 
 ```r
 library(dplyr)
-# creating toy data frame
+# creating toy data frame &amp; converting to tibble
 my_data_frame &lt;- data.frame(x = c(3,2,2,4,1,1), y = c("c","b","d","d","a","a"),
                             z = c(TRUE,FALSE,TRUE,FALSE,TRUE,TRUE))
-# converting data frame to a tibble &amp; printing
 my_tibble &lt;- as_tibble(my_data_frame)
 my_tibble
 ```
@@ -139,13 +151,6 @@ glimpse(my_tibble) #like str()
 ## $ y &lt;chr&gt; "c", "b", "d", "d", "a", "a"
 ## $ z &lt;lgl&gt; TRUE, FALSE, TRUE, FALSE, TRUE, TRUE
 ```
-
----
-## Basic dplyr functions
-
-The `dplyr` package has a wide range of functions (or "verbs") for manipulating tibbles in a user-friendly way.
-
-See this online resource[https://dplyr.tidyverse.org/reference/index.html] for a helpful list.
 
 ---
 ## Operations on ROWS: filter()
@@ -244,7 +249,7 @@ distinct_x
 ---
 ## Operations on ROWS: slice()
 
-Extract specific rows. (As a reminder, use `Help` is helpful!)
+Extract specific rows. Some verbs like slice() have multiple versions.
 
 
 ```r
@@ -324,9 +329,13 @@ mutated_data
 ```
 
 ---
-## Piping
+## Piping: apply multiple verbs to rows &amp; columns 
 
-We can carry out numerous operations/manipulations on rows and columns at a time with the following format. We create a new tibble, assign it to the tibble we want to revise followed by %\&gt;%. Then we can call multiple dplyr functions/verbs in a slightly different format. Mainly, we no longer pass in the tibble to each function since we have already noted it. And, following each function/verb, we add another %\&gt;% - to the end of all except the final function.
+(1) create a new tibble, assign it to the tibble we want to revise followed by %\&gt;%.
+
+(2) Call multiple dplyr functions/verbs in a slightly different format - we no longer pass in the tibble to each function since we have already noted it.
+
+(3) Following each function/verb, we add another %\&gt;% - to the end of all except the final function.
 
 
 ```r
@@ -348,95 +357,273 @@ new_data
 ## 4     1 a            2
 ```
 
-&lt;!-- ### Operations on GROUPS of ROWS --&gt;
+---
+## Operations on GROUPS of ROWS: summarize()
 
-&lt;!-- #### summarize --&gt;
+Compute summary statistics across rows for designated columns.
 
-&lt;!-- Compute summary statistics across rows (observations) for designated columns. --&gt;
 
-&lt;!-- ```{r summarizeData} --&gt;
-&lt;!-- # compute the mean of x across all observations --&gt;
-&lt;!-- summarized_x &lt;- summarize(my_tibble,mean_x=mean(x)) --&gt;
-&lt;!-- summarized_x --&gt;
+```r
+# compute the mean of x across all observations
+summarize(my_tibble,mean_x=mean(x))
+```
 
-&lt;!-- # we can also compute multiple summary statistics at one time: --&gt;
-&lt;!-- summary_stats &lt;- my_tibble %&gt;% --&gt;
-&lt;!--   summarize( --&gt;
-&lt;!--     mean_x = mean(x), --&gt;
-&lt;!--     median_x = median(x), --&gt;
-&lt;!--     max_x = max(x) --&gt;
-&lt;!--   ) --&gt;
-&lt;!-- summary_stats --&gt;
-&lt;!-- ``` --&gt;
+```
+## # A tibble: 1 × 1
+##   mean_x
+##    &lt;dbl&gt;
+## 1   2.17
+```
 
-&lt;!-- #### group_by --&gt;
+```r
+# we can also compute multiple summary statistics at one time:
+summary_stats &lt;- my_tibble %&gt;%
+  summarize(
+    mean_x = mean(x),
+    median_x = median(x),
+    max_x = max(x)
+  )
+summary_stats
+```
 
-&lt;!-- Takes an existing tibble and converts it into a grouped tibble where operations are performed "by group." --&gt;
+```
+## # A tibble: 1 × 3
+##   mean_x median_x max_x
+##    &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;
+## 1   2.17        2     4
+```
 
-&lt;!-- ```{r groupData} --&gt;
-&lt;!-- # just grouping data - by whether z is TRUE OR FALSE --&gt;
-&lt;!-- grouped_data &lt;- group_by(my_tibble,z) --&gt;
+---
+## Operations on GROUPS of ROWS: group_by()
+Takes an existing tibble and converts it into a grouped tibble where operations are performed "by group."
 
-&lt;!-- # if we print our data, it looks the same, but it tells us it is grouped and how --&gt;
-&lt;!-- grouped_data --&gt;
 
-&lt;!-- # now if we run another dplyr function, it will take the grouping into account --&gt;
-&lt;!-- grouped_data_means &lt;- summarize(grouped_data,mean_x=mean(x)) --&gt;
-&lt;!-- grouped_data_means # note that this object is another tibble! abbreviated as tbl --&gt;
+```r
+# just grouping data - by whether z is TRUE OR FALSE
+grouped_data &lt;- group_by(my_tibble,z)
 
-&lt;!-- # we can combine things here... --&gt;
-&lt;!-- summary_stats &lt;- my_tibble %&gt;% --&gt;
-&lt;!--     group_by(z) %&gt;% --&gt;
-&lt;!--     summarize( --&gt;
-&lt;!--     mean_x = mean(x), --&gt;
-&lt;!--     median_x = median(x), --&gt;
-&lt;!--     max_x = max(x) --&gt;
-&lt;!--   ) --&gt;
-&lt;!-- summary_stats --&gt;
-&lt;!-- ``` --&gt;
+# if we print our data, it looks the same, but it tells us it is grouped and how
+grouped_data
+```
 
-&lt;!-- Here is another example of using group_by with another row operation - arrange. In this case, the sorting will happen within groups defined by whether z is TRUE or FALSE. Note it does not sort by groups in the results. But this could be accomplished with another call to arrange(). --&gt;
+```
+## # A tibble: 6 × 3
+## # Groups:   z [2]
+##       x y     z    
+##   &lt;dbl&gt; &lt;chr&gt; &lt;lgl&gt;
+## 1     3 c     TRUE 
+## 2     2 b     FALSE
+## 3     2 d     TRUE 
+## 4     4 d     FALSE
+## 5     1 a     TRUE 
+## 6     1 a     TRUE
+```
 
-&lt;!-- ```{r arrangeGroupedData} --&gt;
-&lt;!-- # adding a variable for illustration --&gt;
-&lt;!-- my_tibble_addw &lt;- mutate(my_tibble, w = c(3,2,-4,0,1)) --&gt;
-&lt;!-- my_tibble_addw --&gt;
-&lt;!-- # arranging tbl by descending order of w, by group defined by z --&gt;
-&lt;!-- arranged_grouped_data &lt;- my_tibble_addw %&gt;% --&gt;
-&lt;!--     group_by(z) %&gt;% --&gt;
-&lt;!--     arrange(desc(w)) --&gt;
-&lt;!-- arranged_grouped_data --&gt;
-&lt;!-- ``` --&gt;
+---
 
-&lt;!-- ### Operations on GROUPS of COLUMNS --&gt;
+```r
+# now if we run another dplyr function, it will take the grouping into account
+grouped_data_means &lt;- summarize(grouped_data,mean_x=mean(x))
+grouped_data_means 
+```
 
-&lt;!-- #### across --&gt;
+```
+## # A tibble: 2 × 2
+##   z     mean_x
+##   &lt;lgl&gt;  &lt;dbl&gt;
+## 1 FALSE   3   
+## 2 TRUE    1.75
+```
 
-&lt;!-- Apply functions across multiple columns. It's particularly useful in conjunction with mutate() and summarize() functions. across() allows you to perform the same operation on multiple columns without having to write repetitive code for each column. --&gt;
+```r
+# we can combine things here with piping...
+summary_stats &lt;- my_tibble %&gt;%
+    group_by(z) %&gt;%
+    summarize(
+    mean_x = mean(x),
+    median_x = median(x),
+    max_x = max(x)
+  )
+summary_stats
+```
 
-&lt;!-- ```{r acrossData} --&gt;
-&lt;!-- # Applying transformations --&gt;
-&lt;!-- transformed_tibble &lt;- my_tibble %&gt;% --&gt;
-&lt;!--   mutate( --&gt;
-&lt;!--     # Convert logical columns to numeric (TRUE to 1, FALSE to 0) --&gt;
-&lt;!--     across(where(is.logical), as.numeric), --&gt;
-&lt;!--     # Append "_modified" to the character values in column 'y' --&gt;
-&lt;!--     across(where(is.character), ~ paste0(.x, "_modified")) --&gt;
-&lt;!--   ) --&gt;
+```
+## # A tibble: 2 × 4
+##   z     mean_x median_x max_x
+##   &lt;lgl&gt;  &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;
+## 1 FALSE   3         3       4
+## 2 TRUE    1.75      1.5     3
+```
 
-&lt;!-- transformed_tibble --&gt;
-&lt;!-- ``` --&gt;
+---
+Another example: use group_by with arrange to sort within groups. 
 
-&lt;!-- Note when you're using across() within mutate() or summarize(), `.x` represents the data from the current column being processed. It's a way to refer to each element of the column(s) you're applying the function to. --&gt;
 
-&lt;!-- ### Summary --&gt;
+```r
+# adding a variable for illustration
+my_tibble_addw &lt;- mutate(my_tibble, w = c(3,2,-4,0,1,-2))
 
-&lt;!-- The dplyr functionality is powerful for wrangling data. With practice, you will learn to harness and layer the wide variety of functions and verbs in order to conduct numerous operations. My advice is that you start slow and gradually add on more complex combinations. --&gt;
+# arranging tbl by descending order of w, by group defined by z
+# notice it doesn't arrange by z
+arranged_grouped_data &lt;- my_tibble_addw %&gt;%
+    group_by(z) %&gt;%
+    arrange(desc(w))
+arranged_grouped_data
+```
 
-&lt;!-- Also, this notebook has covered just a subset of the *types* of functions/verbs - those that operate on single rows and columns or groups of rows and columns. As you will see in the documentation, there are other functions/verbs that operate on whole data frames or that operate at vector level. We will touch on these later when we discuss data merging (or joining), which refers to combining two datasets with overlapping observations. --&gt;
+```
+## # A tibble: 6 × 4
+## # Groups:   z [2]
+##       x y     z         w
+##   &lt;dbl&gt; &lt;chr&gt; &lt;lgl&gt; &lt;dbl&gt;
+## 1     3 c     TRUE      3
+## 2     2 b     FALSE     2
+## 3     1 a     TRUE      1
+## 4     4 d     FALSE     0
+## 5     1 a     TRUE     -2
+## 6     2 d     TRUE     -4
+```
+---
+## Operations on GROUPS of COLUMNS: across()
 
-&lt;!-- Finally, here is a good [reference](https://dplyr.tidyverse.org/articles/base.html) for comparing dplyr functions to their base R equivalents.## Introduction to the Tidyverse --&gt;
+Apply functions to multiple columns. Particularly useful with mutate() &amp; summarize(). Allows same operation on multiple columns without having to write repetitive code for each column.
 
+
+```r
+# Applying transformations
+transformed_tibble &lt;- my_tibble %&gt;%
+  mutate(
+    # Convert logical columns to numeric (TRUE to 1, FALSE to 0)
+    across(where(is.logical), as.numeric),
+    # Append "_modified" to the character values in column 'y'
+    across(where(is.character), ~ paste0(.x, "_modified"))
+  )
+      # Note: `.x` represents the current column being processed. It's a way to refer to each element of the column(s) you're applying the function to.
+
+transformed_tibble
+```
+
+```
+## # A tibble: 6 × 3
+##       x y              z
+##   &lt;dbl&gt; &lt;chr&gt;      &lt;dbl&gt;
+## 1     3 c_modified     1
+## 2     2 b_modified     0
+## 3     2 d_modified     1
+## 4     4 d_modified     0
+## 5     1 a_modified     1
+## 6     1 a_modified     1
+```
+
+---
+&lt;div class="centered"&gt;
+  &lt;h1&gt;purrr&lt;/h1&gt;
+&lt;/div&gt;
+---
+## Why Use `purrr`?
+
+- Simplifies repetitive tasks
+- Increases code readability and maintainability
+- Allows for more complex data transformations
+- Facilitates handling nested data
+
+---
+
+## Core Functions
+
+- `map()`: Applies a function to each element of a vector
+- `map2()`: Applies a function to pairs of elements from two vectors
+- `pmap()`: Applies a function to the elements of multiple vectors (list)
+- `map_df()`: Returns the results as a data frame
+
+---
+
+## Simple Example: `map()`
+
+
+```r
+library(purrr)
+# Example: Square each number in a vector
+numbers &lt;- list(1, 4, 9)
+squared &lt;- map(numbers, sqrt) # returns a list
+print(squared)
+```
+
+```
+## [[1]]
+## [1] 1
+## 
+## [[2]]
+## [1] 2
+## 
+## [[3]]
+## [1] 3
+```
+
+```r
+# Example: Sum each vector
+vectors &lt;- list(c(1,1), c(4,4), c(9,9))
+summed &lt;- map(vectors, sum) # also returns a list
+# We can turn the lists into vectors
+unlist(summed)
+```
+
+```
+## [1]  2  8 18
+```
+---
+## Example with multiple tibbles: map()
+
+
+```r
+# Example data frames with NA values
+df1 &lt;- tibble(a = c(1, 2, NA, 4), b = c(NA, 2, 3, 4))
+df2 &lt;- tibble(a = c(5, NA, 7, 8), b = c(9, 10, NA, NA))
+
+# List of data frames
+dfs &lt;- list(df1, df2)
+
+# Remove NA values from each data frame
+cleaned_dfs &lt;- map(dfs, na.omit)
+```
+
+---
+## Simple example: map2()
+
+
+```r
+### Example: Check if Columns are Identical
+
+# Example data frames
+df1 &lt;- tibble(a = 1:10, b = letters[1:10])
+df2 &lt;- tibble(a = 1:10, b = letters[1:10])
+
+# List of data frames
+dfs &lt;- list(df1, df2)
+
+# Check if columns in data frames are identical
+identical_cols &lt;- map2(dfs[[1]], dfs[[2]], identical)
+
+print(identical_cols)
+```
+
+```
+## $a
+## [1] TRUE
+## 
+## $b
+## [1] TRUE
+```
+---
+## Use case examples for purrr functions
+
+`purrr` becomes powerful when combined with user-defined functions, which we will cover in the next session. 
+
+Some example use cases: 
+- apply a user defined transformation to multiple columns in a data set
+- apply a set of checks, cleaning steps to multiple data sets
+- run an analyses on multiple data sets (e.g. multiple outcomes, bootstrapping, Monte Carlo simulations)
+- parallel processing 
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

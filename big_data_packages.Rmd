@@ -1,0 +1,129 @@
+---
+title: "Strategies for Handling Big Data in R"
+subtitle: "Session 3"
+author: "Kristin Porter"
+date: "May 29, 2024"
+output:
+   xaringan::moon_reader:
+---
+
+<style>
+  .centered {
+    display: flex;
+    justify-content: center; /* Horizontal centering */
+    align-items: center;    /* Vertical centering */
+    height: 100vh;         /* Full height of the viewport */
+  }
+</style>
+
+## Overview
+
+- In-memory strategies
+  - Utilize RAM efficiently for fast data processing
+  - Suitable for datasets that fit into memory
+  
+- Out-of-memory strategies
+  - Suitable for datasets larger than available RAM
+  - Process data without loading entire dataset into memory
+
+
+---
+
+<div class="centered">
+  <h1>In-memory strategies</h1>
+</div>
+---
+## The `data.table` Package
+
+- High-performance version of `data.frame`
+- Requires new syntax: similar to SQL
+- Efficient in-memory data manipulation
+
+Example helpful functions: 
+- `fread` function:
+  - can read large flat files in much more quickly than comparable base R packages
+  - shows the status as it makes progress. 
+  - can limit rows and columns similar to `dplyr` approach
+- `data.table` function
+  - converts data frame already in memory to a `data.table` object 
+  - allows many operations with data.table syntax
+  
+See multiple vignettes (example use cases) at CRAN: https://cran.r-project.org/web/packages/data.table/index.html
+  
+
+
+---
+
+## Parallel Processing
+
+- Speed up computations by utilizing multiple CPU cores
+- The `furrr` package extends `purrr` by enabling parallel processing, allowing operations to run concurrently
+- Other packages: `parallel`, `foreach`
+
+```{r parallelchunk, warnings=FALSE, message=FALSE}
+library(furrr)
+library(dplyr)
+
+# Enable parallel processing
+# The plan() function from the future package is used by furrr
+# to determine # of cores to use based on the system's resources.
+# By default, it will use all available CPU cores except one.
+# However, you can specify the number of cores manually.
+plan(multisession)
+
+# Example task
+large_data <- tibble(a = rnorm(1e6))
+
+# Apply function in parallel
+results <- large_data %>%
+  mutate(b = future_map_dbl(a, ~ .x^2))
+```
+
+---
+## Handling Large Matrix Data
+
+- Specialized packages for matrix operations
+
+### The `Matrix` Package
+
+- Designed for handling sparse and dense matrices
+- For efficient memory usage and faster computations on matrix data
+- Suitable for applications in scientific computing, machine learning, and statistics
+
+### The `bigmemory` Package
+
+- Provides memory-efficient storage for large matrices that exceed available RAM
+- Supports shared memory and file-backed matrices, enabling larger-than-RAM data handling
+- Allows multiple R sessions to access the same data
+- Helpful for large-scale simulations, big data analytics, and high-performance computing
+
+---
+
+<div class="centered">
+  <h1>Out-of-memory strategies</h1>
+</div>
+---
+
+## Database Integration
+
+- Use databases to store and query large datasets
+
+### Key Packages for Database Integration
+
+- **DBI**: Provides a common interface for database management systems (DBMS). It acts as a bridge to various database backends.
+
+- **RMySQL**: Specifically designed for interfacing with MySQL databases. It allows users to connect to MySQL, send queries, and retrieve results directly into R.
+
+- **RPostgres**: Tailored for PostgreSQL databases, offering tools to connect to PostgreSQL servers, execute SQL queries, and handle data efficiently.
+
+- **RMariaDB**: A package for connecting to MariaDB, which is a popular fork of MySQL. It enables similar functionalities as RMySQL but is optimized for MariaDB.
+
+---
+## Interfacing with Spark
+
+- Use Apache Spark for distributed data processing leveraging multiple machines
+- No need to leave R environment with packages: `sparklyr`, `sparkR`
+
+---
+
+

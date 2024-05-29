@@ -1,0 +1,382 @@
+---
+title: "Two key Tidyverse packages for data manipulation: dplyr & purrr"
+subtitle: "Session 3"
+author: "Kristin Porter"
+date: "May 29, 2024"
+output:
+   xaringan::moon_reader:
+---
+
+<!-- Add CSS in a style block -->
+<style>
+.two-columns {
+  display: flex;
+}
+.column {
+  flex: 1;
+  padding: 10px;
+}
+</style>
+
+<style>
+  .centered {
+    display: flex;
+    justify-content: center; /* Horizontal centering */
+    align-items: center;    /* Vertical centering */
+    height: 100vh;         /* Full height of the viewport */
+  }
+</style>
+
+```{r setup, include=FALSE}
+library(knitr)
+library(xaringan)
+library(xaringanExtra)
+knitr::opts_chunk$set(echo = TRUE)
+xaringanExtra::use_panelset()
+```
+
+---
+## Taking stock
+
+**`tidyverse`**: a collection of R packages designed around a set of data structures that make it easier to manipulate, analyze and visualize data consisently and predictably. 
+
+<div class="two-columns">
+  <div class="column">
+    <!-- First column  -->
+
+#### Session 1: 
+- list of `tidyverse` packages
+- reading in & writing out data with `tidyverse` functions
+- manipulating & summarizing data with `dplyr`
+
+#### Session 2: 
+- statistical summaries with `dplyr` (& base R)
+- data visualization with `ggplot2` (& base R)
+  </div>
+  <div class="column">
+    <!-- Second column -->
+#### Session 3: 
+- Review of manipulating & summarizing data with `dplyr`
+- Expanding this with `purrr` (with similarities to `apply()` from Session 2)
+- Practice & questions
+
+#### Session 4: (if time)
+- Review of `ggplot2` for data viz
+- Intro to `gt` for tables
+- More practice & questions w/ exercise
+  </div>
+</div>
+```
+```
+```
+---
+<div class="centered">
+  <h1>dplyr</h1>
+</div>
+
+---
+## Introduction to dplyr?
+
+### Why dplyr?
+-   Simplified syntax.
+-   Fast and consistent performance.
+-   Integrates well with other Tidyverse packages.
+
+See this online resource[https://dplyr.tidyverse.org/reference/index.html].
+
+---
+## Basic dplyr functions
+
+The `dplyr` package has a wide range of functions (or "verbs") for manipulating data frames or "tibbles" in a user-friendly way.
+
+**What is a tibble?** Tibbles are data frames that are adjusted to work better with the Tidyverse. Most functions work seamlessly with both data frames and tibbles. However, there are some differences in behavior and output format between data frames and tibbles:
+
+- **Printing:** Tibbles have a more readable print method, showing only the first 10 rows and all the columns that fit on the screen, whereas data frames print all rows by default.
+- **Column Data Types:** Tibbles preserve column data types more consistently than data frames, which sometimes convert character vectors to factors by default.
+- **Subsetting:** Tibbles provide more consistent behavior when subsetting. For example, subsetting a single column of a tibble always returns a tibble, whereas for data frames, it returns a vector.
+- **Performance:** There might be slight performance differences due to the internal optimizations in tibbles, but these are generally negligible for most use cases.
+
+---
+Converting a data frame to a tibble is straightforward: 
+
+```{r tibbleDataFrame, message=FALSE}
+library(dplyr)
+# creating toy data frame & converting to tibble
+my_data_frame <- data.frame(x = c(3,2,2,4,1,1), y = c("c","b","d","d","a","a"),
+                            z = c(TRUE,FALSE,TRUE,FALSE,TRUE,TRUE))
+my_tibble <- as_tibble(my_data_frame)
+my_tibble
+# glimpe of tibble
+glimpse(my_tibble) #like str()
+```
+
+---
+## Operations on ROWS: filter()
+
+Filters rows based on a condition.
+
+```{r filterData}
+filtered_data <- filter(my_tibble, x > 2)
+filtered_data
+```
+---
+## Operations on ROWS: arrange()
+
+Reorders rows.
+
+```{r arrangeData}
+arranged_data <- arrange(my_tibble, desc(x))
+arranged_data
+```
+
+---
+## Operations on ROWS: distinct()
+
+Keeps unique/distinct rows.
+
+<div class="two-columns">
+  <div class="column">
+    <!-- First column -->
+```{r distinctData}
+# remove rows that are
+# duplicate across all columns
+distinct_data <- distinct(my_tibble)
+distinct_data
+```      
+  </div>
+  <div class="column">
+    <!-- Second column -->
+```{r distinctx}
+
+# remove duplicates of x
+# keeping first row if different
+distinct_x <- distinct(my_tibble,
+              x, .keep_all = TRUE)
+distinct_x
+```
+  </div>
+</div>
+```
+```
+```
+
+---
+## Operations on ROWS: slice()
+
+Extract specific rows. Some verbs like slice() have multiple versions.
+
+```{r sliceData}
+# get rows 1, 2 and 3
+sliced_data1 <- slice(my_tibble,c(1,2,3))
+sliced_data1
+
+# get rows with 2 top maximum values of a variable
+sliced_data2 <- slice_max(my_tibble,x,n=2)
+sliced_data2 
+```
+
+
+---
+## Operations on COLUMNS: select()
+
+Selects columns from a dataset.
+
+```{r selectData}
+selected_data <- select(my_tibble, x, y)
+selected_data
+```
+
+---
+## Operations on COLUMNS: mutate()
+
+Adds new columns or transforms existing ones.
+
+```{r mutateData}
+mutated_data <- mutate(my_tibble, w = x * 2)
+mutated_data
+```
+
+---
+## Piping: apply multiple verbs to rows & columns 
+
+(1) create a new tibble, assign it to the tibble we want to revise followed by %\>%.
+
+(2) Call multiple dplyr functions/verbs in a slightly different format - we no longer pass in the tibble to each function since we have already noted it.
+
+(3) Following each function/verb, we add another %\>% - to the end of all except the final function.
+
+```{r combineFun}
+new_data <- my_tibble %>%
+  filter(z) %>%               # Filter rows where z is TRUE
+  select(x, y) %>%            # Select columns x and y
+  mutate(double_x = x * 2)    # Create a new column 'double_x' which is twice the value of x
+
+new_data
+```
+
+---
+## Operations on GROUPS of ROWS: summarize()
+
+Compute summary statistics across rows for designated columns.
+
+```{r summarizeData}
+# compute the mean of x across all observations
+summarize(my_tibble,mean_x=mean(x))
+
+# we can also compute multiple summary statistics at one time:
+summary_stats <- my_tibble %>%
+  summarize(
+    mean_x = mean(x),
+    median_x = median(x),
+    max_x = max(x)
+  )
+summary_stats
+```
+
+---
+## Operations on GROUPS of ROWS: group_by()
+Takes an existing tibble and converts it into a grouped tibble where operations are performed "by group."
+
+```{r groupData}
+# just grouping data - by whether z is TRUE OR FALSE
+grouped_data <- group_by(my_tibble,z)
+
+# if we print our data, it looks the same, but it tells us it is grouped and how
+grouped_data
+```
+
+---
+```{r groupCont}
+
+# now if we run another dplyr function, it will take the grouping into account
+grouped_data_means <- summarize(grouped_data,mean_x=mean(x))
+grouped_data_means 
+
+# we can combine things here with piping...
+summary_stats <- my_tibble %>%
+    group_by(z) %>%
+    summarize(
+    mean_x = mean(x),
+    median_x = median(x),
+    max_x = max(x)
+  )
+summary_stats
+```
+
+---
+Another example: use group_by with arrange to sort within groups. 
+
+```{r arrangeGroupedData}
+# adding a variable for illustration
+my_tibble_addw <- mutate(my_tibble, w = c(3,2,-4,0,1,-2))
+
+# arranging tbl by descending order of w, by group defined by z
+# notice it doesn't arrange by z
+arranged_grouped_data <- my_tibble_addw %>%
+    group_by(z) %>%
+    arrange(desc(w))
+arranged_grouped_data
+```
+---
+## Operations on GROUPS of COLUMNS: across()
+
+Apply functions to multiple columns. Particularly useful with mutate() & summarize(). Allows same operation on multiple columns without having to write repetitive code for each column.
+
+```{r acrossData}
+# Applying transformations
+transformed_tibble <- my_tibble %>%
+  mutate(
+    # Convert logical columns to numeric (TRUE to 1, FALSE to 0)
+    across(where(is.logical), as.numeric),
+    # Append "_modified" to the character values in column 'y'
+    across(where(is.character), ~ paste0(.x, "_modified"))
+  )
+      # Note: `.x` represents the current column being processed. It's a way to refer to each element of the column(s) you're applying the function to.
+
+transformed_tibble
+```
+
+---
+<div class="centered">
+  <h1>purrr</h1>
+</div>
+---
+## Why Use `purrr`?
+
+- Simplifies repetitive tasks
+- Increases code readability and maintainability
+- Allows for more complex data transformations
+- Facilitates handling nested data
+
+---
+
+## Core Functions
+
+- `map()`: Applies a function to each element of a vector
+- `map2()`: Applies a function to pairs of elements from two vectors
+- `pmap()`: Applies a function to the elements of multiple vectors (list)
+- `map_df()`: Returns the results as a data frame
+
+---
+
+## Simple Example: `map()`
+
+```{r purrex}
+library(purrr)
+# Example: Square each number in a vector
+numbers <- list(1, 4, 9)
+squared <- map(numbers, sqrt) # returns a list
+print(squared)
+
+# Example: Sum each vector
+vectors <- list(c(1,1), c(4,4), c(9,9))
+summed <- map(vectors, sum) # also returns a list
+# We can turn the lists into vectors
+unlist(summed)
+
+```
+---
+## Example with multiple tibbles: map()
+
+```{r purrdf}
+
+# Example data frames with NA values
+df1 <- tibble(a = c(1, 2, NA, 4), b = c(NA, 2, 3, 4))
+df2 <- tibble(a = c(5, NA, 7, 8), b = c(9, 10, NA, NA))
+
+# List of data frames
+dfs <- list(df1, df2)
+
+# Remove NA values from each data frame
+cleaned_dfs <- map(dfs, na.omit)
+```
+
+---
+## Simple example: map2()
+
+```{r map2Ex}
+
+### Example: Check if Columns are Identical
+
+# Example data frames
+df1 <- tibble(a = 1:10, b = letters[1:10])
+df2 <- tibble(a = 1:10, b = letters[1:10])
+
+# List of data frames
+dfs <- list(df1, df2)
+
+# Check if columns in data frames are identical
+identical_cols <- map2(dfs[[1]], dfs[[2]], identical)
+
+print(identical_cols)
+```
+---
+## Use case examples for purrr functions
+
+`purrr` becomes powerful when combined with user-defined functions, which we will cover in the next session. 
+
+Some example use cases: 
+- apply a user defined transformation to multiple columns in a data set
+- apply a set of checks, cleaning steps to multiple data sets
+- run an analyses on multiple data sets (e.g. multiple outcomes, bootstrapping, Monte Carlo simulations)
+- parallel processing 

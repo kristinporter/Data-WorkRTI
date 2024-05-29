@@ -1758,7 +1758,7 @@ display: none;
 <h1>Load both data sets</h1>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBMb2FkIHRoZSBSQV9kYXRhIGFuZCBTVV9kYXRhXG5sb2FkZWRfb2JqZWN0c1JBIDwtIGxvYWQoXCJTbW9raW5nQ2Vzc2F0aW9uX1JBX2RhdGEuUmRhXCIpXG5SQV9kYXRhIDwtIGdldChsb2FkZWRfb2JqZWN0c1JBKVxuXG5sb2FkZWRfb2JqZWN0c1NVIDwtIGxvYWQoXCJTbW9raW5nQ2Vzc2F0aW9uX1NVX2RhdGEuUmRhXCIpXG5TVV9kYXRhIDwtIGdldChsb2FkZWRfb2JqZWN0c1NVKVxuXG4jIEdldCBkaW1lbnNpb25zXG5kaW0oUkFfZGF0YSlcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBMb2FkIHRoZSBSQV9kYXRhIGFuZCBTVV9kYXRhXG5sb2FkZWRfb2JqZWN0c1JBIDwtIGxvYWQoXCJTbW9raW5nQ2Vzc2F0aW9uX1JBX2RhdGEuUmRhXCIpXG5SQV9kYXRhIDwtIGdldChsb2FkZWRfb2JqZWN0c1JBKVxuXG5sb2FkZWRfb2JqZWN0c1NVIDwtIGxvYWQoXCJTbW9raW5nQ2Vzc2F0aW9uX1NVX2RhdGEuUmRhXCIpXG5TVV9kYXRhIDwtIGdldChsb2FkZWRfb2JqZWN0c1NVKVxuXG4jIEdldCBkaW1lbnNpb25zXG5kaW0oUkFfZGF0YSlcbmRpbShTVV9kYXRhKVxuXG4jIFByZXZpZXcgdGhlIGRhdGFcbmhlYWQoUkFfZGF0YSlcbmhlYWQoU1VfZGF0YSlcblxuIyBHbGltcHNlIHRoZSBkYXRhXG5nbGltcHNlKFJBX2RhdGEpXG5nbGltcHNlKFNVX2RhdGEpXG5gYGAifQ== -->
 <pre class="r"><code># Load the RA_data and SU_data
 loaded_objectsRA &lt;- load(&quot;SmokingCessation_RA_data.Rda&quot;)
 RA_data &lt;- get(loaded_objectsRA)
@@ -1767,69 +1767,17 @@ loaded_objectsSU &lt;- load(&quot;SmokingCessation_SU_data.Rda&quot;)
 SU_data &lt;- get(loaded_objectsSU)
 
 # Get dimensions
-dim(RA_data)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDIwMDAgICAgN1xuIn0= -->
-<pre><code>[1] 2000    7</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGltKFNVX2RhdGEpXG5gYGAifQ== -->
-<pre class="r"><code>dim(SU_data)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDEwMDcgICAgOFxuIn0= -->
-<pre><code>[1] 1007    8</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBQcmV2aWV3IHRoZSBkYXRhXG5oZWFkKFJBX2RhdGEpXG5gYGAifQ== -->
-<pre class="r"><code># Preview the data
-head(RA_data)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6NiwibmNvbCI6Nywic3VtbWFyeSI6eyJBIHRpYmJsZSI6WyI2IMOXIDciXX19LCJyZGYiOiJINHNJQUFBQUFBQUFBOFZUVDB2RE1CVFArbWUxQllmaVFYWVR2QWtyeUVBOGV0Q0JWMUhZYmNRMjY0cHBVNXZvSmg0VUZQME9maVV2ZmdHL2cyY1BxMm1YMTIyWlI4SEF5L3VYbC96ZUw4blpjYi9yOVQyRWtJa3NTODYyTkpGOWNkN3JIQ0prR2RKcElBdTVwWjdJOUpZMEhDbnJVcHBWY2lhR0VsTkpxOHdmbmJ6ZWp4OCtubXZkYTMvdFBiMS8xdnEwdS91MmMvMENXdFpzVlB2T0Rtd09TWUlwK1NOdmpoa3dXa3FnQjcwbkdPQXZZbXZ6aEYzRmFUUUlDT2RZeEN3ZEhDUXNGU091Rm15dkx0aS9JemovOS9ybFBuOFpTNWR1cHpnaFhEWHZxS0FSaDhveWNRUThtNXhNbExrMllqeUxCYWJLZDBWT3NFaElLaUF3WkpTeThlQW1VNEhORmJRYURqZG5ZeCt3bEEwWWozSXFpdUpiQnh4UXpBRXdCTDBRQyt3UGMxa3Z2YWxXNHJDc1BGRVdHZkM4UGUzYTZ6K1Fhd0dYTWh4Mnl1MjFoSm1sMGNKR1NNRnVLTzdCZG1aWWpFS2oyQ0xCaU1FTEpta1VwOEN6VGZFbEFXYk5rTndxc3lVWnFnanlzenl1bWZaa2xQdUN6Uy9EQ3hpRlNNVUZtdjRBOU9Od1dnVUVBQUE9In0= -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["id"],"name":[1],"type":["int"],"align":["right"]},{"label":["age"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[3],"type":["chr"],"align":["left"]},{"label":["hospital"],"name":[4],"type":["int"],"align":["right"]},{"label":["treatment"],"name":[5],"type":["int"],"align":["right"]},{"label":["follow_up"],"name":[6],"type":["chr"],"align":["left"]},{"label":["smoking_cessation"],"name":[7],"type":["int"],"align":["right"]}],"data":[{"1":"1","2":"43.05846","3":"female","4":"3","5":"1","6":"smoking_cessation_6months","7":"1"},{"1":"1","2":"43.05846","3":"female","4":"3","5":"1","6":"smoking_cessation_1year","7":"0"},{"1":"2","2":"44.20264","3":"female","4":"4","5":"0","6":"smoking_cessation_6months","7":"0"},{"1":"2","2":"44.20264","3":"female","4":"4","5":"0","6":"smoking_cessation_1year","7":"0"},{"1":"3","2":"50.39952","3":"female","4":"1","5":"1","6":"smoking_cessation_6months","7":"0"},{"1":"3","2":"50.39952","3":"female","4":"1","5":"1","6":"smoking_cessation_1year","7":"0"}],"options":{"columns":{"min":{},"max":[10],"total":[7]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaGVhZChTVV9kYXRhKVxuYGBgIn0= -->
-<pre class="r"><code>head(SU_data)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6NiwibmNvbCI6OCwic3VtbWFyeSI6eyJBIHRpYmJsZSI6WyI2IMOXIDgiXX19LCJyZGYiOiJINHNJQUFBQUFBQUFBOTFUejJ2VVFCU2V6U2FiN0lKcjJ5MUZQSG55b2cyaUYzc29tNFBvVGRBcTlKYU95YVFiVEdiaVpMSjZxcUwvaDVYaVJmQmV3WU05ZVBUa1FmQldFQlQ4QVJYOEFTS05iNUlaemVaUE1QRHkzcnczM3pmNTNyeGN2YkIrYnJBK1FBaDFrV25DMjRJUVdkZXZYVncrajVCcHdLS0RUTlNYL2c2VVJ4QTRZRWZBZWxVUklhTkN3MjZKVlBtaDlONm8vUHA4Kzh2aTNRTkphdTk0YzI5ZkZTK3ZPT1BmSjNmV2hqZUZaMTFlZVhQODUydXZ0M0txUFBiZ2ZvTVhLVzV0K3FsNWUwc1BMKzBqNUptNzdNVUcrTzY3M1E5NzRKMVA1WGZZTVA3MjdEMlg2K0VCL2J4ZjRacmZpeHI4MnRlOGc2M1YxVWVBc3g5dm43NEgvdWhlVC9yeFliYnhGTW4xajQvUkNmRHpaNStzblpuaDFkcDFMeXpGcSt1NlAwMU4zVmFETFlwVGtrTXdWelc1VGhweHFLSVJqUU1tWWtyOGtHU0Vob1FHUkpXV01rNm1NU3R5LzFZUkN4OExRZEpNNUtxNm1CZFp4cmp3SThhckRVQ3lxV3Nwb1FJbi9vVGdSRXo4WEdCUmFOeENDc2ROc1lnWjlRV3JrSDhaV1JBekVqREswamlZUlRrVGxtY3hjTGJVOVRtNzdXcUZzaTBHZEJhVlpmbXJ0WEhlamFrZ25PTEV6VWtTY1JKSmhjb09sZjJYTGJLQ0JPZDZBSFJ5RUdLQjNZaEQ1MnJ0TXhDYlpmSndBQm55MTdRbG9ERmlUYUlPYnlYNkNjUGhzcVJ2RmJvWmlQOUhwT2U4bzJaWngwNzlMVWFwNExhQ215U1lNQlgzQ04yRSs5QUNFM3lESlBxVWtFeFZPSVRacUViRHpUaGN2bFlPMmR3VlREWktaUUtXNkl5YWhUOXpKZndvd1FRQUFBPT0ifQ== -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["id"],"name":[1],"type":["int"],"align":["right"]},{"label":["nicotine_dependence"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["previous_quit_attempts"],"name":[3],"type":["int"],"align":["right"]},{"label":["support_for_quitting"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["mental_health_status"],"name":[5],"type":["int"],"align":["right"]},{"label":["motivation_to_quit"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["socioeconomic_status"],"name":[7],"type":["int"],"align":["right"]},{"label":["hospital"],"name":[8],"type":["int"],"align":["right"]}],"data":[{"1":"1","2":"4.999946","3":"0","4":"2.761044","5":"1","6":"3.311640","7":"4","8":"3"},{"1":"2","2":"NA","3":"1","4":"2.589569","5":"0","6":"2.955382","7":"5","8":"4"},{"1":"3","2":"4.212694","3":"1","4":"2.486191","5":"0","6":"3.968762","7":"2","8":"1"},{"1":"4","2":"1.759432","3":"1","4":"3.115234","5":"1","6":"1.902436","7":"3","8":"1"},{"1":"5","2":"2.663196","3":"0","4":"1.295142","5":"0","6":"3.995564","7":"5","8":"1"},{"1":"6","2":"2.777916","3":"0","4":"3.867399","5":"1","6":"4.299474","7":"1","8":"3"}],"options":{"columns":{"min":{},"max":[10],"total":[8]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG4jIEdsaW1wc2UgdGhlIGRhdGFcbmdsaW1wc2UoUkFfZGF0YSlcbmBgYCJ9 -->
-<pre class="r"><code>
+dim(RA_data)
+dim(SU_data)
+
+# Preview the data
+head(RA_data)
+head(SU_data)
+
 # Glimpse the data
-glimpse(RA_data)</code></pre>
+glimpse(RA_data)
+glimpse(SU_data)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiUm93czogMiwwMDBcbkNvbHVtbnM6IDdcbiQgaWQgICAgICAgICAgICAgICAgPGludD4gMSwgMSwgMiwgMiwgMywgMywgNCwgNCwgNSwgNSwgNiwgNiwgNywgNywgOCwgOCwgOSwgOSwgMTAsIDEwLCAxMSwgMTEsIDEyLCAxMiwgMTMsIDEzLCAxNCzigKZcbiQgYWdlICAgICAgICAgICAgICAgPGRibD4gNDMuMDU4NDYsIDQzLjA1ODQ2LCA0NC4yMDI2NCwgNDQuMjAyNjQsIDUwLjM5OTUyLCA1MC4zOTk1MiwgNDUuMjQ0MjUsIDQ1LjI0NDI1LCA0NS40NDc4NyzigKZcbiQgc2V4ICAgICAgICAgICAgICAgPGNocj4gXCJmZW1hbGVcIiwgXCJmZW1hbGVcIiwgXCJmZW1hbGVcIiwgXCJmZW1hbGVcIiwgXCJmZW1hbGVcIiwgXCJmZW1hbGVcIiwgXCJtYWxlXCIsIFwibWFsZVwiLCBcImZlbWFsZVwiLCBcImZl4oCmXG4kIGhvc3BpdGFsICAgICAgICAgIDxpbnQ+IDMsIDMsIDQsIDQsIDEsIDEsIDEsIDEsIDEsIDEsIDMsIDMsIDMsIDMsIDQsIDQsIDIsIDIsIDMsIDMsIDEsIDEsIDQsIDQsIDQsIDQsIDIsIDIsIDIsIDIs4oCmXG4kIHRyZWF0bWVudCAgICAgICAgIDxpbnQ+IDEsIDEsIDAsIDAsIDEsIDEsIDAsIDAsIDAsIDAsIDEsIDEsIDEsIDEsIDAsIDAsIDAsIDAsIDAsIDAsIDAsIDAsIDEsIDEsIDAsIDAsIDAsIDAsIDEsIDEs4oCmXG4kIGZvbGxvd191cCAgICAgICAgIDxjaHI+IFwic21va2luZ19jZXNzYXRpb25fNm1vbnRoc1wiLCBcInNtb2tpbmdfY2Vzc2F0aW9uXzF5ZWFyXCIsIFwic21va2luZ19jZXNzYXRpb25fNm1vbnRoc1wiLCBcInNtb+KAplxuJCBzbW9raW5nX2Nlc3NhdGlvbiA8aW50PiAxLCAwLCAwLCAwLCAwLCAwLCAwLCAxLCAwLCAwLCAwLCAwLCAwLCAwLCAwLCAwLCAwLCAwLCAwLCAwLCAwLCAxLCAwLCAxLCAwLCAwLCAwLCAwLCAxLCAwLOKAplxuIn0= -->
-<pre><code>Rows: 2,000
-Columns: 7
-$ id                &lt;int&gt; 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14,…
-$ age               &lt;dbl&gt; 43.05846, 43.05846, 44.20264, 44.20264, 50.39952, 50.39952, 45.24425, 45.24425, 45.44787,…
-$ sex               &lt;chr&gt; &quot;female&quot;, &quot;female&quot;, &quot;female&quot;, &quot;female&quot;, &quot;female&quot;, &quot;female&quot;, &quot;male&quot;, &quot;male&quot;, &quot;female&quot;, &quot;fe…
-$ hospital          &lt;int&gt; 3, 3, 4, 4, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 4, 4, 2, 2, 3, 3, 1, 1, 4, 4, 4, 4, 2, 2, 2, 2,…
-$ treatment         &lt;int&gt; 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1,…
-$ follow_up         &lt;chr&gt; &quot;smoking_cessation_6months&quot;, &quot;smoking_cessation_1year&quot;, &quot;smoking_cessation_6months&quot;, &quot;smo…
-$ smoking_cessation &lt;int&gt; 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0,…</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2xpbXBzZShTVV9kYXRhKVxuYGBgIn0= -->
-<pre class="r"><code>glimpse(SU_data)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiUm93czogMSwwMDdcbkNvbHVtbnM6IDhcbiQgaWQgICAgICAgICAgICAgICAgICAgICA8aW50PiAxLCAyLCAzLCA0LCA1LCA2LCA3LCA4LCA5LCAxMCwgMTEsIDEyLCAxMywgMTQsIDE1LCAxNiwgMTcsIDE4LCAxOSwgMjAsIDIxLCAyMiwgMjMsIDLigKZcbiQgbmljb3RpbmVfZGVwZW5kZW5jZSAgICA8ZGJsPiA0Ljk5OTk0NTYsIE5BLCA0LjIxMjY5NDAsIDEuNzU5NDMyMSwgMi42NjMxOTYzLCAyLjc3NzkxNTksIDQuNzQ1MDEwMCwgMy40OTE4ODMxLCA1LjXigKZcbiQgcHJldmlvdXNfcXVpdF9hdHRlbXB0cyA8aW50PiAwLCAxLCAxLCAxLCAwLCAwLCAwLCAwLCAxLCAwLCAwLCAxLCAwLCAxLCAxLCAxLCAwLCAwLCAxLCAxLCAxLCAxLCAxLCAwLCAxLCAwLCAwLCAxLCDigKZcbiQgc3VwcG9ydF9mb3JfcXVpdHRpbmcgICA8ZGJsPiAyLjc2MTA0NCwgMi41ODk1NjksIDIuNDg2MTkxLCAzLjExNTIzNCwgMS4yOTUxNDIsIDMuODY3Mzk5LCAxLjk3MTI0OSwgNC4zNzc5OTksIDQuOTjigKZcbiQgbWVudGFsX2hlYWx0aF9zdGF0dXMgICA8aW50PiAxLCAwLCAwLCAxLCAwLCAxLCAwLCAwLCAwLCAwLCAwLCAxLCAxLCAxLCAwLCAwLCAwLCAxLCAxLCAxLCAwLCAxLCAwLCAwLCAwLCAxLCAwLCAwLCDigKZcbiQgbW90aXZhdGlvbl90b19xdWl0ICAgICA8ZGJsPiAzLjMxMTY0MCwgMi45NTUzODIsIDMuOTY4NzYyLCAxLjkwMjQzNiwgMy45OTU1NjQsIDQuMjk5NDc0LCAxLjM5ODE3NCwgMi4xMDM0ODUsIDEuMDjigKZcbiQgc29jaW9lY29ub21pY19zdGF0dXMgICA8aW50PiA0LCA1LCAyLCAzLCA1LCAxLCAxLCAyLCA0LCAxLCA1LCAyLCA1LCA0LCAzLCA0LCA0LCAzLCAxLCAxLCA0LCA0LCAzLCAyLCA0LCAxLCAzLCAxLCDigKZcbiQgaG9zcGl0YWwgICAgICAgICAgICAgICA8aW50PiAzLCA0LCAxLCAxLCAxLCAzLCAzLCA0LCAyLCAzLCAxLCA0LCA0LCAyLCAyLCAzLCA0LCA0LCA0LCAyLCA0LCAxLCAxLCAxLCAzLCA0LCAyLCAzLCDigKZcbiJ9 -->
-<pre><code>Rows: 1,007
-Columns: 8
-$ id                     &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 2…
-$ nicotine_dependence    &lt;dbl&gt; 4.9999456, NA, 4.2126940, 1.7594321, 2.6631963, 2.7779159, 4.7450100, 3.4918831, 5.5…
-$ previous_quit_attempts &lt;int&gt; 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, …
-$ support_for_quitting   &lt;dbl&gt; 2.761044, 2.589569, 2.486191, 3.115234, 1.295142, 3.867399, 1.971249, 4.377999, 4.98…
-$ mental_health_status   &lt;int&gt; 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, …
-$ motivation_to_quit     &lt;dbl&gt; 3.311640, 2.955382, 3.968762, 1.902436, 3.995564, 4.299474, 1.398174, 2.103485, 1.08…
-$ socioeconomic_status   &lt;int&gt; 4, 5, 2, 3, 5, 1, 1, 2, 4, 1, 5, 2, 5, 4, 3, 4, 4, 3, 1, 1, 4, 4, 3, 2, 4, 1, 3, 1, …
-$ hospital               &lt;int&gt; 3, 4, 1, 1, 1, 3, 3, 4, 2, 3, 1, 4, 4, 2, 2, 3, 4, 4, 4, 2, 4, 1, 1, 1, 3, 4, 2, 3, …</code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -1839,56 +1787,27 @@ $ hospital               &lt;int&gt; 3, 4, 1, 1, 1, 3, 3, 4, 2, 3, 1, 4, 4, 2, 2
 <h2>Convert from Long to Wide</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBDb252ZXJ0IGZyb20gbG9uZyB0byB3aWRlIGZvcm1hdFxuUkFfZGF0YV93aWRlIDwtIFJBX2RhdGEgJT4lXG4gIHBpdm90X3dpZGVyKG5hbWVzX2Zyb20gPSBmb2xsb3dfdXAsIHZhbHVlc19mcm9tID0gc21va2luZ19jZXNzYXRpb24pXG5cbiMgVmlldyB0aGUgdHJhbnNmb3JtZWQgZGF0YVxuaGVhZChSQV9kYXRhX3dpZGUpXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBDb252ZXJ0IGZyb20gbG9uZyB0byB3aWRlIGZvcm1hdFxuUkFfZGF0YV93aWRlIDwtIFJBX2RhdGEgJT4lXG4gIHBpdm90X3dpZGVyKG5hbWVzX2Zyb20gPSBmb2xsb3dfdXAsIHZhbHVlc19mcm9tID0gc21va2luZ19jZXNzYXRpb24pXG5cbiMgVmlldyB0aGUgdHJhbnNmb3JtZWQgZGF0YVxuaGVhZChSQV9kYXRhX3dpZGUpXG5cbiMgQ2hlY2sgZGltZW5zaW9uc1xuZGltKFJBX2RhdGFfd2lkZSlcblxuIyBDaGVjayBtZWFucyBpbiBsb25nIHZzLiB3aWRlIGZvcm1hdFxub3V0Y29tZV9tZWFuc19sb25nIDwtIFJBX2RhdGEgJT4lXG4gIGdyb3VwX2J5KGZvbGxvd191cCkgJT4lXG4gIHN1bW1hcmlzZShtZWFuPW1lYW4oc21va2luZ19jZXNzYXRpb24sbmEucm09VFJVRSkpXG5vdXRjb21lX21lYW5zX2xvbmdcblxub3V0Y29tZV9tZWFuc193aWRlIDwtIFJBX2RhdGFfd2lkZSAlPiVcbiAgc3VtbWFyaXNlKGFjcm9zcyhjKFwic21va2luZ19jZXNzYXRpb25fNm1vbnRoc1wiLFwic21va2luZ19jZXNzYXRpb25fMXllYXJcIiksIFxcKHgpIG1lYW4oeCwgbmEucm0gPSBUUlVFKSkpXG5vdXRjb21lX21lYW5zX3dpZGVcbmBgYCJ9 -->
 <pre class="r"><code># Convert from long to wide format
 RA_data_wide &lt;- RA_data %&gt;%
   pivot_wider(names_from = follow_up, values_from = smoking_cessation)
 
 # View the transformed data
-head(RA_data_wide)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6NiwibmNvbCI6Nywic3VtbWFyeSI6eyJBIHRpYmJsZSI6WyI2IMOXIDciXX19LCJyZGYiOiJINHNJQUFBQUFBQUFBNDFTUFVzRE1Sak9mZFRhQTR2VW9YUVQzSVFyYUVFRWx3UDFvSU9MSDlDdHhHdDZQYnhMNmlXMEZRY0ZwVTdPZ2dqK0FQRUh1THU1K0FmOEFXN09EcTI1YTJMUGlHQWdlWi8zSzNuZjk4bnVWcU5tTlN3QWdBRk1rNTg1RGtIdVlOKzExd0V3ZGE1b3dBU0ZSQTY0ZTRHRFBOOXpmTStrVGdEME5KdEhKNW5DWGt5a3MzMTEyajk3dlhUY3lzZnl4Y3ViVTY4dDNTNGVEeDMzZm5QNGVQUHN1RTk3RDZYU3RWTWY5TjlYN3paNHpueWFQM2x3cG8waUdLSi9hT2JmbnAwRVQrdVZkV3FaYlNqOWdJeVVXUFdyUy9xekt4UDdZNUE1RENORVJiTjVZZFNEbGtBRzlHWDFCa1VEQVdjN2hIWURCa09oRjFpTUlJc1Fac0pRb1JFNUNyRGY5QkNsa0FVRU45Y2lnbG1IaW9EeTc0Q1ZFd1JqcGJwQ1RQcFZXV0hTbG43T2ovRjQvS20yNFlXUXlqYWswV3BCQnF2dG1PZHpiYVNrNUVrM2VaY242ZklqV1JraXNoZHBzV0lveDlEMkNPNmhtTmtod2I3TmlOMFBXa2dKTTdyWXoxd3J1ZEVFUHhMbko1WHBZNFVHRTNrZEluOFN3bjZBSlJlNUVCNGlPWDJqaFhvQ0Z2bTgwbkZWdTNId3pZYkZyYlRLeUpRd3l5T2h0S1NUQWFNdi85NlVTbjBEQUFBPSJ9 -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["id"],"name":[1],"type":["int"],"align":["right"]},{"label":["age"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[3],"type":["chr"],"align":["left"]},{"label":["hospital"],"name":[4],"type":["int"],"align":["right"]},{"label":["treatment"],"name":[5],"type":["int"],"align":["right"]},{"label":["smoking_cessation_6months"],"name":[6],"type":["int"],"align":["right"]},{"label":["smoking_cessation_1year"],"name":[7],"type":["int"],"align":["right"]}],"data":[{"1":"1","2":"43.05846","3":"female","4":"3","5":"1","6":"1","7":"0"},{"1":"2","2":"44.20264","3":"female","4":"4","5":"0","6":"0","7":"0"},{"1":"3","2":"50.39952","3":"female","4":"1","5":"1","6":"0","7":"0"},{"1":"4","2":"45.24425","3":"male","4":"1","5":"0","6":"0","7":"1"},{"1":"5","2":"45.44787","3":"female","4":"1","5":"0","6":"0","7":"0"},{"1":"6","2":"50.94116","3":"Male","4":"3","5":"1","6":"0","7":"0"}],"options":{"columns":{"min":{},"max":[10],"total":[7]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG4jIENoZWNrIGRpbWVuc2lvbnNcbmRpbShSQV9kYXRhX3dpZGUpXG5gYGAifQ== -->
-<pre class="r"><code>
+head(RA_data_wide)
+
 # Check dimensions
-dim(RA_data_wide)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDEwMDAgICAgN1xuIn0= -->
-<pre><code>[1] 1000    7</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBDaGVjayBtZWFucyBpbiBsb25nIHZzLiB3aWRlIGZvcm1hdFxub3V0Y29tZV9tZWFuc19sb25nIDwtIFJBX2RhdGEgJT4lXG4gIGdyb3VwX2J5KGZvbGxvd191cCkgJT4lXG4gIHN1bW1hcmlzZShtZWFuPW1lYW4oc21va2luZ19jZXNzYXRpb24sbmEucm09VFJVRSkpXG5vdXRjb21lX21lYW5zX2xvbmdcbmBgYCJ9 -->
-<pre class="r"><code># Check means in long vs. wide format
+dim(RA_data_wide)
+
+# Check means in long vs. wide format
 outcome_means_long &lt;- RA_data %&gt;%
   group_by(follow_up) %&gt;%
   summarise(mean=mean(smoking_cessation,na.rm=TRUE))
-outcome_means_long</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MiwibmNvbCI6Miwic3VtbWFyeSI6eyJBIHRpYmJsZSI6WyIyIMOXIDIiXX19LCJyZGYiOiJINHNJQUFBQUFBQUFBMlZSTVU3RE1CUjEwb1Fva2FpUUdDb09rVWdJQ1pqYUJiR3dJWkM2UlNaeDB3akhQN0pOQXhzck05eUJBM0FDRnU3U2pSTTAyS2t0Uldhdy9meGUzdi81ejdkWHk3TmttU0NFSmlnSTFCNHFpTUw3dSt2MEVxSEFWeGNQQlNqVzU3T1NqeFhRNU5GdzdvV1phT0N4WmxWZUVDR3dySUhscHk4RWN5T2YvSmZQRzJCeUxaUTQxWFVXWDl2NSszYitzZmgrdTdqNStmeDFHb2NNTjBRNFRlTVZVQXBkL3RRYUltZ0labzR6NXRCbDFuMm8zYTlxNi90KzU3WW9LQmEyaFNXVEVrdWNyYmp5cTV0cmlhRFZzeWlUcjBPSnRHR1E5MnRjeU9NT01lTTRMWUJ0Q0pjcEJWYWxFdEt1TG9uejJhUmwxYWdzTWtONDVnMUdXUCtaM3h0N1pCTWh4Um9NUGlDc3FobXg0MUw4UUtqdFVwS05nVk9WMXhCWDF2S2FTWnVEWWtVbVFXSnJTUXFnbGhtU1Ficy9FTFM5UkVrQ0FBQT0ifQ== -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["follow_up"],"name":[1],"type":["chr"],"align":["left"]},{"label":["mean"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"smoking_cessation_1year","2":"0.07777778"},{"1":"smoking_cessation_6months","2":"0.13700000"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[2]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5vdXRjb21lX21lYW5zX3dpZGUgPC0gUkFfZGF0YV93aWRlICU+JVxuICBzdW1tYXJpc2UoYWNyb3NzKGMoXCJzbW9raW5nX2Nlc3NhdGlvbl82bW9udGhzXCIsXCJzbW9raW5nX2Nlc3NhdGlvbl8xeWVhclwiKSwgXFwoeCkgbWVhbih4LCBuYS5ybSA9IFRSVUUpKSlcbm91dGNvbWVfbWVhbnNfd2lkZVxuYGBgIn0= -->
-<pre class="r"><code>
+outcome_means_long
+
 outcome_means_wide &lt;- RA_data_wide %&gt;%
   summarise(across(c(&quot;smoking_cessation_6months&quot;,&quot;smoking_cessation_1year&quot;), \(x) mean(x, na.rm = TRUE)))
 outcome_means_wide</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MSwibmNvbCI6Miwic3VtbWFyeSI6eyJBIHRpYmJsZSI6WyIxIMOXIDIiXX19LCJyZGYiOiJINHNJQUFBQUFBQUFBMlZRc1U3RE1CQzlwZ2xSSTFFaE1WUjhSQ0loSkdBcUMySmhReUIxcTB4aTBvakVGOWxXQ3hzck0vd0RIOEFYc1BBdjNmaUNsbk5pbzhwRWl2M3UrZDY5dTd1NW5KMGtzd1FBaGhDR2RFWUVJYnE3dlVyUEFjS0FnZ0dFTURMM0V6MGZFakRrMkJBWFg2OW4xOThmUDMveDUzcjZ0cDYrZThKSXNJWXJBZ2VkdUNlUFZJT1BsU2puT1ZlSzZRckYvTFJCb1JmS0preitKeHcvY3lhOTRpT0pxOHdaN0J1REZ6cTI5UGxkNURWVHJndEhKZ1hUTEh1UXBLZG80MGxpYkkwdmlRSXpkMndFM1hQLzd4WWFTSStZU0pibUtKWmM2clJHVWFZYTAxVlZjQzl0MklweXB5ellJWnlGdzBIZldiQzE4dGpLUTU0djBPSTlMc3BLY0RkdXplNTU3VndLdnJSd1RQdnExcFcxc2hMYTdZRllsV25VekVtU0hHdkhkSnVCelM4SGdtU2JMQUlBQUE9PSJ9 -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["smoking_cessation_6months"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["smoking_cessation_1year"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"0.137","2":"0.07777778"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[1]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -1903,13 +1822,6 @@ ra_duplicates &lt;- RA_data_wide %&gt;%
   filter(n() &gt; 1)
 ra_duplicates</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImdyb3VwZWRfZGYiLCJ0YmxfZGYiLCJ0YmwiLCJkYXRhLmZyYW1lIl0sIm5yb3ciOjAsIm5jb2wiOjcsInN1bW1hcnkiOnsiQSB0aWJibGUiOlsiMCDDlyA3Il0sIkdyb3VwcyI6WyJpZCBbMF0iXX19LCJyZGYiOiJINHNJQUFBQUFBQUFBMzJSNFVyRE1CU0ZzemExTHJBeDJBL1pRN1FnZ3ZnQTRnT0l3djZOdS9TdURXdVRra1NkTHovTjJrUm5SQXZwUFQzbjl2Ynk5ZkYrZmNQV2pCQ1NFa3JkUFhPU1pNOVBEOFVkSVRSeER4TkN5ZlJVRHk1ZU9wRzdNeVBqTmZkMTRldnMvL3BqWU1aYk1NYS9IRXhXZ1lWeXA2SERxSDJxMVZzcG5XLyttaGZDeGJEa2FDYWk4aXFGR29NMGVQRHlzbEdtRnhiYThCV3JFV3lIMG5walpUcTFGN0xlY0RRR3JGQnljOXNwYVJ2akc2NStOMXkvSTJnWEhhTU5jOVdmY3JkakVrQ3lJUjdQT1llSmpveWxob0kzeVBkRjlkSzNnb1BGbUYzYXkvcHNaT0FlNjN6Y2luNUVxQ2p5Um5sOWdiSVdNdkRLV3RoaUlKUlcrT3JsM1AyU0FYclphL0ZGakRuWGxGWjlRMlZjdGNFWnFKRGpKMXBnNEpoNUFnQUEifQ== -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["id"],"name":[1],"type":["int"],"align":["right"]},{"label":["age"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[3],"type":["chr"],"align":["left"]},{"label":["hospital"],"name":[4],"type":["int"],"align":["right"]},{"label":["treatment"],"name":[5],"type":["int"],"align":["right"]},{"label":["smoking_cessation_6months"],"name":[6],"type":["int"],"align":["right"]},{"label":["smoking_cessation_1year"],"name":[7],"type":["int"],"align":["right"]}],"data":[],"options":{"columns":{"min":{},"max":[10],"total":[7]},"rows":{"min":[10],"max":[10],"total":[0]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -1925,13 +1837,6 @@ RA_data_wide &lt;- RA_data_wide %&gt;%
 # Verify creation
 head(RA_data_wide[,c(&quot;id&quot;,&quot;sex&quot;,&quot;female&quot;)])</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6NiwibmNvbCI6Mywic3VtbWFyeSI6eyJBIHRpYmJsZSI6WyI2IMOXIDMiXX19LCJyZGYiOiJINHNJQUFBQUFBQUFBNDFSd1VyRU1CQ2RKdW1XTGJnSWduL1JYcng0OHlMZXZJakNYbU9iWFF0dFV0S282ODFQOXV4aDZ5VE5nQVlXRENRejh5WnZNbm56Y0x1OUtyY2xBSEFRQXM4Y1hjaWZIdStxYXdEQk1NaEF3TnJiQTZZdndrMkFNOXlya0FSZ0VST2VHZkh6WUJmaWFxY0cyYXQvUk9KMDV0NzdBQnVmdWZtQ3NGSkxLNDJUaitSYURtcUtUZklJc3E2TkhwL1VJZW5oTDM5dHpYdE5OYndRN0JPUGVaNi8wNGVhWGs3MEVJRmxLNTJzZHhiNUdCMFRTbUZHMXhtTkpPYWxMandoeXB3bGhUS2JBSmRXVm8xVjBxbHE2YnRxWDRmaEk3bkZSNzMvVlJYaUg3STRPUEw1MGhpYkk3MmdRYWpteFpBOFN1ODdUU1BLZS9tc2VucWxWVy9SM2FCY1FhMTZ0SjEySkFPaVUrMk1rMFFwRzlNVEVvU0I0dzg2QUM1eG5nSUFBQT09In0= -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["id"],"name":[1],"type":["int"],"align":["right"]},{"label":["sex"],"name":[2],"type":["chr"],"align":["left"]},{"label":["female"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"female","3":"1"},{"1":"2","2":"female","3":"1"},{"1":"3","2":"female","3":"1"},{"1":"4","2":"male","3":"0"},{"1":"5","2":"female","3":"1"},{"1":"6","2":"Male","3":"0"}],"options":{"columns":{"min":{},"max":[10],"total":[3]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -1950,13 +1855,6 @@ su_duplicates &lt;- SU_data %&gt;%
   arrange(id)
 su_duplicates</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImdyb3VwZWRfZGYiLCJ0YmxfZGYiLCJ0YmwiLCJkYXRhLmZyYW1lIl0sIm5yb3ciOjE0LCJuY29sIjo4LCJzdW1tYXJ5Ijp7IkEgdGliYmxlIjpbIjE0IMOXIDgiXSwiR3JvdXBzIjpbImlkIFs3XSJdfX0sInJkZiI6Ikg0c0lBQUFBQUFBQUE0V1V6MnZVUUJUSFo1TnM5d2U2Ykx0ZGY5MzJJQ2k2UzBFcGdzVU54ZXBKRWZGSFFTR09rMmt6bU0ya3lXU3JlS2tYeFlwZ0wzcTAvZ3VlUGF5SzRFM3FYYWdYOFNCRjlDRDJzTnZKN2t3eXphV0JiejV2M3N4N2VmTm15Tlh6ODZmSzgyVUFnQTRNZzcvejNBVDU2OWN1Tk04QVlHaDhrQU1HS01XOHo2ZHIzQ2h5N2VlcWNOK1UwT3BJMmpraGJ5VDlpZEJUb1JjanhiR2dZaDUrOXZPbERqOG5QTGo2NWJZejEwaFlCeDhmWFI3Y1REaGUzeHFiL0RDVHNQNW1yWFg4Umk1aDlkYkdsdm44VXNKOS9yY2p2VVlnbWRhOTU1TVR5ajdEdXR2Yk00LzczSkEwd2ZLUEV6MkZFK2prSzFPbE5uMTZVK0g0OTRmclV3cXJSZTJpeXZLaFQwYzNVeXAxNXpMYXExN3BIL1c3TnZ2cjd6clBLOWplL3YvdW1Lbnc5K3V6VjFaU21xVnAvTDZuc3JFMGQwZWh2dkgxZ1pteS9XOTI3ZTFLU3FWdVRValdreGZTaGFSZmp1VjZHWi8xU3hsQzJiRll2K3NDNTVFTHc1QWJWY1ZadGlHRHJZVUFkbkJtZVNtZ3l5MlArME5SaHhadmFUQVkvTW5tbFl2aXZFWGgxSWd0ckpwSEVHWEV3NWFOZmV6WjJFTllUQjN3QTl3bE5BcXRwWWd3Q3pLR096NEx4ZXhrR1BrK0RaaTFRSVBoQXA1a1VjNTFzTWVnYXprWXVzeXhRZ1paSk9NbU92eHpYY2dJOVN4R2g1RkpSb29JeFloNnRFUFE3cWlpUTBPZjhKemM3bWQyV0tCK25JM3ZVWXQvQUlXNGI4cWhxZjNNQlJsSExZeWF5TUhvWHRPT2ZKY2d5SEQyREhTZjd5dE5LZStOdkxmU0xvNnFNZ1lpdkNEQ0RZd2NLdXd4N0MzeVZzdVRjZUZkN01xdjJMZ3J6QW8vMnVHaHRmeUFlTEk3WmU0Tlc0ekdQUkFlUkYzcEdYWUY5SGNBYjVNU0RURUZBQUE9In0= -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["id"],"name":[1],"type":["int"],"align":["right"]},{"label":["nicotine_dependence"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["previous_quit_attempts"],"name":[3],"type":["int"],"align":["right"]},{"label":["support_for_quitting"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["mental_health_status"],"name":[5],"type":["int"],"align":["right"]},{"label":["motivation_to_quit"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["socioeconomic_status"],"name":[7],"type":["int"],"align":["right"]},{"label":["hospital"],"name":[8],"type":["int"],"align":["right"]}],"data":[{"1":"304","2":"6.386629","3":"0","4":"1.639777","5":"1","6":"4.815357","7":"2","8":"3"},{"1":"304","2":"6.386629","3":"0","4":"1.639777","5":"1","6":"4.815357","7":"2","8":"3"},{"1":"394","2":"5.885557","3":"0","4":"2.058544","5":"1","6":"1.685970","7":"1","8":"2"},{"1":"394","2":"5.885557","3":"0","4":"2.058544","5":"1","6":"1.685970","7":"1","8":"2"},{"1":"574","2":"5.250746","3":"0","4":"4.596850","5":"0","6":"1.038875","7":"5","8":"2"},{"1":"574","2":"5.250746","3":"0","4":"4.596850","5":"0","6":"1.038875","7":"5","8":"2"},{"1":"622","2":"4.271416","3":"0","4":"4.502160","5":"1","6":"3.151561","7":"3","8":"4"},{"1":"622","2":"4.271416","3":"0","4":"4.502160","5":"1","6":"3.151561","7":"3","8":"4"},{"1":"903","2":"5.407780","3":"1","4":"4.470198","5":"0","6":"3.141329","7":"1","8":"2"},{"1":"903","2":"5.407780","3":"1","4":"4.470198","5":"0","6":"3.141329","7":"1","8":"2"},{"1":"905","2":"4.089668","3":"0","4":"4.007821","5":"0","6":"2.477452","7":"3","8":"4"},{"1":"905","2":"4.089668","3":"0","4":"4.007821","5":"0","6":"2.477452","7":"3","8":"4"},{"1":"912","2":"3.555109","3":"0","4":"3.262095","5":"1","6":"1.453752","7":"2","8":"3"},{"1":"912","2":"3.555109","3":"0","4":"3.262095","5":"1","6":"1.453752","7":"2","8":"3"}],"options":{"columns":{"min":{},"max":[10],"total":[8]},"rows":{"min":[10],"max":[10],"total":[14]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
@@ -1971,13 +1869,6 @@ su_duplicates_after &lt;- SU_data %&gt;%
   filter(n() &gt; 1)
 su_duplicates_after</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImdyb3VwZWRfZGYiLCJ0YmxfZGYiLCJ0YmwiLCJkYXRhLmZyYW1lIl0sIm5yb3ciOjAsIm5jb2wiOjgsInN1bW1hcnkiOnsiQSB0aWJibGUiOlsiMCDDlyA4Il0sIkdyb3VwcyI6WyJpZCBbMF0iXX19LCJyZGYiOiJINHNJQUFBQUFBQUFBNDFSVVU3RE1Bek50bzV0bFpnbWhyakYrc01QQjBBY0FJRzB2eXFrM2hxcGpVUGlGazQvY05zRXRrcElWRXI5OGh5L3hNL1BqL3Y3ZEo4S0lXWWlTZmcvWnlqbXJ5OVB1d2Noa2lsdkppSVJxeTUrY25yTFlNbnJXZ3pmT3NULzdrTzhFSjZyU25yUFlITkdwb1VrbVIyY3JHRjBmT1h3SXpQTSs3LzBZbkxUUDNZZ3A3b0lhR3UwUXRJRzhnSXNtQUtNZ3BDNnN3NWFqWTNQM3h0TnVTU0MycElQMlZ2ZldJdU84Z082L2dDTEhHT3VCa095eWt1UUZaVzVKMGxOckx1cCticFdra2FURS9hVlA0cW9OSUpDZzdWV2wxWExFcjNWck1uNE5PcHdnYlpUNHg2bjNVQVduVjk5ZWxqblBrN2NpT0F1ZGc1cWJHRlhOTGJTU2hLTXpaOVpidXhYTXc1dWpKZkRzNUt2VUw0STVRbW9FZ08rQW5Oa3IrTm9LdmtHVmJ5bGdEYkFOYyswbjFwbW5UYlJucFJabnhGMkpnUkdZUldaM2haeCtnYTloa0Fod2dJQUFBPT0ifQ== -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["id"],"name":[1],"type":["int"],"align":["right"]},{"label":["nicotine_dependence"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["previous_quit_attempts"],"name":[3],"type":["int"],"align":["right"]},{"label":["support_for_quitting"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["mental_health_status"],"name":[5],"type":["int"],"align":["right"]},{"label":["motivation_to_quit"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["socioeconomic_status"],"name":[7],"type":["int"],"align":["right"]},{"label":["hospital"],"name":[8],"type":["int"],"align":["right"]}],"data":[],"options":{"columns":{"min":{},"max":[10],"total":[8]},"rows":{"min":[10],"max":[10],"total":[0]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -1986,78 +1877,28 @@ su_duplicates_after</code></pre>
 <h1>Merge RA_data and SU_data</h1>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBNZXJnZSBSQV9kYXRhX3dpZGUgYW5kIFNVX2RhdGEgb24gJ2lkJ1xuc3R1ZHlfZGF0YSA8LSBSQV9kYXRhX3dpZGUgJT4lIGlubmVyX2pvaW4oU1VfZGF0YSwgYnkgPSBcImlkXCIpXG5cbiMgVmlldyB0aGUgbWVyZ2VkIGRhdGFcbmhlYWQoc3R1ZHlfZGF0YSlcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBNZXJnZSBSQV9kYXRhX3dpZGUgYW5kIFNVX2RhdGEgb24gJ2lkJ1xuc3R1ZHlfZGF0YSA8LSBSQV9kYXRhX3dpZGUgJT4lIGlubmVyX2pvaW4oU1VfZGF0YSwgYnkgPSBcImlkXCIpXG5cbiMgVmlldyB0aGUgbWVyZ2VkIGRhdGFcbmhlYWQoc3R1ZHlfZGF0YSlcblxuIyBTaW5jZSBob3NwaXRhbCB3YXMgaW4gYm90aCBkYXRhIHNldHMgd2UgbWVyZ2VkLCB3ZSBoYXZlIGl0IHR3aWNlXG4jIExldCdzIGZpeFxuc3R1ZHlfZGF0YSA8LSBzdHVkeV9kYXRhICU+JVxuICBtdXRhdGUoaG9zcGl0YWwgPSBob3NwaXRhbC54KSAlPiUgICMgQ3JlYXRlIHRoZSBuZXcgaG9zcGl0YWwgdmFyaWFibGVcbiAgc2VsZWN0KC1ob3NwaXRhbC54LCAtaG9zcGl0YWwueSkgICMgUmVtb3ZlIHRoZSBvbGQgaG9zcGl0YWwueCBhbmQgaG9zcGl0YWwueSBjb2x1bW5zXG5oZWFkKHN0dWR5X2RhdGEpXG5cbiMgQ2hlY2sgZGltZW5zaW9uc1xuZGltKFJBX2RhdGFfd2lkZSlcbmRpbShTVV9kYXRhKVxuZGltKHN0dWR5X2RhdGEpXG5cbiMgR2xpbXBzZSBtZXJnZWQgZGF0YVxuZ2xpbXBzZShzdHVkeV9kYXRhKVxuYGBgIn0= -->
 <pre class="r"><code># Merge RA_data_wide and SU_data on &#39;id&#39;
 study_data &lt;- RA_data_wide %&gt;% inner_join(SU_data, by = &quot;id&quot;)
 
 # View the merged data
-head(study_data)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6NiwibmNvbCI6MTUsInN1bW1hcnkiOnsiQSB0aWJibGUiOlsiNiDDlyAxNSJdfX0sInJkZiI6Ikg0c0lBQUFBQUFBQUE0MVVUV2dUUVJTZS9EY0JrOXFVYWowVkJBOXFnN1lnRmlsWlVDTTlLR2dWZXR1T20wbXlkSGRudXpOSld3UXJWdXJKc3lCaXBIZ1I5VnpGZ3ozMHBnZnhJSGdRQ29MaVR5R0NQeURTOWMxbXA5MnNGaHlZZlgvenZYbnp2Y2VlT3pFeG5KbklJSVJpS0I2SGJ3SlVsTGh3dmpSNEZLRjRGSXdJaXFPMGtMTVF6b09TZzcwRGR0SUxJaFQxMEhCYUlIMS9Wa2psNVBWTE0vTXZyeW1sL3RiK2hlZHZsYkhodmJjR3BoZVZVdlA0NHFPYnEwcnB5ZmlEbnA0Ynl0anN6TWVoMjhjQTArM2gyeGNtSzhURUJ2a1BLNzU5NUxUUXQrcVZkVVlDT3haNkR3cElxWWZqNFNYandSVTg2L0ZSYkxXTnNKUXJiRy95bUhlL1BtMnU5ODU3OGRTUzB2M21SWDMxYkZmeDk3Nmw4ZXdVVnhKblJsN3YrZmxLU1k0Y2NIY3ZYQTNWRTN4clo5NWszNTFUYXdncDhXWDZiQkprN04zeWh4V1FYWi9kNzZLZWI0L2ZPOExPdHF3dmF4M3ZEUE1qWlR0djV2TG82RjNBcGU0MUQxNEJtVnRKQ2xuY3NDY2ZJbUgvK0ZRWkFMbHo2UDc0b1k2OGNvYmtUQ1ZRSi8vYjlLOWpVQk1XTmdsRDdXSEsrYzZvWHZhMUdLN0s2WWd4TXV1cm1ScGx0czZ4VVpDZU5IY0k1aWF4dU8vb1p5YWQwcTJxcWhIR01OZXBwUjR4cWNWcnpEK3c2KzhEaCtjSWR2NDVtWGxMMXlqWExhS1dpVTJzTXJFMEdlcXpIZExRYVoycDAzV2RxNWh6WXRwYzN0TEw2clpOSGE1V3FPTWRnQ1JWR1JQbFlrT3RFV3p3bXNvNDVuV0o2ekhodWthN0xFNDk1R1pHcXVtVWFOU2lwcTUxb3JaNG1RdlJuSGJvVEVGU0xmb1RoUllqMTNWL2hmdWhHWmpKZmtobnBvdzVMbFFjd0lPMUVZS2txQzNxQkZCVS9IRlNBaERvZURCUnhBazVzaVp4cW1SUTVHZUVoKytOMlVEV1ZqWTVleEYvdnFTZWF4Y1VkWDE0U3Y1UGlGYWpzcC9FcWtMLzVDc05mSkVZOHBZeWFjaHlnQ2FQcFlMdDZKdXpsQUV2SzNBS3hFcVBSZzNwOFFoQkczOEE2SCtyVDUwRkFBQT0ifQ== -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["id"],"name":[1],"type":["int"],"align":["right"]},{"label":["age"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[3],"type":["chr"],"align":["left"]},{"label":["hospital.x"],"name":[4],"type":["int"],"align":["right"]},{"label":["treatment"],"name":[5],"type":["int"],"align":["right"]},{"label":["smoking_cessation_6months"],"name":[6],"type":["int"],"align":["right"]},{"label":["smoking_cessation_1year"],"name":[7],"type":["int"],"align":["right"]},{"label":["female"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["nicotine_dependence"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["previous_quit_attempts"],"name":[10],"type":["int"],"align":["right"]},{"label":["support_for_quitting"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["mental_health_status"],"name":[12],"type":["int"],"align":["right"]},{"label":["motivation_to_quit"],"name":[13],"type":["dbl"],"align":["right"]},{"label":["socioeconomic_status"],"name":[14],"type":["int"],"align":["right"]},{"label":["hospital.y"],"name":[15],"type":["int"],"align":["right"]}],"data":[{"1":"1","2":"43.05846","3":"female","4":"3","5":"1","6":"1","7":"0","8":"1","9":"4.999946","10":"0","11":"2.761044","12":"1","13":"3.311640","14":"4","15":"3"},{"1":"2","2":"44.20264","3":"female","4":"4","5":"0","6":"0","7":"0","8":"1","9":"NA","10":"1","11":"2.589569","12":"0","13":"2.955382","14":"5","15":"4"},{"1":"3","2":"50.39952","3":"female","4":"1","5":"1","6":"0","7":"0","8":"1","9":"4.212694","10":"1","11":"2.486191","12":"0","13":"3.968762","14":"2","15":"1"},{"1":"4","2":"45.24425","3":"male","4":"1","5":"0","6":"0","7":"1","8":"0","9":"1.759432","10":"1","11":"3.115234","12":"1","13":"1.902436","14":"3","15":"1"},{"1":"5","2":"45.44787","3":"female","4":"1","5":"0","6":"0","7":"0","8":"1","9":"2.663196","10":"0","11":"1.295142","12":"0","13":"3.995564","14":"5","15":"1"},{"1":"6","2":"50.94116","3":"Male","4":"3","5":"1","6":"0","7":"0","8":"0","9":"2.777916","10":"0","11":"3.867399","12":"1","13":"4.299474","14":"1","15":"3"}],"options":{"columns":{"min":{},"max":[10],"total":[15]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG4jIFNpbmNlIGhvc3BpdGFsIHdhcyBpbiBib3RoIGRhdGEgc2V0cyB3ZSBtZXJnZWQsIHdlIGhhdmUgaXQgdHdpY2VcbiMgTGV0J3MgZml4XG5zdHVkeV9kYXRhIDwtIHN0dWR5X2RhdGEgJT4lXG4gIG11dGF0ZShob3NwaXRhbCA9IGhvc3BpdGFsLngpICU+JSAgIyBDcmVhdGUgdGhlIG5ldyBob3NwaXRhbCB2YXJpYWJsZVxuICBzZWxlY3QoLWhvc3BpdGFsLngsIC1ob3NwaXRhbC55KSAgIyBSZW1vdmUgdGhlIG9sZCBob3NwaXRhbC54IGFuZCBob3NwaXRhbC55IGNvbHVtbnNcbmhlYWQoc3R1ZHlfZGF0YSlcbmBgYCJ9 -->
-<pre class="r"><code>
+head(study_data)
+
 # Since hospital was in both data sets we merged, we have it twice
 # Let&#39;s fix
 study_data &lt;- study_data %&gt;%
   mutate(hospital = hospital.x) %&gt;%  # Create the new hospital variable
   select(-hospital.x, -hospital.y)  # Remove the old hospital.x and hospital.y columns
-head(study_data)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6NiwibmNvbCI6MTQsInN1bW1hcnkiOnsiQSB0aWJibGUiOlsiNiDDlyAxNCJdfX0sInJkZiI6Ikg0c0lBQUFBQUFBQUE0MVVUV2dUUVJTZVpKTk5HekRXcGxUcnFTQjRVQnUwQmJGSXlZSWE2VUZCbzlEYmR0eE1rcVc3Tzl1ZFNSc1JyRmlwSjgrQ2lKWGlSZFJ6RlEvMjBKc2V4SVBnUVNnSWlqK0ZDdjZBU05jM201MjRXUlVjbUgxLzg3MTU4NzNIbmo0Nk1aS2R5Q0tFRkpSS3dUY05La3FmUFZNYU9vUlFLZ2xHQXFWUXQ1Qk5DT2RCeWNIZUFsc05nZ2dsQXpTY0ZzalFMODZvMnJHckYyYm5ubC9SU2dNYmUrYWZ2dGJHUjNiZEdKeGUwRXFMUnhZZVhGL1ZTby9LOTNwN3Iybmp6ZG4zd3pjUEE2WW53TGN1Vkt2RXhoYjVEeXYxNzhnSm9YZldpeUpTNnZGNGZNbDRkRVhQQnU4dGJyU011SlFyYnJkNXl2dWZIeSt1OTgwRjhjeVMxdlBxV1dQMVZGZng1KzZsY202S2ErbVRveTkzZm4raHFhTjcvUjN6bDJQMUpDSzdNNi9hZit2NEdrSmFhcGsrbVFTcHZGbCt0d0t5NjZQL1ZkVHo1ZUZiVDlpNURlZlRXc2M3NC94STJjcWJ2VGcyZGh0d21UdUwreTZCM0xxaUNsbmNkQ2Z2STJGLysxQWRCTGx0K0c1NWYwZGVPU055WnRLb2szODVSOUUzS2JGQlREdllKZ3kxaGlVWE9wTm1KZFFVWEpQZFZ4aHBobW8zOXdqbU5uRjQ2QmhnTnAweW5acHVFTVl3TjZtakg3U3B3K3NzUExEOXp3TUh6aFBzL1hYTzhvNXBVRzQ2Uks4UWx6Z1Y0aGd5MU85NlpNYWtEYVpQTjB5dVk4Nko3WEo1U3g5cnVDNzF1RjZsWG5BQWt0UmtUSlNMTGIxT3NNWHJPdU9ZTnlTdTE0YnJabHBsY1JvZzJ4bXBZVkppVUlmYXB0R0o2cXBUNXBxUU0wWnB0MGRuQzVKVzBZc2t0QlA1dnY4anpyMWhZU2E1bDg1c0JYTmNxSHFBQjJzekJzbFFWMVFKb0tUNGUyUUVJTkxkYUtLRUYzUGtiT0xWeUpESXp3aVAzNnU0UU5YdmJITE9FdUVzU1QzWEtpanBoL0NNL0RjUW8wNWxONGxUZys3SlYxcjRITEhrTFJVeUk4c0JtZ0tXQ3E1bnRpY3BDMTVXNEZUUUdub01ha2xQUUFqYS9BVnhmaUhaYVFVQUFBPT0ifQ== -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["id"],"name":[1],"type":["int"],"align":["right"]},{"label":["age"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[3],"type":["chr"],"align":["left"]},{"label":["treatment"],"name":[4],"type":["int"],"align":["right"]},{"label":["smoking_cessation_6months"],"name":[5],"type":["int"],"align":["right"]},{"label":["smoking_cessation_1year"],"name":[6],"type":["int"],"align":["right"]},{"label":["female"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["nicotine_dependence"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["previous_quit_attempts"],"name":[9],"type":["int"],"align":["right"]},{"label":["support_for_quitting"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["mental_health_status"],"name":[11],"type":["int"],"align":["right"]},{"label":["motivation_to_quit"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["socioeconomic_status"],"name":[13],"type":["int"],"align":["right"]},{"label":["hospital"],"name":[14],"type":["int"],"align":["right"]}],"data":[{"1":"1","2":"43.05846","3":"female","4":"1","5":"1","6":"0","7":"1","8":"4.999946","9":"0","10":"2.761044","11":"1","12":"3.311640","13":"4","14":"3"},{"1":"2","2":"44.20264","3":"female","4":"0","5":"0","6":"0","7":"1","8":"NA","9":"1","10":"2.589569","11":"0","12":"2.955382","13":"5","14":"4"},{"1":"3","2":"50.39952","3":"female","4":"1","5":"0","6":"0","7":"1","8":"4.212694","9":"1","10":"2.486191","11":"0","12":"3.968762","13":"2","14":"1"},{"1":"4","2":"45.24425","3":"male","4":"0","5":"0","6":"1","7":"0","8":"1.759432","9":"1","10":"3.115234","11":"1","12":"1.902436","13":"3","14":"1"},{"1":"5","2":"45.44787","3":"female","4":"0","5":"0","6":"0","7":"1","8":"2.663196","9":"0","10":"1.295142","11":"0","12":"3.995564","13":"5","14":"1"},{"1":"6","2":"50.94116","3":"Male","4":"1","5":"0","6":"0","7":"0","8":"2.777916","9":"0","10":"3.867399","11":"1","12":"4.299474","13":"1","14":"3"}],"options":{"columns":{"min":{},"max":[10],"total":[14]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG4jIENoZWNrIGRpbWVuc2lvbnNcbmRpbShSQV9kYXRhX3dpZGUpXG5gYGAifQ== -->
-<pre class="r"><code>
+head(study_data)
+
 # Check dimensions
-dim(RA_data_wide)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDEwMDAgICAgOFxuIn0= -->
-<pre><code>[1] 1000    8</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGltKFNVX2RhdGEpXG5gYGAifQ== -->
-<pre class="r"><code>dim(SU_data)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDEwMDAgICAgOFxuIn0= -->
-<pre><code>[1] 1000    8</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGltKHN0dWR5X2RhdGEpXG5gYGAifQ== -->
-<pre class="r"><code>dim(study_data)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDEwMDAgICAxNFxuIn0= -->
-<pre><code>[1] 1000   14</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBHbGltcHNlIG1lcmdlZCBkYXRhXG5nbGltcHNlKHN0dWR5X2RhdGEpXG5gYGAifQ== -->
-<pre class="r"><code># Glimpse merged data
+dim(RA_data_wide)
+dim(SU_data)
+dim(study_data)
+
+# Glimpse merged data
 glimpse(study_data)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiUm93czogMSwwMDBcbkNvbHVtbnM6IDE0XG4kIGlkICAgICAgICAgICAgICAgICAgICAgICAgPGludD4gMSwgMiwgMywgNCwgNSwgNiwgNywgOCwgOSwgMTAsIDExLCAxMiwgMTMsIDE0LCAxNSwgMTYsIDE3LCAxOCwgMTksIDIwLCAyMSwgMjIsIDIz4oCmXG4kIGFnZSAgICAgICAgICAgICAgICAgICAgICAgPGRibD4gNDMuMDU4NDYsIDQ0LjIwMjY0LCA1MC4zOTk1MiwgNDUuMjQ0MjUsIDQ1LjQ0Nzg3LCA1MC45NDExNiwgNDYuNTk2NjYsIDQwLjYxNzcwLCA04oCmXG4kIHNleCAgICAgICAgICAgICAgICAgICAgICAgPGNocj4gXCJmZW1hbGVcIiwgXCJmZW1hbGVcIiwgXCJmZW1hbGVcIiwgXCJtYWxlXCIsIFwiZmVtYWxlXCIsIFwiTWFsZVwiLCBcImZlbWFsZVwiLCBcImZlbWFsZVwiLCBcImZlbWHigKZcbiQgdHJlYXRtZW50ICAgICAgICAgICAgICAgICA8aW50PiAxLCAwLCAxLCAwLCAwLCAxLCAxLCAwLCAwLCAwLCAwLCAxLCAwLCAwLCAxLCAxLCAxLCAwLCAxLCAwLCAwLCAxLCAxLCAxLCAwLCAxLCAwLCDigKZcbiQgc21va2luZ19jZXNzYXRpb25fNm1vbnRocyA8aW50PiAxLCAwLCAwLCAwLCAwLCAwLCAwLCAwLCAwLCAwLCAwLCAwLCAwLCAwLCAxLCAwLCAwLCAwLCAwLCAwLCAwLCAwLCAxLCAwLCAwLCAwLCAwLCDigKZcbiQgc21va2luZ19jZXNzYXRpb25fMXllYXIgICA8aW50PiAwLCAwLCAwLCAxLCAwLCAwLCAwLCAwLCAwLCAwLCAxLCAxLCAwLCAwLCAwLCAwLCAwLCAwLCAwLCAwLCAxLCAwLCAxLCAwLCAwLCAwLCAwLCDigKZcbiQgZmVtYWxlICAgICAgICAgICAgICAgICAgICA8ZGJsPiAxLCAxLCAxLCAwLCAxLCAwLCAxLCAxLCAxLCAxLCAwLCAxLCAwLCAwLCAwLCAxLCAwLCAxLCAxLCAxLCAwLCAxLCAwLCAxLCAxLCAxLCAwLCDigKZcbiQgbmljb3RpbmVfZGVwZW5kZW5jZSAgICAgICA8ZGJsPiA0Ljk5OTk0NTYsIE5BLCA0LjIxMjY5NDAsIDEuNzU5NDMyMSwgMi42NjMxOTYzLCAyLjc3NzkxNTksIDQuNzQ1MDEwMCwgMy40OTE4ODMxLCDigKZcbiQgcHJldmlvdXNfcXVpdF9hdHRlbXB0cyAgICA8aW50PiAwLCAxLCAxLCAxLCAwLCAwLCAwLCAwLCAxLCAwLCAwLCAxLCAwLCAxLCAxLCAxLCAwLCAwLCAxLCAxLCAxLCAxLCAxLCAwLCAxLCAwLCAwLCDigKZcbiQgc3VwcG9ydF9mb3JfcXVpdHRpbmcgICAgICA8ZGJsPiAyLjc2MTA0NCwgMi41ODk1NjksIDIuNDg2MTkxLCAzLjExNTIzNCwgMS4yOTUxNDIsIDMuODY3Mzk5LCAxLjk3MTI0OSwgNC4zNzc5OTksIDTigKZcbiQgbWVudGFsX2hlYWx0aF9zdGF0dXMgICAgICA8aW50PiAxLCAwLCAwLCAxLCAwLCAxLCAwLCAwLCAwLCAwLCAwLCAxLCAxLCAxLCAwLCAwLCAwLCAxLCAxLCAxLCAwLCAxLCAwLCAwLCAwLCAxLCAwLCDigKZcbiQgbW90aXZhdGlvbl90b19xdWl0ICAgICAgICA8ZGJsPiAzLjMxMTY0MCwgMi45NTUzODIsIDMuOTY4NzYyLCAxLjkwMjQzNiwgMy45OTU1NjQsIDQuMjk5NDc0LCAxLjM5ODE3NCwgMi4xMDM0ODUsIDHigKZcbiQgc29jaW9lY29ub21pY19zdGF0dXMgICAgICA8aW50PiA0LCA1LCAyLCAzLCA1LCAxLCAxLCAyLCA0LCAxLCA1LCAyLCA1LCA0LCAzLCA0LCA0LCAzLCAxLCAxLCA0LCA0LCAzLCAyLCA0LCAxLCAzLCDigKZcbiQgaG9zcGl0YWwgICAgICAgICAgICAgICAgICA8aW50PiAzLCA0LCAxLCAxLCAxLCAzLCAzLCA0LCAyLCAzLCAxLCA0LCA0LCAyLCAyLCAzLCA0LCA0LCA0LCAyLCA0LCAxLCAxLCAxLCAzLCA0LCAyLCDigKZcbiJ9 -->
-<pre><code>Rows: 1,000
-Columns: 14
-$ id                        &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23…
-$ age                       &lt;dbl&gt; 43.05846, 44.20264, 50.39952, 45.24425, 45.44787, 50.94116, 46.59666, 40.61770, 4…
-$ sex                       &lt;chr&gt; &quot;female&quot;, &quot;female&quot;, &quot;female&quot;, &quot;male&quot;, &quot;female&quot;, &quot;Male&quot;, &quot;female&quot;, &quot;female&quot;, &quot;fema…
-$ treatment                 &lt;int&gt; 1, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, …
-$ smoking_cessation_6months &lt;int&gt; 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, …
-$ smoking_cessation_1year   &lt;int&gt; 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, …
-$ female                    &lt;dbl&gt; 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, …
-$ nicotine_dependence       &lt;dbl&gt; 4.9999456, NA, 4.2126940, 1.7594321, 2.6631963, 2.7779159, 4.7450100, 3.4918831, …
-$ previous_quit_attempts    &lt;int&gt; 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, …
-$ support_for_quitting      &lt;dbl&gt; 2.761044, 2.589569, 2.486191, 3.115234, 1.295142, 3.867399, 1.971249, 4.377999, 4…
-$ mental_health_status      &lt;int&gt; 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, …
-$ motivation_to_quit        &lt;dbl&gt; 3.311640, 2.955382, 3.968762, 1.902436, 3.995564, 4.299474, 1.398174, 2.103485, 1…
-$ socioeconomic_status      &lt;int&gt; 4, 5, 2, 3, 5, 1, 1, 2, 4, 1, 5, 2, 5, 4, 3, 4, 4, 3, 1, 1, 4, 4, 3, 2, 4, 1, 3, …
-$ hospital                  &lt;int&gt; 3, 4, 1, 1, 1, 3, 3, 4, 2, 3, 1, 4, 4, 2, 2, 3, 4, 4, 4, 2, 4, 1, 1, 1, 3, 4, 2, …</code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -2067,7 +1908,7 @@ $ hospital                  &lt;int&gt; 3, 4, 1, 1, 1, 3, 3, 4, 2, 3, 1, 4, 4, 2
 <h2>Check for Outliers and Missing Values</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBDaGVjayBmb3Igb3V0bGllcnMgdXNpbmcgc3VtbWFyeSBzdGF0aXN0aWNzXG4jIFdpdGggZHBseXIgJiBwdXJyOiBcbnN1bW1hcml6ZV9jb2x1bW4gPC0gZnVuY3Rpb24oY29sdW1uKSB7XG4gIGRhdGEuZnJhbWUoXG4gICAgbWluID0gbWluKGNvbHVtbiwgbmEucm0gPSBUUlVFKSxcbiAgICBRMSA9IHF1YW50aWxlKGNvbHVtbiwgMC4yNSwgbmEucm0gPSBUUlVFKSxcbiAgICBtZWRpYW4gPSBtZWRpYW4oY29sdW1uLCBuYS5ybSA9IFRSVUUpLFxuICAgIFEzID0gcXVhbnRpbGUoY29sdW1uLCAwLjc1LCBuYS5ybSA9IFRSVUUpLFxuICAgIG1heCA9IG1heChjb2x1bW4sIG5hLnJtID0gVFJVRSksXG4gICAgbWVhbiA9IG1lYW4oY29sdW1uLCBuYS5ybSA9IFRSVUUpLFxuICAgIHNkID0gc2QoY29sdW1uLCBuYS5ybSA9IFRSVUUpLFxuICAgIG5fbWlzc2luZyA9IHN1bShpcy5uYShjb2x1bW4pKVxuICApXG59XG5zdW1tYXJ5X3N0YXRzIDwtIHN0dWR5X2RhdGEgJT4lXG4gIHNlbGVjdCh3aGVyZShpcy5udW1lcmljKSkgJT4lXG4gIG1hcF9kZnIofiBzdW1tYXJpemVfY29sdW1uKC54KSwgLmlkID0gXCJ2YXJpYWJsZVwiKVxuc3VtbWFyeV9zdGF0c1xuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBDaGVjayBmb3Igb3V0bGllcnMgdXNpbmcgc3VtbWFyeSBzdGF0aXN0aWNzXG4jIFdpdGggZHBseXIgJiBwdXJyOiBcbnN1bW1hcml6ZV9jb2x1bW4gPC0gZnVuY3Rpb24oY29sdW1uKSB7XG4gIGRhdGEuZnJhbWUoXG4gICAgbWluID0gbWluKGNvbHVtbiwgbmEucm0gPSBUUlVFKSxcbiAgICBRMSA9IHF1YW50aWxlKGNvbHVtbiwgMC4yNSwgbmEucm0gPSBUUlVFKSxcbiAgICBtZWRpYW4gPSBtZWRpYW4oY29sdW1uLCBuYS5ybSA9IFRSVUUpLFxuICAgIFEzID0gcXVhbnRpbGUoY29sdW1uLCAwLjc1LCBuYS5ybSA9IFRSVUUpLFxuICAgIG1heCA9IG1heChjb2x1bW4sIG5hLnJtID0gVFJVRSksXG4gICAgbWVhbiA9IG1lYW4oY29sdW1uLCBuYS5ybSA9IFRSVUUpLFxuICAgIHNkID0gc2QoY29sdW1uLCBuYS5ybSA9IFRSVUUpLFxuICAgIG5fbWlzc2luZyA9IHN1bShpcy5uYShjb2x1bW4pKVxuICApXG59XG5zdW1tYXJ5X3N0YXRzIDwtIHN0dWR5X2RhdGEgJT4lXG4gIHNlbGVjdCh3aGVyZShpcy5udW1lcmljKSkgJT4lXG4gIG1hcF9kZnIofiBzdW1tYXJpemVfY29sdW1uKC54KSwgLmlkID0gXCJ2YXJpYWJsZVwiKVxuc3VtbWFyeV9zdGF0c1xuXG4jIFdpdGggYmFzZSBSLCBzdW1tYXJ5IGlzIHNpbXBsZVxuc3VtbWFyeShzdHVkeV9kYXRhKVxuYGBgIn0= -->
 <pre class="r"><code># Check for outliers using summary statistics
 # With dplyr &amp; purr: 
 summarize_column &lt;- function(column) {
@@ -2085,46 +1926,11 @@ summarize_column &lt;- function(column) {
 summary_stats &lt;- study_data %&gt;%
   select(where(is.numeric)) %&gt;%
   map_dfr(~ summarize_column(.x), .id = &quot;variable&quot;)
-summary_stats</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibnJvdyI6MTQsIm5jb2wiOjksInN1bW1hcnkiOnsiRGVzY3JpcHRpb24iOlsiZGYgWzE0IMOXIDldIl19fSwicmRmIjoiSDRzSUFBQUFBQUFBQTQxVlhXd1VSUnlmKytwMUwybDd0a1UwVVlsUktpKzllRzM1RUEyelNRdGlESDRRU1k3RVpKbnVUWHNUZG5mVzNibnI4V0FxRDRZUVlrakVwQ1RvQ3lGV1NYd29KZktBRC9SQmdzWlFxSHdacksweElpV0VsQUlWZzcwNnQ3ZXp2VjA0ZFpLOS8veitYNy8vL09meW42MDltYzVFSmdFQWlJQm9sUC9HK0JiRXRyMnpxWDBkQU5Fd0J5RVFCVkpaRnJtNWhXL0tJTW0vUnRjUUpsbDNGMEg5Mk4wbWN0UTJDVU5hcXVocUpHWmh4SFJzTUZmeHBLM1RuY1RvVjFSczI0Z1JhaWhyZEdxd25PMDZMSC9ZSWIwTEk4czExL1ZoSFdtQ3NNVWdLbVhFd0VvV205aklZa01WcHNkTkN4Y0l6ZHZLZTNuQ0ZNUVkxazBtV0ZydHZHbFNpeWw5MUhJY2VKSitZU3VYaXpRbGg1SEdjb3JORU11THVHYWQweFVxWlRIcVJIb1pxVW9vVnFsQmRhTDZvNWI2c3N0cElmL2dMSEJXVVA3WGdxZWxpU2UrUC9oQlRmdnNpaDllUHZYSXZBNnZURE1Pa0RmMkRvemNlMUQ4djd4eWN0bXQ3bTkvL2R6aldieS92Nm5hRHA0dUZoMVpnM2R3YzhWdjArNzFrN2tmRDhqZzM1ZUlsMXZPc3Nuclg1M3hlT0xkdjc5bVZ2SEdUMTdibk9TeVh0UVI0TjFqVmZTdkhqaysybnpJRkg2MXp1M3hMbDhZWWRMaHJJZWI1T0Z6QjZ2c1RkdUhWcTRxOThYRjlRSGUvWlZLNU15cGlrejY4OWVTOG5NOTRmR2hIZWJTK2VlLzZkcFIzWS9TeFdNY3k2M0FseGM4MU9lQjZZWHhRa1NPWEZpNDgvWEd3L0NYUG1mQnNiMXJYejg5UEF0SFp6WWNtTm53Q1p4T3Q4MFVMNVRrbHNrYnNkSWJpL0NuVExKM3k4U2NITGMrSE41MnJCMU8zUDd5d1IvYVBqbitoVGJhczY5SHJtODJoajU2YzByazlYaXRocWRJWGQzN2NuUDJoU083cjFydzl2WFBqSzNqVitEVVgxZnViKyt1ZzVlaTVPNDVkaFdlYit2NitkQ2xLSndPalQwLzltNE16dThkSko4K2V3MU92WFg1bFl6MEo1eTdlZlRFU09nb25Gei8yODJ4dGdLY2UyYkxvUEwzZDNCK3o5bkdNeXMrRm5rNVo0UEwvYWlWY0dWckRUc0l6TG1ZZ1hSc2c4cU1rMXhsZlFGWkJQVjYweWFpRTBPTXY3ZlRZaURwT0V2UWtyN1RjMFppQ0VaMXZPUmdpN2twR1lwT2JMczhkL3kxU0JZZFNGWFhJMlp1dkdQMXlsUXFsZmJERGovczlNTXVQMXp0aDJ2OGNLMGZydlBEbDBSYjNESmVET0IwQUhjRWNHY0Fkd1h2UU5XUUxjNHNsSWtzWWlqVlovRjJjRlFLaE1TcFdSN0ZQQ2hjZnFUaTdzMkgzSzg2VWNnS0tCNnpVTHVhdytyT2RwcG5Hc0ZXa0RwaWxxL0dsN0RCbFkxVmU2bFNVM2pSRFkrTFc4ZHFqb28vQ1RiNitTc2xEcXFoWHF3Smxpd3V1TnRHZnZIT3ZhZE1pM2d2Wm9KcjdSU2ovUGtRR3BWcVF1UDBCSlQrQVpMMWtDYlRCd0FBIn0= -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["variable"],"name":[1],"type":["chr"],"align":["left"]},{"label":["min"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Q1"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["median"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Q3"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["max"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["mean"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["sd"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["n_missing"],"name":[9],"type":["int"],"align":["right"]}],"data":[{"1":"id","2":"1.0000000","3":"250.750000","4":"500.500000","5":"750.250000","6":"1000.000000","7":"500.50000000","8":"288.8194361","9":"0","_rn_":"25%...1"},{"1":"age","2":"1.0000000","3":"42.769278","4":"45.009609","5":"47.286765","6":"99.000000","7":"44.93655369","8":"4.5978075","9":"0","_rn_":"25%...2"},{"1":"hospital.x","2":"1.0000000","3":"1.000000","4":"2.000000","5":"3.000000","6":"4.000000","7":"2.47900000","8":"1.1192908","9":"0","_rn_":"25%...3"},{"1":"treatment","2":"0.0000000","3":"0.000000","4":"0.000000","5":"1.000000","6":"1.000000","7":"0.47500000","8":"0.4996245","9":"0","_rn_":"25%...4"},{"1":"smoking_cessation_6months","2":"0.0000000","3":"0.000000","4":"0.000000","5":"0.000000","6":"1.000000","7":"0.13700000","8":"0.3440194","9":"0","_rn_":"25%...5"},{"1":"smoking_cessation_1year","2":"0.0000000","3":"0.000000","4":"0.000000","5":"0.000000","6":"1.000000","7":"0.07777778","8":"0.2679569","9":"10","_rn_":"25%...6"},{"1":"female","2":"0.0000000","3":"0.000000","4":"1.000000","5":"1.000000","6":"1.000000","7":"0.50600000","8":"0.5002142","9":"0","_rn_":"25%...7"},{"1":"nicotine_dependence","2":"0.1721747","3":"4.021417","4":"4.951618","5":"5.997747","6":"9.632834","7":"4.96671304","8":"1.4085688","9":"20","_rn_":"25%...8"},{"1":"previous_quit_attempts","2":"0.0000000","3":"0.000000","4":"0.000000","5":"1.000000","6":"1.000000","7":"0.39600000","8":"0.4893091","9":"0","_rn_":"25%...9"},{"1":"support_for_quitting","2":"0.0000000","3":"1.998183","4":"2.908152","5":"3.906570","6":"4.990952","7":"2.93091899","8":"1.1827800","9":"0","_rn_":"25%...10"},{"1":"mental_health_status","2":"0.0000000","3":"0.000000","4":"0.000000","5":"1.000000","6":"1.000000","7":"0.29600000","8":"0.4567194","9":"0","_rn_":"25%...11"},{"1":"motivation_to_quit","2":"1.0077631","3":"2.014390","4":"2.966748","5":"3.918745","6":"4.998862","7":"2.95723858","8":"1.1323981","9":"0","_rn_":"25%...12"},{"1":"socioeconomic_status","2":"1.0000000","3":"2.000000","4":"3.000000","5":"4.000000","6":"5.000000","7":"3.00900000","8":"1.4081555","9":"0","_rn_":"25%...13"},{"1":"hospital.y","2":"1.0000000","3":"1.000000","4":"2.000000","5":"3.000000","6":"4.000000","7":"2.47900000","8":"1.1192908","9":"0","_rn_":"25%...14"}],"options":{"columns":{"min":{},"max":[10],"total":[9]},"rows":{"min":[10],"max":[10],"total":[14]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG4jIFdpdGggYmFzZSBSLCBzdW1tYXJ5IGlzIHNpbXBsZVxuc3VtbWFyeShzdHVkeV9kYXRhKVxuYGBgIn0= -->
-<pre class="r"><code>
+summary_stats
+
 # With base R, summary is simple
 summary(study_data)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgIGlkICAgICAgICAgICAgICBhZ2UgICAgICAgICAgICBzZXggICAgICAgICAgICAgIGhvc3BpdGFsLnggICAgICB0cmVhdG1lbnQgICAgIHNtb2tpbmdfY2Vzc2F0aW9uXzZtb250aHNcbiBNaW4uICAgOiAgIDEuMCAgIE1pbi4gICA6IDEuMDAgICBMZW5ndGg6MTAwMCAgICAgICAgTWluLiAgIDoxLjAwMCAgIE1pbi4gICA6MC4wMDAgICBNaW4uICAgOjAuMDAwICAgICAgICAgICAgXG4gMXN0IFF1LjogMjUwLjggICAxc3QgUXUuOjQyLjc3ICAgQ2xhc3MgOmNoYXJhY3RlciAgIDFzdCBRdS46MS4wMDAgICAxc3QgUXUuOjAuMDAwICAgMXN0IFF1LjowLjAwMCAgICAgICAgICAgIFxuIE1lZGlhbiA6IDUwMC41ICAgTWVkaWFuIDo0NS4wMSAgIE1vZGUgIDpjaGFyYWN0ZXIgICBNZWRpYW4gOjIuMDAwICAgTWVkaWFuIDowLjAwMCAgIE1lZGlhbiA6MC4wMDAgICAgICAgICAgICBcbiBNZWFuICAgOiA1MDAuNSAgIE1lYW4gICA6NDQuOTQgICAgICAgICAgICAgICAgICAgICAgTWVhbiAgIDoyLjQ3OSAgIE1lYW4gICA6MC40NzUgICBNZWFuICAgOjAuMTM3ICAgICAgICAgICAgXG4gM3JkIFF1LjogNzUwLjIgICAzcmQgUXUuOjQ3LjI5ICAgICAgICAgICAgICAgICAgICAgIDNyZCBRdS46My4wMDAgICAzcmQgUXUuOjEuMDAwICAgM3JkIFF1LjowLjAwMCAgICAgICAgICAgIFxuIE1heC4gICA6MTAwMC4wICAgTWF4LiAgIDo5OS4wMCAgICAgICAgICAgICAgICAgICAgICBNYXguICAgOjQuMDAwICAgTWF4LiAgIDoxLjAwMCAgIE1heC4gICA6MS4wMDAgICAgICAgICAgICBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gc21va2luZ19jZXNzYXRpb25fMXllYXIgICAgIGZlbWFsZSAgICAgIG5pY290aW5lX2RlcGVuZGVuY2UgcHJldmlvdXNfcXVpdF9hdHRlbXB0cyBzdXBwb3J0X2Zvcl9xdWl0dGluZ1xuIE1pbi4gICA6MC4wMDAwMCAgICAgICAgIE1pbi4gICA6MC4wMDAgICBNaW4uICAgOjAuMTcyMiAgICAgIE1pbi4gICA6MC4wMDAgICAgICAgICAgTWluLiAgIDowLjAwMCAgICAgICBcbiAxc3QgUXUuOjAuMDAwMDAgICAgICAgICAxc3QgUXUuOjAuMDAwICAgMXN0IFF1Ljo0LjAyMTQgICAgICAxc3QgUXUuOjAuMDAwICAgICAgICAgIDFzdCBRdS46MS45OTggICAgICAgXG4gTWVkaWFuIDowLjAwMDAwICAgICAgICAgTWVkaWFuIDoxLjAwMCAgIE1lZGlhbiA6NC45NTE2ICAgICAgTWVkaWFuIDowLjAwMCAgICAgICAgICBNZWRpYW4gOjIuOTA4ICAgICAgIFxuIE1lYW4gICA6MC4wNzc3OCAgICAgICAgIE1lYW4gICA6MC41MDYgICBNZWFuICAgOjQuOTY2NyAgICAgIE1lYW4gICA6MC4zOTYgICAgICAgICAgTWVhbiAgIDoyLjkzMSAgICAgICBcbiAzcmQgUXUuOjAuMDAwMDAgICAgICAgICAzcmQgUXUuOjEuMDAwICAgM3JkIFF1Ljo1Ljk5NzcgICAgICAzcmQgUXUuOjEuMDAwICAgICAgICAgIDNyZCBRdS46My45MDcgICAgICAgXG4gTWF4LiAgIDoxLjAwMDAwICAgICAgICAgTWF4LiAgIDoxLjAwMCAgIE1heC4gICA6OS42MzI4ICAgICAgTWF4LiAgIDoxLjAwMCAgICAgICAgICBNYXguICAgOjQuOTkxICAgICAgIFxuIE5BJ3MgICA6MTAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBOQSdzICAgOjIwICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBtZW50YWxfaGVhbHRoX3N0YXR1cyBtb3RpdmF0aW9uX3RvX3F1aXQgc29jaW9lY29ub21pY19zdGF0dXMgICBob3NwaXRhbC55ICAgXG4gTWluLiAgIDowLjAwMCAgICAgICAgTWluLiAgIDoxLjAwOCAgICAgIE1pbi4gICA6MS4wMDAgICAgICAgIE1pbi4gICA6MS4wMDAgIFxuIDFzdCBRdS46MC4wMDAgICAgICAgIDFzdCBRdS46Mi4wMTQgICAgICAxc3QgUXUuOjIuMDAwICAgICAgICAxc3QgUXUuOjEuMDAwICBcbiBNZWRpYW4gOjAuMDAwICAgICAgICBNZWRpYW4gOjIuOTY3ICAgICAgTWVkaWFuIDozLjAwMCAgICAgICAgTWVkaWFuIDoyLjAwMCAgXG4gTWVhbiAgIDowLjI5NiAgICAgICAgTWVhbiAgIDoyLjk1NyAgICAgIE1lYW4gICA6My4wMDkgICAgICAgIE1lYW4gICA6Mi40NzkgIFxuIDNyZCBRdS46MS4wMDAgICAgICAgIDNyZCBRdS46My45MTkgICAgICAzcmQgUXUuOjQuMDAwICAgICAgICAzcmQgUXUuOjMuMDAwICBcbiBNYXguICAgOjEuMDAwICAgICAgICBNYXguICAgOjQuOTk5ICAgICAgTWF4LiAgIDo1LjAwMCAgICAgICAgTWF4LiAgIDo0LjAwMCAgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIn0= -->
-<pre><code>       id              age            sex              hospital.x      treatment     smoking_cessation_6months
- Min.   :   1.0   Min.   : 1.00   Length:1000        Min.   :1.000   Min.   :0.000   Min.   :0.000            
- 1st Qu.: 250.8   1st Qu.:42.77   Class :character   1st Qu.:1.000   1st Qu.:0.000   1st Qu.:0.000            
- Median : 500.5   Median :45.01   Mode  :character   Median :2.000   Median :0.000   Median :0.000            
- Mean   : 500.5   Mean   :44.94                      Mean   :2.479   Mean   :0.475   Mean   :0.137            
- 3rd Qu.: 750.2   3rd Qu.:47.29                      3rd Qu.:3.000   3rd Qu.:1.000   3rd Qu.:0.000            
- Max.   :1000.0   Max.   :99.00                      Max.   :4.000   Max.   :1.000   Max.   :1.000            
-                                                                                                              
- smoking_cessation_1year     female      nicotine_dependence previous_quit_attempts support_for_quitting
- Min.   :0.00000         Min.   :0.000   Min.   :0.1722      Min.   :0.000          Min.   :0.000       
- 1st Qu.:0.00000         1st Qu.:0.000   1st Qu.:4.0214      1st Qu.:0.000          1st Qu.:1.998       
- Median :0.00000         Median :1.000   Median :4.9516      Median :0.000          Median :2.908       
- Mean   :0.07778         Mean   :0.506   Mean   :4.9667      Mean   :0.396          Mean   :2.931       
- 3rd Qu.:0.00000         3rd Qu.:1.000   3rd Qu.:5.9977      3rd Qu.:1.000          3rd Qu.:3.907       
- Max.   :1.00000         Max.   :1.000   Max.   :9.6328      Max.   :1.000          Max.   :4.991       
- NA&#39;s   :10                              NA&#39;s   :20                                                     
- mental_health_status motivation_to_quit socioeconomic_status   hospital.y   
- Min.   :0.000        Min.   :1.008      Min.   :1.000        Min.   :1.000  
- 1st Qu.:0.000        1st Qu.:2.014      1st Qu.:2.000        1st Qu.:1.000  
- Median :0.000        Median :2.967      Median :3.000        Median :2.000  
- Mean   :0.296        Mean   :2.957      Mean   :3.009        Mean   :2.479  
- 3rd Qu.:1.000        3rd Qu.:3.919      3rd Qu.:4.000        3rd Qu.:3.000  
- Max.   :1.000        Max.   :4.999      Max.   :5.000        Max.   :4.000  
-                                                                             </code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -2132,22 +1938,14 @@ summary(study_data)</code></pre>
 <h2>Remove Rows with Missing Outcomes</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBSZW1vdmUgcm93cyB3aXRoIG1pc3NpbmcgYHNtb2tpbmdfY2Vzc2F0aW9uXzF5ZWFyYFxuc3R1ZHlfZGF0YSA8LSBzdHVkeV9kYXRhICU+JSBmaWx0ZXIoIWlzLm5hKHNtb2tpbmdfY2Vzc2F0aW9uXzF5ZWFyKSlcblxuIyBWZXJpZnkgcmVtb3ZhbFxuc3VtKGlzLm5hKHN0dWR5X2RhdGEkc21va2luZ19jZXNzYXRpb25fMXllYXIpKVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBSZW1vdmUgcm93cyB3aXRoIG1pc3NpbmcgYHNtb2tpbmdfY2Vzc2F0aW9uXzF5ZWFyYFxuc3R1ZHlfZGF0YSA8LSBzdHVkeV9kYXRhICU+JSBmaWx0ZXIoIWlzLm5hKHNtb2tpbmdfY2Vzc2F0aW9uXzF5ZWFyKSlcblxuIyBWZXJpZnkgcmVtb3ZhbFxuc3VtKGlzLm5hKHN0dWR5X2RhdGEkc21va2luZ19jZXNzYXRpb25fMXllYXIpKVxuZGltKHN0dWR5X2RhdGEpXG5gYGAifQ== -->
 <pre class="r"><code># Remove rows with missing `smoking_cessation_1year`
 study_data &lt;- study_data %&gt;% filter(!is.na(smoking_cessation_1year))
 
 # Verify removal
-sum(is.na(study_data$smoking_cessation_1year))</code></pre>
+sum(is.na(study_data$smoking_cessation_1year))
+dim(study_data)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDBcbiJ9 -->
-<pre><code>[1] 0</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGltKHN0dWR5X2RhdGEpXG5gYGAifQ== -->
-<pre class="r"><code>dim(study_data)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDk5MCAgMTVcbiJ9 -->
-<pre><code>[1] 990  15</code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -2155,7 +1953,7 @@ sum(is.na(study_data$smoking_cessation_1year))</code></pre>
 <h2>For baseline covariates with missing values, dummy impute</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBJbXB1dGUgbWlzc2luZyB2YWx1ZXMgd2l0aCBtZWFuIGFuZCBjcmVhdGUgZHVtbXkgdmFyaWFibGVzXG5cbiMgaGFyZCBjb2Rpbmcgb25lIGF0IGEgdGltZVxuc3R1ZHlfZGF0YSA8LSBzdHVkeV9kYXRhICU+JVxuICBtdXRhdGUoXG4gICAgYWdlX2ltcHV0ZWRfZHVtbXkgPSBpZl9lbHNlKGlzLm5hKGFnZSksIDEsIDApLFxuICAgIG5pY290aW5lX2RlcGVuZGVuY2VfaW1wdXRlZF9kdW1teSA9IGlmX2Vsc2UoaXMubmEobmljb3RpbmVfZGVwZW5kZW5jZSksIDEsIDApLFxuICAgIGFnZV9pbXB1dGVkID0gaWZfZWxzZShpcy5uYShhZ2UpLCBtZWFuKGFnZSwgbmEucm0gPSBUUlVFKSwgYWdlKSxcbiAgICBuaWNvdGluZV9kZXBlbmRlbmNlX2ltcHV0ZWQgPSBpZl9lbHNlKGlzLm5hKG5pY290aW5lX2RlcGVuZGVuY2UpLCBtZWFuKG5pY290aW5lX2RlcGVuZGVuY2UsIG5hLnJtID0gVFJVRSksIG5pY290aW5lX2RlcGVuZGVuY2UpXG4gIClcblxuIyBBIG1vcmUgZWxlZ2FudCB3YXkgZm9yIHRoZSBpbXB1dGF0aW9uIHdpdGggYGRwbHlyYCAtIHJlcXVpcmVzIGNyZWF0aW5nIGEgZnVuY3Rpb24gKG5vdCBjb3ZlcmVkIHlldClcbiNjb2x1bW5zX3RvX2ltcHV0ZSA8LSBjKFwibmljb3RpbmVfZGVwZW5kZW5jZVwiLCBcImFnZVwiKVxuI3N0dWR5X2RhdGEgPC0gc3R1ZHlfZGF0YSAlPiVcbiMgIG11dGF0ZShhY3Jvc3MoYWxsX29mKGNvbHVtbnNfdG9faW1wdXRlKSx+IGlmZWxzZShpcy5uYSguKSwgbWVhbiguLCBuYS5ybSA9IFRSVUUpLCAuKSkpXG4gICMgb3ZlcndyaXRlcyBtaXNzaW5nIHZhbHVlcyBpbiBcImFnZVwiXG4gICMgYWRkaW5nIGR1bW1pZXMgd2l0aCB0aGlzIGFwcHJvYWNoIGdldHMgbW9yZSBjb21wbGljYXRlZFxuXG4jIENoZWNrIHRoZSBpbXB1dGF0aW9uXG5zZWxlY3RlZF9jb2x1bW5zIDwtIHN0dWR5X2RhdGEgJT4lXG4gIHNlbGVjdChhZ2UsIGFnZV9pbXB1dGVkLCBhZ2VfaW1wdXRlZF9kdW1teSwgbmljb3RpbmVfZGVwZW5kZW5jZSwgbmljb3RpbmVfZGVwZW5kZW5jZV9pbXB1dGVkLCBuaWNvdGluZV9kZXBlbmRlbmNlX2ltcHV0ZWRfZHVtbXkpICU+JVxuICBzbGljZV9oZWFkKG4gPSA1KVxuc2VsZWN0ZWRfY29sdW1uc1xuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBJbXB1dGUgbWlzc2luZyB2YWx1ZXMgd2l0aCBtZWFuIGFuZCBjcmVhdGUgZHVtbXkgdmFyaWFibGVzXG5cbiMgaGFyZCBjb2Rpbmcgb25lIGF0IGEgdGltZVxuc3R1ZHlfZGF0YSA8LSBzdHVkeV9kYXRhICU+JVxuICBtdXRhdGUoXG4gICAgYWdlX2ltcHV0ZWRfZHVtbXkgPSBpZl9lbHNlKGlzLm5hKGFnZSksIDEsIDApLFxuICAgIG5pY290aW5lX2RlcGVuZGVuY2VfaW1wdXRlZF9kdW1teSA9IGlmX2Vsc2UoaXMubmEobmljb3RpbmVfZGVwZW5kZW5jZSksIDEsIDApLFxuICAgIGFnZV9pbXB1dGVkID0gaWZfZWxzZShpcy5uYShhZ2UpLCBtZWFuKGFnZSwgbmEucm0gPSBUUlVFKSwgYWdlKSxcbiAgICBuaWNvdGluZV9kZXBlbmRlbmNlX2ltcHV0ZWQgPSBpZl9lbHNlKGlzLm5hKG5pY290aW5lX2RlcGVuZGVuY2UpLCBtZWFuKG5pY290aW5lX2RlcGVuZGVuY2UsIG5hLnJtID0gVFJVRSksIG5pY290aW5lX2RlcGVuZGVuY2UpXG4gIClcblxuIyBBIG1vcmUgZWxlZ2FudCB3YXkgZm9yIHRoZSBpbXB1dGF0aW9uIHdpdGggYGRwbHlyYCAtIHJlcXVpcmVzIGNyZWF0aW5nIGEgZnVuY3Rpb24gKG5vdCBjb3ZlcmVkIHlldClcbiNjb2x1bW5zX3RvX2ltcHV0ZSA8LSBjKFwibmljb3RpbmVfZGVwZW5kZW5jZVwiLCBcImFnZVwiKVxuI3N0dWR5X2RhdGEgPC0gc3R1ZHlfZGF0YSAlPiVcbiMgIG11dGF0ZShhY3Jvc3MoYWxsX29mKGNvbHVtbnNfdG9faW1wdXRlKSx+IGlmZWxzZShpcy5uYSguKSwgbWVhbiguLCBuYS5ybSA9IFRSVUUpLCAuKSkpXG4gICMgb3ZlcndyaXRlcyBtaXNzaW5nIHZhbHVlcyBpbiBcImFnZVwiXG4gICMgYWRkaW5nIGR1bW1pZXMgd2l0aCB0aGlzIGFwcHJvYWNoIGdldHMgbW9yZSBjb21wbGljYXRlZFxuXG4jIENoZWNrIHRoZSBpbXB1dGF0aW9uXG5zZWxlY3RlZF9jb2x1bW5zIDwtIHN0dWR5X2RhdGEgJT4lXG4gIHNlbGVjdChhZ2UsIGFnZV9pbXB1dGVkLCBhZ2VfaW1wdXRlZF9kdW1teSwgbmljb3RpbmVfZGVwZW5kZW5jZSwgbmljb3RpbmVfZGVwZW5kZW5jZV9pbXB1dGVkLCBuaWNvdGluZV9kZXBlbmRlbmNlX2ltcHV0ZWRfZHVtbXkpICU+JVxuICBmaWx0ZXIoYWdlX2ltcHV0ZWRfZHVtbXkgPT0gMSB8IG5pY290aW5lX2RlcGVuZGVuY2VfaW1wdXRlZF9kdW1teSA9PSAxKSAlPiVcbiAgc2xpY2VfaGVhZChuID0gNSlcbnNlbGVjdGVkX2NvbHVtbnNcbnN1bW1hcnkoc3R1ZHlfZGF0YSlcbmBgYCJ9 -->
 <pre class="r"><code># Impute missing values with mean and create dummy variables
 
 # hard coding one at a time
@@ -2177,49 +1975,11 @@ study_data &lt;- study_data %&gt;%
 # Check the imputation
 selected_columns &lt;- study_data %&gt;%
   select(age, age_imputed, age_imputed_dummy, nicotine_dependence, nicotine_dependence_imputed, nicotine_dependence_imputed_dummy) %&gt;%
+  filter(age_imputed_dummy == 1 | nicotine_dependence_imputed_dummy == 1) %&gt;%
   slice_head(n = 5)
-selected_columns</code></pre>
+selected_columns
+summary(study_data)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6NSwibmNvbCI6Niwic3VtbWFyeSI6eyJBIHRpYmJsZSI6WyI1IMOXIDYiXX19LCJyZGYiOiJINHNJQUFBQUFBQUFBd3R5aVREbWl1QmlZR0JnWm1CaEFaS3NRQ1lEYTJpSW02NEZBd01MRTVERHlNREN3QW1pSzREU3drQUdHeER6Z1ZRNXVMWlhsOWRmYUhGd2sveWcxWHo2cm9PbnNmSXNoY0kyQjdmNXptMXJweDl4Y05zWnZGcElxSmRjOVF6RUE0ajV3djgvN3A3L1ZzUkIrRmI2dnVXQ2Z4d0VicDRwUFJMSVlmOUhiVkV3WDNhSkE2dWY1VFdwNzVmSVZVKzhjMUFDampVdk1UZTFHTWdRQUFjZVJKQTVNVDBWeXVRR011TXpjd3RLUzFKVG9FS0NTRUx4S2FXNXVaVlFDZUc4ek9UOGtzeTgxUGlVMUlMVXZKVFV2R1NZTWRKWXBOQ01WY1NqQkdvTnF0TTVpL0xMOVdETzV3VmlwZ1lnOGYvLy85L29ma3pPU1N5RytSRW15SldTV0pLb2wxWUUxQS9rL1VQVHdwNWZVSktabndmVXhBUktWZXdnRFdCcENFWTJpTEVJVFVBYTdGaW8wM1Z6TTR1TE0vUFNkY3NTYzBwVDBSM0JYSkNYam1RMEE5UWpqTkFJaGJIWklLNWorZy9Wemc3VnpwS2FuSkVQWmJPbDVxVURBdy9tNVp6RXBOUWNtQzBwcVdWUUpoOHd6TUJCcGxkUWxKbFhBZ3NMb0dpeFhrbCtTU0pNQzFkeWZnNU1CQnc2RFA4QXp2MW1lNDREQUFBPSJ9 -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["age"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["age_imputed"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["age_imputed_dummy"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["nicotine_dependence"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["nicotine_dependence_imputed"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["nicotine_dependence_imputed_dummy"],"name":[6],"type":["dbl"],"align":["right"]}],"data":[{"1":"43.05846","2":"43.05846","3":"0","4":"4.999946","5":"4.999946","6":"0"},{"1":"44.20264","2":"44.20264","3":"0","4":"4.963286","5":"4.963286","6":"0"},{"1":"50.39952","2":"50.39952","3":"0","4":"4.212694","5":"4.212694","6":"0"},{"1":"45.24425","2":"45.24425","3":"0","4":"1.759432","5":"1.759432","6":"0"},{"1":"45.44787","2":"45.44787","3":"0","4":"2.663196","5":"2.663196","6":"0"}],"options":{"columns":{"min":{},"max":[10],"total":[6]},"rows":{"min":[10],"max":[10],"total":[5]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtbWFyeShzdHVkeV9kYXRhKVxuYGBgIn0= -->
-<pre class="r"><code>summary(study_data)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgIGlkICAgICAgICAgICAgICBhZ2UgICAgICAgICAgICBzZXggICAgICAgICAgICAgIGhvc3BpdGFsLnggICAgICB0cmVhdG1lbnQgICAgICBzbW9raW5nX2Nlc3NhdGlvbl82bW9udGhzXG4gTWluLiAgIDogICAxLjAgICBNaW4uICAgOiAxLjAwICAgTGVuZ3RoOjk5MCAgICAgICAgIE1pbi4gICA6MS4wMDAgICBNaW4uICAgOjAuMDAwMCAgIE1pbi4gICA6MC4wMDAwICAgICAgICAgICBcbiAxc3QgUXUuOiAyNTEuMiAgIDFzdCBRdS46NDIuNzcgICBDbGFzcyA6Y2hhcmFjdGVyICAgMXN0IFF1LjoxLjAwMCAgIDFzdCBRdS46MC4wMDAwICAgMXN0IFF1LjowLjAwMDAgICAgICAgICAgIFxuIE1lZGlhbiA6IDUwMS41ICAgTWVkaWFuIDo0NS4wMSAgIE1vZGUgIDpjaGFyYWN0ZXIgICBNZWRpYW4gOjIuMDAwICAgTWVkaWFuIDowLjAwMDAgICBNZWRpYW4gOjAuMDAwMCAgICAgICAgICAgXG4gTWVhbiAgIDogNTAwLjUgICBNZWFuICAgOjQ0LjkyICAgICAgICAgICAgICAgICAgICAgIE1lYW4gICA6Mi40NzkgICBNZWFuICAgOjAuNDc3OCAgIE1lYW4gICA6MC4xMzc0ICAgICAgICAgICBcbiAzcmQgUXUuOiA3NDguOCAgIDNyZCBRdS46NDcuMjYgICAgICAgICAgICAgICAgICAgICAgM3JkIFF1LjozLjAwMCAgIDNyZCBRdS46MS4wMDAwICAgM3JkIFF1LjowLjAwMDAgICAgICAgICAgIFxuIE1heC4gICA6MTAwMC4wICAgTWF4LiAgIDo5OS4wMCAgICAgICAgICAgICAgICAgICAgICBNYXguICAgOjQuMDAwICAgTWF4LiAgIDoxLjAwMDAgICBNYXguICAgOjEuMDAwMCAgICAgICAgICAgXG4gc21va2luZ19jZXNzYXRpb25fMXllYXIgICAgIGZlbWFsZSAgICAgIG5pY290aW5lX2RlcGVuZGVuY2UgcHJldmlvdXNfcXVpdF9hdHRlbXB0cyBzdXBwb3J0X2Zvcl9xdWl0dGluZ1xuIE1pbi4gICA6MC4wMDAwMCAgICAgICAgIE1pbi4gICA6MC4wMDAgICBNaW4uICAgOjAuMTcyMiAgICAgIE1pbi4gICA6MC4wMDAgICAgICAgICAgTWluLiAgIDowLjAwMCAgICAgICBcbiAxc3QgUXUuOjAuMDAwMDAgICAgICAgICAxc3QgUXUuOjAuMDAwICAgMXN0IFF1Ljo0LjA1NjQgICAgICAxc3QgUXUuOjAuMDAwICAgICAgICAgIDFzdCBRdS46Mi4wMTkgICAgICAgXG4gTWVkaWFuIDowLjAwMDAwICAgICAgICAgTWVkaWFuIDoxLjAwMCAgIE1lZGlhbiA6NC45NjMzICAgICAgTWVkaWFuIDowLjAwMCAgICAgICAgICBNZWRpYW4gOjIuOTE1ICAgICAgIFxuIE1lYW4gICA6MC4wNzc3OCAgICAgICAgIE1lYW4gICA6MC41MDMgICBNZWFuICAgOjQuOTYzMyAgICAgIE1lYW4gICA6MC4zOTYgICAgICAgICAgTWVhbiAgIDoyLjkzNyAgICAgICBcbiAzcmQgUXUuOjAuMDAwMDAgICAgICAgICAzcmQgUXUuOjEuMDAwICAgM3JkIFF1Ljo1Ljk1NDQgICAgICAzcmQgUXUuOjEuMDAwICAgICAgICAgIDNyZCBRdS46My45MTQgICAgICAgXG4gTWF4LiAgIDoxLjAwMDAwICAgICAgICAgTWF4LiAgIDoxLjAwMCAgIE1heC4gICA6OS42MzI4ICAgICAgTWF4LiAgIDoxLjAwMCAgICAgICAgICBNYXguICAgOjQuOTkxICAgICAgIFxuIG1lbnRhbF9oZWFsdGhfc3RhdHVzIG1vdGl2YXRpb25fdG9fcXVpdCBzb2Npb2Vjb25vbWljX3N0YXR1cyAgIGhvc3BpdGFsLnkgICAgYWdlX2ltcHV0ZWRfZHVtbXlcbiBNaW4uICAgOjAuMDAwMCAgICAgICBNaW4uICAgOjEuMDA4ICAgICAgTWluLiAgIDoxLjAwMCAgICAgICAgTWluLiAgIDoxLjAwMCAgIE1pbi4gICA6MCAgICAgICAgXG4gMXN0IFF1LjowLjAwMDAgICAgICAgMXN0IFF1LjoyLjAxNSAgICAgIDFzdCBRdS46Mi4wMDAgICAgICAgIDFzdCBRdS46MS4wMDAgICAxc3QgUXUuOjAgICAgICAgIFxuIE1lZGlhbiA6MC4wMDAwICAgICAgIE1lZGlhbiA6Mi45NjcgICAgICBNZWRpYW4gOjMuMDAwICAgICAgICBNZWRpYW4gOjIuMDAwICAgTWVkaWFuIDowICAgICAgICBcbiBNZWFuICAgOjAuMjkyOSAgICAgICBNZWFuICAgOjIuOTU4ICAgICAgTWVhbiAgIDozLjAwMyAgICAgICAgTWVhbiAgIDoyLjQ3OSAgIE1lYW4gICA6MCAgICAgICAgXG4gM3JkIFF1LjoxLjAwMDAgICAgICAgM3JkIFF1LjozLjkyMiAgICAgIDNyZCBRdS46NC4wMDAgICAgICAgIDNyZCBRdS46My4wMDAgICAzcmQgUXUuOjAgICAgICAgIFxuIE1heC4gICA6MS4wMDAwICAgICAgIE1heC4gICA6NC45OTkgICAgICBNYXguICAgOjUuMDAwICAgICAgICBNYXguICAgOjQuMDAwICAgTWF4LiAgIDowICAgICAgICBcbiBuaWNvdGluZV9kZXBlbmRlbmNlX2ltcHV0ZWRfZHVtbXkgIGFnZV9pbXB1dGVkICAgIG5pY290aW5lX2RlcGVuZGVuY2VfaW1wdXRlZFxuIE1pbi4gICA6MCAgICAgICAgICAgICAgICAgICAgICAgICBNaW4uICAgOiAxLjAwICAgTWluLiAgIDowLjE3MjIgICAgICAgICAgICAgXG4gMXN0IFF1LjowICAgICAgICAgICAgICAgICAgICAgICAgIDFzdCBRdS46NDIuNzcgICAxc3QgUXUuOjQuMDU2NCAgICAgICAgICAgICBcbiBNZWRpYW4gOjAgICAgICAgICAgICAgICAgICAgICAgICAgTWVkaWFuIDo0NS4wMSAgIE1lZGlhbiA6NC45NjMzICAgICAgICAgICAgIFxuIE1lYW4gICA6MCAgICAgICAgICAgICAgICAgICAgICAgICBNZWFuICAgOjQ0LjkyICAgTWVhbiAgIDo0Ljk2MzMgICAgICAgICAgICAgXG4gM3JkIFF1LjowICAgICAgICAgICAgICAgICAgICAgICAgIDNyZCBRdS46NDcuMjYgICAzcmQgUXUuOjUuOTU0NCAgICAgICAgICAgICBcbiBNYXguICAgOjAgICAgICAgICAgICAgICAgICAgICAgICAgTWF4LiAgIDo5OS4wMCAgIE1heC4gICA6OS42MzI4ICAgICAgICAgICAgIFxuIn0= -->
-<pre><code>       id              age            sex              hospital.x      treatment      smoking_cessation_6months
- Min.   :   1.0   Min.   : 1.00   Length:990         Min.   :1.000   Min.   :0.0000   Min.   :0.0000           
- 1st Qu.: 251.2   1st Qu.:42.77   Class :character   1st Qu.:1.000   1st Qu.:0.0000   1st Qu.:0.0000           
- Median : 501.5   Median :45.01   Mode  :character   Median :2.000   Median :0.0000   Median :0.0000           
- Mean   : 500.5   Mean   :44.92                      Mean   :2.479   Mean   :0.4778   Mean   :0.1374           
- 3rd Qu.: 748.8   3rd Qu.:47.26                      3rd Qu.:3.000   3rd Qu.:1.0000   3rd Qu.:0.0000           
- Max.   :1000.0   Max.   :99.00                      Max.   :4.000   Max.   :1.0000   Max.   :1.0000           
- smoking_cessation_1year     female      nicotine_dependence previous_quit_attempts support_for_quitting
- Min.   :0.00000         Min.   :0.000   Min.   :0.1722      Min.   :0.000          Min.   :0.000       
- 1st Qu.:0.00000         1st Qu.:0.000   1st Qu.:4.0564      1st Qu.:0.000          1st Qu.:2.019       
- Median :0.00000         Median :1.000   Median :4.9633      Median :0.000          Median :2.915       
- Mean   :0.07778         Mean   :0.503   Mean   :4.9633      Mean   :0.396          Mean   :2.937       
- 3rd Qu.:0.00000         3rd Qu.:1.000   3rd Qu.:5.9544      3rd Qu.:1.000          3rd Qu.:3.914       
- Max.   :1.00000         Max.   :1.000   Max.   :9.6328      Max.   :1.000          Max.   :4.991       
- mental_health_status motivation_to_quit socioeconomic_status   hospital.y    age_imputed_dummy
- Min.   :0.0000       Min.   :1.008      Min.   :1.000        Min.   :1.000   Min.   :0        
- 1st Qu.:0.0000       1st Qu.:2.015      1st Qu.:2.000        1st Qu.:1.000   1st Qu.:0        
- Median :0.0000       Median :2.967      Median :3.000        Median :2.000   Median :0        
- Mean   :0.2929       Mean   :2.958      Mean   :3.003        Mean   :2.479   Mean   :0        
- 3rd Qu.:1.0000       3rd Qu.:3.922      3rd Qu.:4.000        3rd Qu.:3.000   3rd Qu.:0        
- Max.   :1.0000       Max.   :4.999      Max.   :5.000        Max.   :4.000   Max.   :0        
- nicotine_dependence_imputed_dummy  age_imputed    nicotine_dependence_imputed
- Min.   :0                         Min.   : 1.00   Min.   :0.1722             
- 1st Qu.:0                         1st Qu.:42.77   1st Qu.:4.0564             
- Median :0                         Median :45.01   Median :4.9633             
- Mean   :0                         Mean   :44.92   Mean   :4.9633             
- 3rd Qu.:0                         3rd Qu.:47.26   3rd Qu.:5.9544             
- Max.   :0                         Max.   :99.00   Max.   :9.6328             </code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -2228,37 +1988,11 @@ selected_columns</code></pre>
 <h1>Final summary and checks of data</h1>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaGVhZChzdHVkeV9kYXRhKVxuYGBgIn0= -->
-<pre class="r"><code>head(study_data)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaGVhZChzdHVkeV9kYXRhKVxuZ2xpbXBzZShzdHVkeV9kYXRhKVxuXG5gYGAifQ== -->
+<pre class="r"><code>head(study_data)
+glimpse(study_data)
+</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6NiwibmNvbCI6MTQsInN1bW1hcnkiOnsiQSB0aWJibGUiOlsiNiDDlyAxNCJdfX0sInJkZiI6Ikg0c0lBQUFBQUFBQUE0MVVTMmpVUUJpZWZUL1F0ZTZXYWowVkJBOCtGbTFCTEZJMm9LNzBvS0JWNkMwZHM3TzdvY2xNbXN3K1JMQmlwWjQ4Q3lKV2loZFJ6MVU4MkVOdmVoQVBnZ2VoSUNnK0NoVjhnTWpHZjdLWm1vMEtEa3orMTN6Ly9QUDlQemw5ZEhJa081bEZDTVZRUEE3ZkJLZ29jZlpNZWQ4aGhPSlJNQ0lvampKQ3RpRmNBQ1VIZXpQc3BCZEVLT3FoNGJSQStuNXhKcWtjdTNxaE5mdjhpbEllWE44OTkvUzFNajZ5ODhiUXpMeFNYamd5LytENmlsSitOSEV2bjcrbWpMZGI3NGR2SGdaTW40ZnZYcGlzRWhNYjVEK3MrTDhqSjRUZVd5OEtTS21INCtFbDQ4RVZQT3U5dDdUZU5jSlNyckM5d1ZQQi9meDRZYTEvMW91bkZwVytWODhhSzZmU3BaKzdGaWR5MDF4Sm5CeDl1ZVA3Q3lVNXVzZmRQbmM1VkU4a3NIdnpKZ2R1SFY5RlNJa3ZzU2RUSUdOdmx0NHRnMHgvZEwrS2VyNDhmR3NMTzdkT1A2MzJ2RFBNajVUZHZObUxZMk8zQVplNnM3RDNFc2d0eTBraFN4MXI2ajRTOXJjUDFTR1FXNGZ2VHV6dnlTdG5STTVNQXZYeUwrY28rS1pZYUJBVEZKdkVRZDFoeWZuT3FGN3h0Uml1eWU3SEhOTDIxUXkzQ2VZbW9keDNERG9tbTlacFRkV0k0MkN1TTZvZU5CbmxkY2Mvc08zUEF3Zk9FMnovZGM0S1ZOY1kxeWxSSzhRaXRFS29Ka01EbGsyYU9tczQ2a3hENXlybW5KZ1dsN2YwT3czTFlqWlhxOHoyRGtDU21veUpjckdoMWdrMmVGMTFPT1lOaWN1YmNGMnpXeFpuSG5Jakk5TjBSalJHbWFscnZhaDBuVG1XRGpsRGxHWnMxaXBLV2tVdm90Qk81THJ1anpEM21vRWR5YjEwWml1WTQyTFZCanhZblJBa3hTeFJKWUNpNHUrUkVvQkFkNE9KSW5iSXNhbXFVeUJBcXhOdE9ueHJ6QUtpZnVlU1V4YnhKMG5xdVc0NVVkZUhwK1NmZ1doMUpudEphQTE2Sjk5bzRIUEVrTGRVU05OWGMwQ1N4MUhSc3ZXTk9jcUMxeWx5SmtqMVBSb3pwTWVqQTNWK0FZS2ZsZDVuQlFBQSJ9 -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["id"],"name":[1],"type":["int"],"align":["right"]},{"label":["age"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["sex"],"name":[3],"type":["chr"],"align":["left"]},{"label":["treatment"],"name":[4],"type":["int"],"align":["right"]},{"label":["smoking_cessation_6months"],"name":[5],"type":["int"],"align":["right"]},{"label":["smoking_cessation_1year"],"name":[6],"type":["int"],"align":["right"]},{"label":["female"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["nicotine_dependence"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["previous_quit_attempts"],"name":[9],"type":["int"],"align":["right"]},{"label":["support_for_quitting"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["mental_health_status"],"name":[11],"type":["int"],"align":["right"]},{"label":["motivation_to_quit"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["socioeconomic_status"],"name":[13],"type":["int"],"align":["right"]},{"label":["hospital"],"name":[14],"type":["int"],"align":["right"]}],"data":[{"1":"1","2":"43.05846","3":"female","4":"1","5":"1","6":"0","7":"1","8":"4.999946","9":"0","10":"2.761044","11":"1","12":"3.311640","13":"4","14":"3"},{"1":"2","2":"44.20264","3":"female","4":"0","5":"0","6":"0","7":"1","8":"NA","9":"1","10":"2.589569","11":"0","12":"2.955382","13":"5","14":"4"},{"1":"3","2":"50.39952","3":"female","4":"1","5":"0","6":"0","7":"1","8":"4.212694","9":"1","10":"2.486191","11":"0","12":"3.968762","13":"2","14":"1"},{"1":"4","2":"45.24425","3":"male","4":"0","5":"0","6":"1","7":"0","8":"1.759432","9":"1","10":"3.115234","11":"1","12":"1.902436","13":"3","14":"1"},{"1":"5","2":"45.44787","3":"female","4":"0","5":"0","6":"0","7":"1","8":"2.663196","9":"0","10":"1.295142","11":"0","12":"3.995564","13":"5","14":"1"},{"1":"6","2":"50.94116","3":"Male","4":"1","5":"0","6":"0","7":"0","8":"2.777916","9":"0","10":"3.867399","11":"1","12":"4.299474","13":"1","14":"3"}],"options":{"columns":{"min":{},"max":[10],"total":[14]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2xpbXBzZShzdHVkeV9kYXRhKVxuYGBgIn0= -->
-<pre class="r"><code>glimpse(study_data)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiUm93czogMSwwMDBcbkNvbHVtbnM6IDE0XG4kIGlkICAgICAgICAgICAgICAgICAgICAgICAgPGludD4gMSwgMiwgMywgNCwgNSwgNiwgNywgOCwgOSwgMTAsIDExLCAxMiwgMTMsIDE0LCAxNSwgMTYsIDE3LCAxOCwgMTksIDIwLCAyMSwgMjIsIDIz4oCmXG4kIGFnZSAgICAgICAgICAgICAgICAgICAgICAgPGRibD4gNDMuMDU4NDYsIDQ0LjIwMjY0LCA1MC4zOTk1MiwgNDUuMjQ0MjUsIDQ1LjQ0Nzg3LCA1MC45NDExNiwgNDYuNTk2NjYsIDQwLjYxNzcwLCA04oCmXG4kIHNleCAgICAgICAgICAgICAgICAgICAgICAgPGNocj4gXCJmZW1hbGVcIiwgXCJmZW1hbGVcIiwgXCJmZW1hbGVcIiwgXCJtYWxlXCIsIFwiZmVtYWxlXCIsIFwiTWFsZVwiLCBcImZlbWFsZVwiLCBcImZlbWFsZVwiLCBcImZlbWHigKZcbiQgdHJlYXRtZW50ICAgICAgICAgICAgICAgICA8aW50PiAxLCAwLCAxLCAwLCAwLCAxLCAxLCAwLCAwLCAwLCAwLCAxLCAwLCAwLCAxLCAxLCAxLCAwLCAxLCAwLCAwLCAxLCAxLCAxLCAwLCAxLCAwLCDigKZcbiQgc21va2luZ19jZXNzYXRpb25fNm1vbnRocyA8aW50PiAxLCAwLCAwLCAwLCAwLCAwLCAwLCAwLCAwLCAwLCAwLCAwLCAwLCAwLCAxLCAwLCAwLCAwLCAwLCAwLCAwLCAwLCAxLCAwLCAwLCAwLCAwLCDigKZcbiQgc21va2luZ19jZXNzYXRpb25fMXllYXIgICA8aW50PiAwLCAwLCAwLCAxLCAwLCAwLCAwLCAwLCAwLCAwLCAxLCAxLCAwLCAwLCAwLCAwLCAwLCAwLCAwLCAwLCAxLCAwLCAxLCAwLCAwLCAwLCAwLCDigKZcbiQgZmVtYWxlICAgICAgICAgICAgICAgICAgICA8ZGJsPiAxLCAxLCAxLCAwLCAxLCAwLCAxLCAxLCAxLCAxLCAwLCAxLCAwLCAwLCAwLCAxLCAwLCAxLCAxLCAxLCAwLCAxLCAwLCAxLCAxLCAxLCAwLCDigKZcbiQgbmljb3RpbmVfZGVwZW5kZW5jZSAgICAgICA8ZGJsPiA0Ljk5OTk0NTYsIE5BLCA0LjIxMjY5NDAsIDEuNzU5NDMyMSwgMi42NjMxOTYzLCAyLjc3NzkxNTksIDQuNzQ1MDEwMCwgMy40OTE4ODMxLCDigKZcbiQgcHJldmlvdXNfcXVpdF9hdHRlbXB0cyAgICA8aW50PiAwLCAxLCAxLCAxLCAwLCAwLCAwLCAwLCAxLCAwLCAwLCAxLCAwLCAxLCAxLCAxLCAwLCAwLCAxLCAxLCAxLCAxLCAxLCAwLCAxLCAwLCAwLCDigKZcbiQgc3VwcG9ydF9mb3JfcXVpdHRpbmcgICAgICA8ZGJsPiAyLjc2MTA0NCwgMi41ODk1NjksIDIuNDg2MTkxLCAzLjExNTIzNCwgMS4yOTUxNDIsIDMuODY3Mzk5LCAxLjk3MTI0OSwgNC4zNzc5OTksIDTigKZcbiQgbWVudGFsX2hlYWx0aF9zdGF0dXMgICAgICA8aW50PiAxLCAwLCAwLCAxLCAwLCAxLCAwLCAwLCAwLCAwLCAwLCAxLCAxLCAxLCAwLCAwLCAwLCAxLCAxLCAxLCAwLCAxLCAwLCAwLCAwLCAxLCAwLCDigKZcbiQgbW90aXZhdGlvbl90b19xdWl0ICAgICAgICA8ZGJsPiAzLjMxMTY0MCwgMi45NTUzODIsIDMuOTY4NzYyLCAxLjkwMjQzNiwgMy45OTU1NjQsIDQuMjk5NDc0LCAxLjM5ODE3NCwgMi4xMDM0ODUsIDHigKZcbiQgc29jaW9lY29ub21pY19zdGF0dXMgICAgICA8aW50PiA0LCA1LCAyLCAzLCA1LCAxLCAxLCAyLCA0LCAxLCA1LCAyLCA1LCA0LCAzLCA0LCA0LCAzLCAxLCAxLCA0LCA0LCAzLCAyLCA0LCAxLCAzLCDigKZcbiQgaG9zcGl0YWwgICAgICAgICAgICAgICAgICA8aW50PiAzLCA0LCAxLCAxLCAxLCAzLCAzLCA0LCAyLCAzLCAxLCA0LCA0LCAyLCAyLCAzLCA0LCA0LCA0LCAyLCA0LCAxLCAxLCAxLCAzLCA0LCAyLCDigKZcbiJ9 -->
-<pre><code>Rows: 1,000
-Columns: 14
-$ id                        &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23…
-$ age                       &lt;dbl&gt; 43.05846, 44.20264, 50.39952, 45.24425, 45.44787, 50.94116, 46.59666, 40.61770, 4…
-$ sex                       &lt;chr&gt; &quot;female&quot;, &quot;female&quot;, &quot;female&quot;, &quot;male&quot;, &quot;female&quot;, &quot;Male&quot;, &quot;female&quot;, &quot;female&quot;, &quot;fema…
-$ treatment                 &lt;int&gt; 1, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, …
-$ smoking_cessation_6months &lt;int&gt; 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, …
-$ smoking_cessation_1year   &lt;int&gt; 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, …
-$ female                    &lt;dbl&gt; 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, …
-$ nicotine_dependence       &lt;dbl&gt; 4.9999456, NA, 4.2126940, 1.7594321, 2.6631963, 2.7779159, 4.7450100, 3.4918831, …
-$ previous_quit_attempts    &lt;int&gt; 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, …
-$ support_for_quitting      &lt;dbl&gt; 2.761044, 2.589569, 2.486191, 3.115234, 1.295142, 3.867399, 1.971249, 4.377999, 4…
-$ mental_health_status      &lt;int&gt; 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, …
-$ motivation_to_quit        &lt;dbl&gt; 3.311640, 2.955382, 3.968762, 1.902436, 3.995564, 4.299474, 1.398174, 2.103485, 1…
-$ socioeconomic_status      &lt;int&gt; 4, 5, 2, 3, 5, 1, 1, 2, 4, 1, 5, 2, 5, 4, 3, 4, 4, 3, 1, 1, 4, 4, 3, 2, 4, 1, 3, …
-$ hospital                  &lt;int&gt; 3, 4, 1, 1, 1, 3, 3, 4, 2, 3, 1, 4, 4, 2, 2, 3, 4, 4, 4, 2, 4, 1, 1, 1, 3, 4, 2, …</code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 </div>
 

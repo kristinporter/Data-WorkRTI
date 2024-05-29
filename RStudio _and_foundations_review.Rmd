@@ -118,7 +118,7 @@ Hit "Apply" then "OK"
 - Select subdirectory. 
 - Click “Create Project”
 - Navigate to "NCSU_DSA" folder in RStudio and confirm you see “NCSU_DSA.Rproj”
-- Save your script here. 
+- Save your scripts here. 
 
 ---
 ## Quick overview of R Markdown
