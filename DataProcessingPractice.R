@@ -5,7 +5,7 @@
 
 ### DATA
 # There are two data sets: 
-#. (1) SmokingCessaion_RA_data (randomization file)
+#. (1) SmokingCessation_RA_data (randomization file)
 #.     This data is in long format. Each participant in the study has one row for each of 2 follow-ups. 
 #.     The data has the following measures:
 #
@@ -18,8 +18,7 @@
 # hospital: hospital at which patient enrolled in study (categorical, 1 to 4)
 
 #. (2) SmokingCessaion_SU_data (survey file)
-#.     This data is in long format. Each participant in the study has one row for each of 2 follow-ups. 
-#.     The study has the following measures:
+#.     The data has the following measures:
 #
 # id: study id
 # nicotine_dependence: continuous, 1 to 10
