@@ -1,0 +1,376 @@
+---
+title: "Solutions to Practice Analysis Exercise"
+output: html_document
+---
+
+## (1) Load and summarize toy data
+
+
+```{r load-data}
+library(dplyr)
+# Load the RA_data and SU_data
+loaded_objects <- load("SmokingCessation_AnalysisFile.Rda")
+study_data <- get(loaded_objects)
+
+# Get dimensions
+dim(study_data)
+
+# Glimpse the data
+glimpse(study_data)
+```
+
+## (2) Estimate impact of smoking cessation intervention with a linear probability model
+
+Here we fit the regression for one of our outcomes, `smoking_cessation_6months`. We include fixed effects for the randomization blocks (hospitals) and the basline covariates `nicotine_dependence_imputed`, `nicotine_dependence_imputed_dummy` and `previous_quit_attempts`. 
+
+```{r}
+# fit model using glm()
+glm.linear.impact <- glm(smoking_cessation_6months ~ treatment + hospital + nicotine_dependence_imputed + nicotine_dependence_imputed_dummy +  previous_quit_attempts,data=study_data)
+
+# look at summary
+summary(glm.linear.impact)
+
+# look at elements of returned object
+names(glm.linear.impact)
+
+# print just "coefficients"
+summary(glm.linear.impact)$coefficients
+
+# print just results for treatment
+summary(glm.linear.impact)$coefficients["treatment",]
+```
+
+## (3) Estimate impact of smoking cessation intervention with a logistic regression model 
+
+```{r}
+# fit logistic model using glm()
+glm.logistic.impact <- glm(smoking_cessation_6months ~ treatment + hospital + nicotine_dependence_imputed + nicotine_dependence_imputed_dummy +  previous_quit_attempts,data=study_data)
+
+# view coefficients
+summary(glm.logistic.impact)$coefficients
+```
+
+## (4) Use plug-in estimator to estimate target parameter
+
+Here we use the plug-in estimator to get an estimate of the difference in the probabilities of the outcome. This is equivalent to the coefficient on the treatment indicator in the linear probability model. 
+
+$$
+\hat{\psi}_{plug-in}=\frac{1}{n}\hat{P}(Y_i=1|T_i=1,X_i) - \frac{1}{n}\hat{P}(Y_i=1|T_i=0,X_i).
+$$
+
+The basic idea is to act as if everyone in the analytic sample was assigned to treatment ($treatment=1$) and get their resulting predicted probability of the outcome using the estimated logistic regression model. Then do the same as if everyone in the analytic sample was assigned to control ($treatment=0$). Then, we get the mean of the predicted probabilities for when everyone has $treatment=1$ and the mean of the predicted probabilities for when everyone has $treatment=0$. The plug-in estimator is then the difference in means.
+
+```{r}
+library(dplyr)
+
+# create a data set with treatment=1 for all observations and get predictions
+datT1 <- study_data %>% mutate(treatment = 1)
+predT1 <- predict(glm.logistic.impact, newdata = datT1, type = "response")
+
+# create a data set with treatment=0 for all observations and get predictions
+datT0 <- study_data %>% mutate(treatment = 0)
+predT0 <- predict(glm.logistic.impact, newdata = datT0, type = "response")
+
+# take differences in means
+impact.estimate.plugin <- mean(predT1) - mean(predT0)
+
+# print
+impact.estimate.plugin
+```
+
+## (5) Bootstrap to get the standard error of our estimate
+
+Next, we will estimate the standard error with a nonparametric bootstrap. We cannot rely on the standard error returned for the coefficient in front of $treatment$ because it is not equivalent to our parameter of interest. 
+
+For the nonparametric bootstrap, we resample our observations with replacement a large number of times (e.g. 1000 or more) and recalculate our impact estimate with each resampled data set. Then, our standard error is the standard deviation of those 1000 impact estimates.
+
+To keep things simple, let's ignore the blocking. (In practice, we would want to stratify the resampling by block.)
+
+### First, let's use a "for loop" for the bootstrap
+
+```{r}
+# Set number of bootstraps
+B<-1000
+# Get sample size of data set
+samp.size <- nrow(study_data)
+# Create empty vector to hold B impact estimates from bootstraps
+bs.estimates_forloop <- numeric(B)
+# Loop through analysis B times
+for (b in 1:B) {
+  # Resample rows with replacement
+  resample <- sample(1:samp.size, replace = TRUE)
+  # Get a bootstrap sample with those sampled rows
+  bs.dat <- study_data[resample, ]
+  # Fit logistic regression with bootstrap sample
+  bs.logistic <- glm(smoking_cessation_6months ~ treatment + hospital + nicotine_dependence_imputed + nicotine_dependence_imputed_dummy +  previous_quit_attempts,data=bs.dat)
+  # Assign everyone treatment=1 and treatment=0 in bootstrap sample using dplyr
+  bs.dat1 <- bs.dat %>% mutate(treatment = 1)
+  bs.dat0 <- bs.dat %>% mutate(treatment = 0)
+  # Get predictions with treatment=1 and treatment=0
+  pred.bs1 <- predict(bs.logistic, newdata = bs.dat1, type = "response")
+  pred.bs0 <- predict(bs.logistic, newdata = bs.dat0, type = "response")
+  # Get the difference in means to get the bootstrap impact estimate
+  bs.estimates_forloop[b] <- mean(pred.bs1) - mean(pred.bs0)
+} 
+```
+
+### Check distribution of bootstrap estimates
+
+```{r}
+library(ggplot2)
+
+# Convert bs.estimates_forloop to a data frame
+bs.estimates_df <- data.frame(impact_estimate = bs.estimates_forloop)
+
+# Create the histogram using ggplot2
+ggplot(bs.estimates_df, aes(x = impact_estimate)) +
+  geom_histogram(binwidth = 0.01, fill = "blue", color = "black") +
+  labs(title = "Histogram of Bootstrap Impact Estimates", 
+       x = "Impact Estimate", 
+       y = "Frequency")
+
+```
+
+### Turn this plot into a function so we can use again
+
+```{r}
+plot_boot_histogram <- function(df, col, plot_title) {
+# Create the histogram using ggplot2
+ggplot(df, aes(x = col)) +
+  geom_histogram(binwidth = 0.01, fill = "blue", color = "black") +
+  labs(title = plot_title, 
+       x = "Impact Estimate", 
+       y = "Frequency")
+}
+
+```
+
+### Do same bootstrap using `purrr`
+
+```{r bootpurrr}
+library(purrr)
+
+# Set number of bootstraps
+B <- 1000
+# Get sample size of data set
+samp.size <- nrow(study_data)
+
+# Create a list of bootstrap samples
+# Note that in map(), when you use ~, you can write a quick, inline function 
+bootstrap_samples <- map(1:B, ~ study_data[sample(1:samp.size, replace = TRUE), ])
+
+# Function to estimate impacts with logistic reg + plug-in estimator
+bootstrap_iteration <- function(bs.dat) {
+  # Fit logistic regression with bootstrap sample
+bs.logistic <- glm(smoking_cessation_6months ~ treatment + hospital + nicotine_dependence_imputed + nicotine_dependence_imputed_dummy +  previous_quit_attempts,data=bs.dat)
+  # Assign everyone treatment=1 and treatment=0 in bootstrap sample using dplyr
+  bs.dat1 <- bs.dat %>% mutate(treatment = 1)
+  bs.dat0 <- bs.dat %>% mutate(treatment = 0)
+  # Get predictions with treatment=1 and treatment=0
+  pred.bs1 <- predict(bs.logistic, newdata = bs.dat1, type = "response")
+  pred.bs0 <- predict(bs.logistic, newdata = bs.dat0, type = "response")
+  # Get the difference in means to get the bootstrap impact estimate
+  mean(pred.bs1) - mean(pred.bs0)
+}
+
+# Use map to perform the logistic regression and compute impact estimates
+bs.estimates_purrr <- map_dbl(bootstrap_samples, bootstrap_iteration)
+
+# Call function that plots histogram
+plot_boot_histogram(bs.estimates_df,bs.estimates_forloop,"Histogram of Impact Estimates from For Loop")
+```
+
+## (6) Compute standard error impact estimate
+
+Then, we can compute the standard error by taking the standard deviation of the bootstrapped sampling distribution. 
+
+```{r standarderror}
+# Find SD of bootstrap sampling distribution
+se.impact.estimate <- sd(bs.estimates_purrr)
+cat("SE of impact estimate:",se.impact.estimate, "\n")
+
+```
+
+
+## (7) Create a table of results using gt
+
+```{r outputresults1}
+library(gt)
+ # Create a data frame for the results
+  results_df <- data.frame(
+    Estimate = c("Treatment Group", "Control Group", "Impact Estimate", "Standard Error"),
+    Value = c(mean(predT1), mean(predT0), impact.estimate.plugin, se.impact.estimate)
+  )
+  
+# Format the results as a gt table
+gt_table1 <- gt(results_df) %>%
+  tab_header(title = "Estimated treatment effect on smoking cessation at 6 month follow-up") %>%
+  fmt_number(columns = c(Value), decimals = 3)
+  
+gt_table1
+```
+
+Or we could pivot the table: 
+
+```{r outputresults2}
+# Create a data frame for the results
+results_df <- data.frame(
+  Treatment_Group = mean(predT1),
+  Control_Group = mean(predT0),
+  Impact_Estimate = impact.estimate.plugin,
+  Standard_Error = se.impact.estimate
+)
+
+# Format the results as a gt table
+gt_table <- gt(results_df) %>%
+  tab_header(title = "Estimated treatment effect on smoking cessation at 6 month follow-up") %>%
+  fmt_number(columns = everything(), decimals = 3)
+
+# Print the gt table
+gt_table
+```
+
+## (8) Turn entire above procedure into a function so we can repeat for multiple outcomes
+
+```{r functionEstimate}
+# Define the function
+estimate_impact <- function(data, outcome, treatment, covariates, plot_title, B = 1000) {
+  # Fit the logistic regression model
+  formula <- as.formula(paste(outcome, "~", paste(c(covariates, treatment), collapse = " + ")))
+  glm_model <- glm(formula, data = data, family = binomial(link = "logit"))
+  
+  # Create a data set with treatment = 1 for all observations and get predictions
+  data_t1 <- data %>% mutate(!!sym(treatment) := 1)
+  pred_t1 <- predict(glm_model, newdata = data_t1, type = "response")
+  
+  # Create a data set with treatment = 0 for all observations and get predictions
+  data_t0 <- data %>% mutate(!!sym(treatment) := 0)
+  pred_t0 <- predict(glm_model, newdata = data_t0, type = "response")
+  
+  # Calculate the impact estimate
+  impact_estimate <- mean(pred_t1) - mean(pred_t0)
+  
+  # Get sample size of data set
+  samp_size <- nrow(data)
+  
+  # Create a list of bootstrap samples
+  bootstrap_samples <- map(1:B, ~ study_data[sample(1:samp.size, replace = TRUE), ])
+  
+  # Function to estimate impacts with logistic regression + plug-in estimator
+  bootstrap_iteration <- function(bs_data) {
+    bs_model <- glm(formula, data = bs_data, family = binomial(link = "logit"))
+    bs_data_t1 <- bs_data %>% mutate(!!sym(treatment) := 1)
+    bs_data_t0 <- bs_data %>% mutate(!!sym(treatment) := 0)
+    pred_bs_t1 <- predict(bs_model, newdata = bs_data_t1, type = "response")
+    pred_bs_t0 <- predict(bs_model, newdata = bs_data_t0, type = "response")
+    mean(pred_bs_t1) - mean(pred_bs_t0)
+  }
+  
+  # Use map to perform the logistic regression and compute impact estimates
+  bs_estimates <- map_dbl(bootstrap_samples, bootstrap_iteration)
+  
+  # Calculate the standard error of the impact estimate
+  se_impact_estimate <- sd(bs_estimates)
+  
+# Create a data frame for the results
+results_df <- data.frame(
+  Treatment_Group = mean(pred_t1),
+  Control_Group = mean(pred_t0),
+  Impact_Estimate = impact_estimate,
+  Standard_Error = se_impact_estimate
+)
+
+# Format the results as a gt table
+gt_table <- gt(results_df) %>%
+  tab_header(title = plot_title) %>%
+  fmt_number(columns = everything(), decimals = 3)
+
+# Print the gt table
+gt_table
+}
+
+# Example usage - now we can run same analysis on 1 year follow-up
+result_table <- estimate_impact(study_data, "smoking_cessation_1year", "treatment", c("hospital","nicotine_dependence_imputed","nicotine_dependence_imputed_dummy","previous_quit_attempts"),"Estimated treatment effect on smoking cessation at 1 year follow-up")
+result_table
+```
+
+## Modify to run same analysis on multiple outcomes
+
+```{r multiple outcomes}
+# Define the function
+estimate_impacts <- function(data, outcomes, treatment, covariates, B = 1000) {
+  # Helper function to estimate impact for a single outcome
+  estimate_single_outcome <- function(outcome) {
+    # Fit the logistic regression model
+    formula <- as.formula(paste(outcome, "~", paste(c(covariates, treatment), collapse = " + ")))
+    glm_model <- glm(formula, data = data, family = binomial(link = "logit"))
+    
+    # Create a data set with treatment = 1 for all observations and get predictions
+    data_t1 <- data %>% mutate(!!sym(treatment) := 1)
+    pred_t1 <- predict(glm_model, newdata = data_t1, type = "response")
+    
+    # Create a data set with treatment = 0 for all observations and get predictions
+    data_t0 <- data %>% mutate(!!sym(treatment) := 0)
+    pred_t0 <- predict(glm_model, newdata = data_t0, type = "response")
+    
+    # Calculate the impact estimate
+    impact_estimate <- mean(pred_t1) - mean(pred_t0)
+    
+    # Get sample size of data set
+    samp_size <- nrow(data)
+    
+    # Create a list of bootstrap samples
+    bootstrap_samples <- map(1:B, ~ study_data[sample(1:samp.size, replace = TRUE), ])
+    
+    # Function to estimate impacts with logistic regression + plug-in estimator
+    bootstrap_iteration <- function(bs_data) {
+      bs_model <- glm(formula, data = bs_data, family = binomial(link = "logit"))
+      bs_data_t1 <- bs_data %>% mutate(!!sym(treatment) := 1)
+      bs_data_t0 <- bs_data %>% mutate(!!sym(treatment) := 0)
+      pred_bs_t1 <- predict(bs_model, newdata = bs_data_t1, type = "response")
+      pred_bs_t0 <- predict(bs_model, newdata = bs_data_t0, type = "response")
+      mean(pred_bs_t1) - mean(pred_bs_t0)
+    }
+    
+    # Use map to perform the logistic regression and compute impact estimates
+    bs_estimates <- map_dbl(bootstrap_samples, bootstrap_iteration)
+    
+    # Calculate the standard error of the impact estimate
+    se_impact_estimate <- sd(bs_estimates)
+    
+    # Return the results as a list
+    list(
+      outcome = outcome,
+      mean_pred_t1 = mean(pred_t1),
+      mean_pred_t0 = mean(pred_t0),
+      impact_estimate = impact_estimate,
+      se_impact_estimate = se_impact_estimate
+    )
+  }
+  
+  # Apply the estimate_single_outcome function to each outcome
+  results_list <- map(outcomes, estimate_single_outcome)
+  
+results_df <- bind_rows(results_list) %>%
+  select(outcome, mean_pred_t1, mean_pred_t0, impact_estimate, se_impact_estimate) %>%
+  rename(
+    Outcome = outcome,
+    `Treatment` = mean_pred_t1,
+    `Control` = mean_pred_t0,
+    `Impact Estimate` = impact_estimate,
+    `Standard Error` = se_impact_estimate
+  )
+
+# Format the results as a gt table
+gt_table <- gt(results_df) %>%
+  tab_header(title = "Impact Estimate Results for Multiple Outcomes") %>%
+  fmt_number(columns = c(`Treatment`, `Control`, `Impact Estimate`, `Standard Error`), decimals = 3)
+  
+  gt_table
+}
+
+# Example usage:
+outcomes_list <- c("smoking_cessation_6months","smoking_cessation_1year")
+result_table <- estimate_impacts(study_data, outcomes_list, "treatment", c("hospital","nicotine_dependence_imputed","nicotine_dependence_imputed_dummy","previous_quit_attempts"))
+result_table
+```

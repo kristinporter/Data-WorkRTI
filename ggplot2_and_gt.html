@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Plotting with ggplot2 &amp; tabling with gt</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Kristin Porter" />
+    <meta name="date" content="2024-06-07" />
+    <script src="ggplot2_and_gt_files/header-attrs-2.26/header-attrs.js"></script>
+    <link href="ggplot2_and_gt_files/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="ggplot2_and_gt_files/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Plotting with ggplot2 &amp; tabling with gt
+]
+.subtitle[
+## Session 4
+]
+.author[
+### Kristin Porter
+]
+.date[
+### June 7, 2024
+]
+
+---
+
+
+
+&lt;!-- Add CSS in a style block --&gt;
+&lt;style&gt;
+.two-columns {
+  display: flex;
+}
+.column {
+  flex: 1;
+  padding: 10px;
+}
+&lt;/style&gt;
+
+## Data Viz in R
+
+Base R has multiple functions
+- Typically by plot type
+- Intuitive and easy for basic plots
+- But limited functionality or really complicated to customize
+
+`ggplot2` package
+- Part of Tidyverse
+- Powerful for stunning and highly customizable graphics
+- Steeper learning curve, but worth investment
+
+---
+## The Grammar of Graphics
+
+Framework developed by Leland Wilkinson that breaks down a graphic into several layers, each representing different aspects of data and plot: 
+
+**Data:** The dataset that you want to visualize.
+
+**Aesthetic Mapping (aes):** Mapping variables in your dataset to visual properties such as position, color, size, and shape.
+
+**Geometric Objects (geoms):** The shapes used to represent data points, such as points, lines, bars, or areas.
+
+**Statistical Transformations (stats):** Operations applied to the data before plotting, such as summarization or transformation.
+
+**Scales:** The mapping between data values and aesthetic properties, such as the range of values mapped to a color scale.
+
+**Coordinate System (coord):** The system used to position the geometric objects, such as Cartesian coordinates or polar coordinates.
+
+**Facets:** Subsets of the data used to create multiple plots, such as small multiples.
+
+I highly recommend the cheatsheet at https://ggplot2.tidyverse.org/.
+
+---
+## A Simple Plot
+
+
+```r
+library(ggplot2)
+
+# Basic scatter plot
+ggplot(data = mtcars, aes(x = wt, y = mpg)) +
+  		geom_point()
+```
+
+![](ggplot2_and_gt_files/figure-html/unnamed-chunk-1-1.png)&lt;!-- --&gt;
+
+---
+#### Note: 
+
+**ggplot()** initializes a ggplot object.
+
+**data = mtcars** specifies the dataset to use.
+
+**aes(x = wt, y = mpg)** defines the aesthetic mappings, mapping the mpg variable to the x-axis and the disp variable to the y-axis.
+
+**geom_point()** adds a layer of points to the plot, representing the data points.
+
+---
+## Adding to the plot
+
+
+```r
+# Scatter plot with smoothed line
+ggplot(data = mtcars, aes(x = wt, y = mpg)) +
+  geom_point() +
+  geom_smooth()
+```
+
+![](ggplot2_and_gt_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
+
+---
+#### Note: 
+**geom_smooth()** adds a layer of smoothed line to the plot, which gives an overall trend of the data points
+
+We need to add **“+” after each component** added to the ggplot() initialization except the final one. 
+
+---
+## Customizing the Plot
+
+
+```r
+# Customized scatter plot
+ggplot(data = mtcars, aes(x = wt, y = mpg)) +
+  geom_point(color = "blue") +   # Change point color
+  geom_smooth() +
+  labs(x = "Miles Per Gallon",   # Set x-axis label
+       y = "Displacement",       # Set y-axis label
+       title = "Scatter Plot of MPG vs. Displacement")  # Set plot title
+```
+
+![](ggplot2_and_gt_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+
+
+---
+## Themes
+
+
+```r
+# Create scatter plot with smoothed line
+scatter_plot &lt;- ggplot(data = mtcars, aes(x = wt, y = mpg)) +
+  geom_point(color = "blue") +   # Change point color
+  geom_smooth() +
+  labs(x = "Miles Per Gallon",   # Set x-axis label
+       y = "Displacement",       # Set y-axis label
+       title = "Scatter Plot of MPG vs. Weight") +  # Set plot title
+  theme_minimal()  # Apply minimal theme
+scatter_plot
+```
+
+![](ggplot2_and_gt_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+
+---
+#### Note: 
+Themes allow you to control the overall appearance of your plot, providing a consistent and polished look to your visualizations. 
+
+- For example, built in themes such as `theme_minimal`, `theme_gray`, and `theme_classic` are built in. 
+- You can also create custom themes.
+- They allow for you to have uniformity of style across multiple data visualizations (e.g. the publications department at my organization has created themes so that our products have a standardized style).
+- See this documentation[https://ggplot2.tidyverse.org/reference/ggtheme.html#ref-examples] for more info on themes. 
+
+---
+## Aesthetic values
+
+
+```r
+# Customized scatter plot with additional aes
+ggplot(data = mtcars, aes(x = wt, y = mpg, color = as.factor(cyl))) +
+  geom_point() +   # Change point color based on number of cylinders
+  labs(x = "Miles Per Gallon",   # Set x-axis label
+       y = "Displacement",       # Set y-axis label
+       color = "Cylinders",      # Set legend title
+       title = "Scatter Plot of MPG vs. Weight")
+```
+
+![](ggplot2_and_gt_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+
+---
+
+**Note:**
+
+**aes(x = wt, y = mpg, color = as.factor(cyl)):** We are mapping `cyl` (number of cylinders) variable to the color aesthetic. This means that points will be colored based on the number of cylinders, making it easier to see how this variable influences the relationship between `mpg` and `disp`.
+
+**as.factor(cyl):** We use as.factor(cyl) to ensure that the cyl variable is treated as a categorical variable.
+
+**labs(color = "Cylinders"):** This adds a label to the legend, making it clear what the colors represent.
+
+** Wide range of aesthetics:**
+x, y,
+color
+fill
+shape
+size
+alpha (transparency)
+linetype
+
+---
+## Geoms
+
+Geoms are the building blocks of plots. They represent the geometric objects used to visualize your data, such as points, lines, bars, and areas. 
+
+**Some basic geoms:**
+1. geom_point(): Used to create scatter plots by plotting individual points.
+2. geom_line(): Used to create line plots by connecting points with lines.
+3. geom_bar(): Used to create bar plots by representing counts or frequencies of categorical variables.
+4. Geom_histogram(): Used to create histograms by representing the distribution of continuous variables.
+5. geom_boxplot(): Used to create box plots to visualize the distribution of a continuous variable across different levels of a categorical variable.
+6. geom_smooth(): Used to add smoothed lines or curves to your plots, representing trends or relationships in the data.
+7. geom_area(): Used to create area plots by filling the area under a line or curve.
+8. geom_text(): Used to add text labels to your plots, providing additional information or annotations.
+
+**Selecting right geom for your data:** different geoms are appropriate for different types of data and different numbers of variables being plotted. The cheatsheet provides a helpful guide. 
+
+---
+## `ggplot2` extensions
+
+- We have just covered the very beginner basics of `ggplot2.`
+- There is LOTS of flexibility. 
+- Don’t start from scratch - use templates from ggplot2 galleries: 
+  - Reference section of [http://ggplot2.tidyverse.org]
+  - The R Graph Gallery[https://r-graph-gallery.com/index.html]
+
+---
+## Tabling in R
+
+1. **gt**: Makes it easy to create beautiful tables for HTML, LaTeX, and RTF outputs. It supports adding titles, subtitles, and footnotes, formatting data, and applying styles to cells, rows, and columns. You can save tables in various formats, making it versatile for different reporting needs.
+
+2. **kableExtra**: Also creates complex and customized tables, with similar capabilities as gt. It supports both HTML and LaTeX outputs, enhancing the flexibility of your tables.
+
+3. **formattable**: Designed for creating dynamic tables, especially useful for HTML reports. It provides conditional formatting of cells, custom styling for different data types, and integration with `htmlwidgets` for interactive features.
+
+4. **flextable**: The `flextable` package excels at creating tables for Word and PowerPoint documents. Can apply predefined themes. 
+
+5. **reactable**: Creates interactive data tables using the JavaScript library React Table, suitable for HTML reports and Shiny apps. It offers features like interactive sorting, filtering, and pagination, as well as custom cell rendering and conditional formatting, providing a highly interactive experience.
+
+---
+## Creating a Simple Table with `gt`
+
+
+```r
+library(gt)
+
+# Creating a basic gt table
+gt_table &lt;- gt(head(mtcars))
+gt_table
+```
+
+<div id="sigzdonkyd" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#sigzdonkyd table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#sigzdonkyd thead, #sigzdonkyd tbody, #sigzdonkyd tfoot, #sigzdonkyd tr, #sigzdonkyd td, #sigzdonkyd th {
+  border-style: none;
+}
+
+#sigzdonkyd p {
+  margin: 0;
+  padding: 0;
+}
+
+#sigzdonkyd .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#sigzdonkyd .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#sigzdonkyd .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#sigzdonkyd .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#sigzdonkyd .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#sigzdonkyd .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#sigzdonkyd .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#sigzdonkyd .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#sigzdonkyd .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#sigzdonkyd .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#sigzdonkyd .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#sigzdonkyd .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#sigzdonkyd .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#sigzdonkyd .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#sigzdonkyd .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#sigzdonkyd .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#sigzdonkyd .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#sigzdonkyd .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#sigzdonkyd .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#sigzdonkyd .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#sigzdonkyd .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#sigzdonkyd .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#sigzdonkyd .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#sigzdonkyd .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#sigzdonkyd .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#sigzdonkyd .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#sigzdonkyd .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#sigzdonkyd .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#sigzdonkyd .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#sigzdonkyd .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#sigzdonkyd .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#sigzdonkyd .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#sigzdonkyd .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#sigzdonkyd .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#sigzdonkyd .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#sigzdonkyd .gt_left {
+  text-align: left;
+}
+
+#sigzdonkyd .gt_center {
+  text-align: center;
+}
+
+#sigzdonkyd .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#sigzdonkyd .gt_font_normal {
+  font-weight: normal;
+}
+
+#sigzdonkyd .gt_font_bold {
+  font-weight: bold;
+}
+
+#sigzdonkyd .gt_font_italic {
+  font-style: italic;
+}
+
+#sigzdonkyd .gt_super {
+  font-size: 65%;
+}
+
+#sigzdonkyd .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#sigzdonkyd .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#sigzdonkyd .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#sigzdonkyd .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#sigzdonkyd .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#sigzdonkyd .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#sigzdonkyd .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="mpg">mpg</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="cyl">cyl</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="disp">disp</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="hp">hp</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="drat">drat</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="wt">wt</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="qsec">qsec</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="vs">vs</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="am">am</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="gear">gear</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="carb">carb</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="mpg" class="gt_row gt_right">21.0</td>
+<td headers="cyl" class="gt_row gt_right">6</td>
+<td headers="disp" class="gt_row gt_right">160</td>
+<td headers="hp" class="gt_row gt_right">110</td>
+<td headers="drat" class="gt_row gt_right">3.90</td>
+<td headers="wt" class="gt_row gt_right">2.620</td>
+<td headers="qsec" class="gt_row gt_right">16.46</td>
+<td headers="vs" class="gt_row gt_right">0</td>
+<td headers="am" class="gt_row gt_right">1</td>
+<td headers="gear" class="gt_row gt_right">4</td>
+<td headers="carb" class="gt_row gt_right">4</td></tr>
+    <tr><td headers="mpg" class="gt_row gt_right">21.0</td>
+<td headers="cyl" class="gt_row gt_right">6</td>
+<td headers="disp" class="gt_row gt_right">160</td>
+<td headers="hp" class="gt_row gt_right">110</td>
+<td headers="drat" class="gt_row gt_right">3.90</td>
+<td headers="wt" class="gt_row gt_right">2.875</td>
+<td headers="qsec" class="gt_row gt_right">17.02</td>
+<td headers="vs" class="gt_row gt_right">0</td>
+<td headers="am" class="gt_row gt_right">1</td>
+<td headers="gear" class="gt_row gt_right">4</td>
+<td headers="carb" class="gt_row gt_right">4</td></tr>
+    <tr><td headers="mpg" class="gt_row gt_right">22.8</td>
+<td headers="cyl" class="gt_row gt_right">4</td>
+<td headers="disp" class="gt_row gt_right">108</td>
+<td headers="hp" class="gt_row gt_right">93</td>
+<td headers="drat" class="gt_row gt_right">3.85</td>
+<td headers="wt" class="gt_row gt_right">2.320</td>
+<td headers="qsec" class="gt_row gt_right">18.61</td>
+<td headers="vs" class="gt_row gt_right">1</td>
+<td headers="am" class="gt_row gt_right">1</td>
+<td headers="gear" class="gt_row gt_right">4</td>
+<td headers="carb" class="gt_row gt_right">1</td></tr>
+    <tr><td headers="mpg" class="gt_row gt_right">21.4</td>
+<td headers="cyl" class="gt_row gt_right">6</td>
+<td headers="disp" class="gt_row gt_right">258</td>
+<td headers="hp" class="gt_row gt_right">110</td>
+<td headers="drat" class="gt_row gt_right">3.08</td>
+<td headers="wt" class="gt_row gt_right">3.215</td>
+<td headers="qsec" class="gt_row gt_right">19.44</td>
+<td headers="vs" class="gt_row gt_right">1</td>
+<td headers="am" class="gt_row gt_right">0</td>
+<td headers="gear" class="gt_row gt_right">3</td>
+<td headers="carb" class="gt_row gt_right">1</td></tr>
+    <tr><td headers="mpg" class="gt_row gt_right">18.7</td>
+<td headers="cyl" class="gt_row gt_right">8</td>
+<td headers="disp" class="gt_row gt_right">360</td>
+<td headers="hp" class="gt_row gt_right">175</td>
+<td headers="drat" class="gt_row gt_right">3.15</td>
+<td headers="wt" class="gt_row gt_right">3.440</td>
+<td headers="qsec" class="gt_row gt_right">17.02</td>
+<td headers="vs" class="gt_row gt_right">0</td>
+<td headers="am" class="gt_row gt_right">0</td>
+<td headers="gear" class="gt_row gt_right">3</td>
+<td headers="carb" class="gt_row gt_right">2</td></tr>
+    <tr><td headers="mpg" class="gt_row gt_right">18.1</td>
+<td headers="cyl" class="gt_row gt_right">6</td>
+<td headers="disp" class="gt_row gt_right">225</td>
+<td headers="hp" class="gt_row gt_right">105</td>
+<td headers="drat" class="gt_row gt_right">2.76</td>
+<td headers="wt" class="gt_row gt_right">3.460</td>
+<td headers="qsec" class="gt_row gt_right">20.22</td>
+<td headers="vs" class="gt_row gt_right">1</td>
+<td headers="am" class="gt_row gt_right">0</td>
+<td headers="gear" class="gt_row gt_right">3</td>
+<td headers="carb" class="gt_row gt_right">1</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+
+Note:
+**gt()** initializes a gt table object.
+
+**head(mtcars)** specifies the data frame to be used. Here we display the first few rows of the mtcars dataset.
+
+---
+## Adding Titles and Subtitles
+
+```r
+gt_table &lt;- gt_table %&gt;%
+  tab_header(
+    title = "Basic Car Data",
+    subtitle = "A glimpse of the mtcars dataset"
+  )
+gt_table
+```
+
+<div id="dfejclznks" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#dfejclznks table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#dfejclznks thead, #dfejclznks tbody, #dfejclznks tfoot, #dfejclznks tr, #dfejclznks td, #dfejclznks th {
+  border-style: none;
+}
+
+#dfejclznks p {
+  margin: 0;
+  padding: 0;
+}
+
+#dfejclznks .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#dfejclznks .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#dfejclznks .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#dfejclznks .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#dfejclznks .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#dfejclznks .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#dfejclznks .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#dfejclznks .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#dfejclznks .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#dfejclznks .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#dfejclznks .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#dfejclznks .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#dfejclznks .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#dfejclznks .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#dfejclznks .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#dfejclznks .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#dfejclznks .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#dfejclznks .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#dfejclznks .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#dfejclznks .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#dfejclznks .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#dfejclznks .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#dfejclznks .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#dfejclznks .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#dfejclznks .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#dfejclznks .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#dfejclznks .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#dfejclznks .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#dfejclznks .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#dfejclznks .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#dfejclznks .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#dfejclznks .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#dfejclznks .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#dfejclznks .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#dfejclznks .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#dfejclznks .gt_left {
+  text-align: left;
+}
+
+#dfejclznks .gt_center {
+  text-align: center;
+}
+
+#dfejclznks .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#dfejclznks .gt_font_normal {
+  font-weight: normal;
+}
+
+#dfejclznks .gt_font_bold {
+  font-weight: bold;
+}
+
+#dfejclznks .gt_font_italic {
+  font-style: italic;
+}
+
+#dfejclznks .gt_super {
+  font-size: 65%;
+}
+
+#dfejclznks .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#dfejclznks .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#dfejclznks .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#dfejclznks .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#dfejclznks .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#dfejclznks .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#dfejclznks .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_heading">
+      <td colspan="11" class="gt_heading gt_title gt_font_normal" style>Basic Car Data</td>
+    </tr>
+    <tr class="gt_heading">
+      <td colspan="11" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style>A glimpse of the mtcars dataset</td>
+    </tr>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="mpg">mpg</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="cyl">cyl</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="disp">disp</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="hp">hp</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="drat">drat</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="wt">wt</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="qsec">qsec</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="vs">vs</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="am">am</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="gear">gear</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="carb">carb</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="mpg" class="gt_row gt_right">21.0</td>
+<td headers="cyl" class="gt_row gt_right">6</td>
+<td headers="disp" class="gt_row gt_right">160</td>
+<td headers="hp" class="gt_row gt_right">110</td>
+<td headers="drat" class="gt_row gt_right">3.90</td>
+<td headers="wt" class="gt_row gt_right">2.620</td>
+<td headers="qsec" class="gt_row gt_right">16.46</td>
+<td headers="vs" class="gt_row gt_right">0</td>
+<td headers="am" class="gt_row gt_right">1</td>
+<td headers="gear" class="gt_row gt_right">4</td>
+<td headers="carb" class="gt_row gt_right">4</td></tr>
+    <tr><td headers="mpg" class="gt_row gt_right">21.0</td>
+<td headers="cyl" class="gt_row gt_right">6</td>
+<td headers="disp" class="gt_row gt_right">160</td>
+<td headers="hp" class="gt_row gt_right">110</td>
+<td headers="drat" class="gt_row gt_right">3.90</td>
+<td headers="wt" class="gt_row gt_right">2.875</td>
+<td headers="qsec" class="gt_row gt_right">17.02</td>
+<td headers="vs" class="gt_row gt_right">0</td>
+<td headers="am" class="gt_row gt_right">1</td>
+<td headers="gear" class="gt_row gt_right">4</td>
+<td headers="carb" class="gt_row gt_right">4</td></tr>
+    <tr><td headers="mpg" class="gt_row gt_right">22.8</td>
+<td headers="cyl" class="gt_row gt_right">4</td>
+<td headers="disp" class="gt_row gt_right">108</td>
+<td headers="hp" class="gt_row gt_right">93</td>
+<td headers="drat" class="gt_row gt_right">3.85</td>
+<td headers="wt" class="gt_row gt_right">2.320</td>
+<td headers="qsec" class="gt_row gt_right">18.61</td>
+<td headers="vs" class="gt_row gt_right">1</td>
+<td headers="am" class="gt_row gt_right">1</td>
+<td headers="gear" class="gt_row gt_right">4</td>
+<td headers="carb" class="gt_row gt_right">1</td></tr>
+    <tr><td headers="mpg" class="gt_row gt_right">21.4</td>
+<td headers="cyl" class="gt_row gt_right">6</td>
+<td headers="disp" class="gt_row gt_right">258</td>
+<td headers="hp" class="gt_row gt_right">110</td>
+<td headers="drat" class="gt_row gt_right">3.08</td>
+<td headers="wt" class="gt_row gt_right">3.215</td>
+<td headers="qsec" class="gt_row gt_right">19.44</td>
+<td headers="vs" class="gt_row gt_right">1</td>
+<td headers="am" class="gt_row gt_right">0</td>
+<td headers="gear" class="gt_row gt_right">3</td>
+<td headers="carb" class="gt_row gt_right">1</td></tr>
+    <tr><td headers="mpg" class="gt_row gt_right">18.7</td>
+<td headers="cyl" class="gt_row gt_right">8</td>
+<td headers="disp" class="gt_row gt_right">360</td>
+<td headers="hp" class="gt_row gt_right">175</td>
+<td headers="drat" class="gt_row gt_right">3.15</td>
+<td headers="wt" class="gt_row gt_right">3.440</td>
+<td headers="qsec" class="gt_row gt_right">17.02</td>
+<td headers="vs" class="gt_row gt_right">0</td>
+<td headers="am" class="gt_row gt_right">0</td>
+<td headers="gear" class="gt_row gt_right">3</td>
+<td headers="carb" class="gt_row gt_right">2</td></tr>
+    <tr><td headers="mpg" class="gt_row gt_right">18.1</td>
+<td headers="cyl" class="gt_row gt_right">6</td>
+<td headers="disp" class="gt_row gt_right">225</td>
+<td headers="hp" class="gt_row gt_right">105</td>
+<td headers="drat" class="gt_row gt_right">2.76</td>
+<td headers="wt" class="gt_row gt_right">3.460</td>
+<td headers="qsec" class="gt_row gt_right">20.22</td>
+<td headers="vs" class="gt_row gt_right">1</td>
+<td headers="am" class="gt_row gt_right">0</td>
+<td headers="gear" class="gt_row gt_right">3</td>
+<td headers="carb" class="gt_row gt_right">1</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+
+---
+## Formatting Table Data
+
+```r
+gt_table &lt;- gt_table %&gt;%
+  fmt_number(
+    columns = vars(mpg, hp, wt),
+    decimals = 2
+  ) %&gt;%
+ tab_options(
+    table.font.names = "Times New Roman",
+    table.font.size = 12,
+    heading.align = "center",  # Center align the title and subtitle
+    table.background.color = "white"
+  )
+
+# gt_table
+```
+Note:
+**fmt_number()** formats numerical columns to display with a specified number of decimal places.
+
+---
+## Adding Styles
+
+```r
+gt_table &lt;- gt_table %&gt;%
+  tab_style(
+    style = list(
+      cell_fill(color = "lightblue"),
+      cell_text(weight = "bold")
+    ),
+    locations = cells_body(
+      columns = vars(mpg, hp, wt)
+    )
+  )
+
+# gt_table
+```
+Note:
+**tab_style()** adds styles to the table, such as background color and text weight. **cells_body()** specifies which cells to apply the styles to.
+
+---
+## Adding Footnotes
+
+```r
+gt_table &lt;- gt_table %&gt;%
+  tab_footnote(
+    footnote = "Miles per gallon",
+    locations = cells_column_labels(
+      columns = vars(mpg)
+    )
+  )
+
+#gt_table
+```
+Note:
+**tab_footnote()** adds a footnote to the table, providing additional information about the data.
+
+---
+![](table.png)
+
+
+
+---
+## Saving the Table
+
+```r
+library(webshot2)
+
+# Save the table as HTML
+gtsave(gt_table, "table.html")
+
+# Save the table as PNG 
+gtsave(gt_table, "table.png") # requires webshot2 package
+```
+Note:
+**gtsave()** saves the table to a file. Supported formats include HTML, LaTeX, RTF, and images (PNG, JPEG).
+
+---
+## Advanced Features
+
+The gt package offers many advanced features, such as:
+
+- Customizing borders
+- Creating complex conditional formatting
+- Merging cells
+- Grouping rows and columns
+- Adding images to tables
+
+Documentation and resources:
+
+gt reference: https://gt.rstudio.com/reference/
+
+GT examples: https://gt.rstudio.com/articles/
+
+RStudio Community: https://community.rstudio.com/
+
+Posit Table Gallery: https://posit.co/blog/rstudio-community-table-gallery/
+
+Combining ggplot2 and gt: They complement each other well, allowing you to create comprehensive and visually appealing reports and presentations.
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create();
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

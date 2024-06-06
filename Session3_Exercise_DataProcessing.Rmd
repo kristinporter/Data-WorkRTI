@@ -203,5 +203,10 @@ summary(study_data)
 ```{r final_checks}
 head(study_data)
 glimpse(study_data)
+```
 
+# Write out revised data
+
+```{r save_clean_data}
+save(study_data,file="SmokingCessation_AnalysisFile.Rda")
 ```
