@@ -1,0 +1,275 @@
+---
+title: "User-defined functions in R"
+subtitle: "Session 4"
+author: "Kristin Porter"
+date: "June 7, 2024"
+output:
+   xaringan::moon_reader:
+---
+
+<!-- Add CSS in a style block -->
+<style>
+.two-columns {
+  display: flex;
+}
+.column {
+  flex: 1;
+  padding: 10px;
+}
+</style>
+
+<style>
+  .centered {
+    display: flex;
+    justify-content: center; /* Horizontal centering */
+    align-items: center;    /* Vertical centering */
+    height: 100vh;         /* Full height of the viewport */
+  }
+</style>
+
+```{r setup, include=FALSE}
+library(knitr)
+library(xaringan)
+library(xaringanExtra)
+knitr::opts_chunk$set(echo = TRUE)
+xaringanExtra::use_panelset()
+```
+
+
+## SAS Macro Comparison
+
+Like SAS macros, R functions...
+- allow for code reuse, reducing redundancy
+- take parameters to make the code flexible and adaptable
+
+**Differences:**
+
+*Text Substitution vs. Functional Programming:*
+- SAS Macros: Operate primarily through text substitution, generating SAS code dynamically before execution.
+- R Functions: Operate within the framework of R’s functional programming paradigm, directly manipulating data and performing calculations.
+
+*Execution Timing:*
+- SAS Macros: Code is generated during the macro processing phase and executed in the subsequent data step or procedure step.
+- R Functions: Code is executed immediately when the function is called.
+
+---
+## Example SAS Macro
+
+This very simple macro takes two arguments: `weight` and `height` in metric units. 
+It calculates and returns `bmi`. 
+
+```
+%macro calculate_bmi(weight, height);
+    %let bmi = %sysevalf(&weight / (&height**2));
+    &bmi
+%mend calculate_bmi;
+
+/* Example usage */
+%let bmi1 = %calculate_bmi(70, 1.75);
+%put &bmi1;
+```
+
+---
+## R function to accomplish same task
+
+This very simple function takes two arguments: `weight` and `height` in metric units. 
+It calculates and returns `bmi`. 
+
+```{r calculate_bmi_simple}
+calculate_bmi <- function(weight, height) {
+    bmi <- weight / (height^2)
+    return(bmi)
+}
+
+# Example usage for a single set of arguments
+bmi1 <- calculate_bmi(weight = 70, height = 1.75)
+bmi1 <- calculate_bmi(70,1.75)
+```
+
+Notes: 
+- function name followed by "<- function()"
+- arguments/parameters listed separated by "," inside "()"
+- body of function encloses in "{}" 
+- return statement not required but provides clarity, especially in complex functions 
+- otherwise, the value of the last evaluated expression in the function body is returned by default
+- to call function, pass in argument values in order or define explicitly
+
+---
+## Let's use this function with a data frame
+
+```{r use_calculate_df, message=FALSE}
+# Creating data frame
+wh.dat <- data.frame(weight = c(65,70,70), height = c(1.75,1.75,1.60))
+```
+
+*Using base R*
+```{r baseR_bmi}
+# passing in weight and heigth column
+wh.dat$bmi <- calculate_bmi(weight = wh.dat$weight, height = wh.dat$height)
+wh.dat
+```
+
+---
+*Using `dplyr`* 
+```{r dplyr_bmi, message=FALSE, warning=FALSE}
+library(`dplyr`)
+
+# using mutate
+wh.dat <- wh.dat %>% mutate(bmi = calculate_bmi(weight, height))
+```
+
+*Using `purrr`*
+```{r purrr_bmi}
+library(purrr)
+
+# using map2
+wh.dat$bmi <- map2_dbl(wh.dat$weight, wh.dat$height, calculate_bmi)
+
+# if we want to use pmap, we need a list instead of a data frame
+wh.dat_list <- as.list(wh.dat[,c("weight","height")])
+# using pmap_dbl instead of pmap, it returns a vector instead of list
+wh.dat$bmi <- pmap_dbl(wh.dat_list, calculate_bmi)
+```
+
+---
+# Let's add to our function
+
+Here we: 
+1. Add an another argument, `system`. Note that we give it a default assignment. If we don't pass in anything, it will use the default. 
+2. Use an `if` `else` sequence.
+3. We add an error message for an unexpected value for `system`. 
+```{r calculate_bmi_add}
+calculate_bmi <- function(weight, height, system = "metric") {
+  if (system == "metric") {
+    bmi <- weight / (height^2)
+  } else if (system == "US") {
+    bmi <- (weight / (height^2)) * 703
+  } else {
+    stop("Invalid system. Use 'metric' or 'US'.")
+  }
+}
+
+# Example usage for a single set of arguments
+bmi2 <- calculate_bmi(70, 1.75, 'US')
+#bmi2 <- calculate_bmi(70, 1.75, 'us')
+```
+
+---
+## Let's add some documentation for our function
+
+I'm using a specific format for my comments, following the framework of the `Roxygen` package. This is not required, but the style provides a good standard. 
+
+```{r add_doc}
+
+#' Calculate Body Mass Index (BMI)
+#'
+#' This function calculates BMI based on the user's weight & height. 
+#'
+#' @param weight Numeric: The weight of the individual in kilograms if using the metric
+#' system, or in pounds if using the US system.
+#' @param height Numeric: The height of the individual in meters if using the metric
+#' system, or in inches if using the US system.
+#' @param system Character: Specifies the measurement system used for the inputs.
+#' Can be either "metric" or "US".
+#'
+#' @return A list containing the calculated BMI and the measurement system used.
+#' @examples
+#' calculate_bmi(70, 1.75, "metric")
+#' calculate_bmi(155, 69, "US")
+#'
+calculate_bmi <- function(weight, height, system) {
+  if (system == "metric") {
+    bmi <- weight / (height^2)
+  } else if (system == "US") {
+    bmi <- (weight / (height^2)) * 703
+  } else {
+    stop("Invalid system. Use 'metric' or 'US'.")
+  }
+  
+  return(list(BMI = bmi, System = system))
+}
+```
+
+---
+## Higher Order Functions
+
+These are functions that take other functions as arguments or return functions as results.
+
+Examples in Base R: apply, lapply, sapply, mapply
+
+```{r lapply_ex}
+square <- function(x) x^2
+nums <- list(1, 2, 3, 4)
+lapply(nums, square)
+```
+
+---
+## Creating Higher-Order Functions
+
+```{r simplehigherorder}
+apply_function <- function(f, x) {
+  f(x)
+}
+
+# Here we pass in the baseR function sqrt() for f
+apply_function(sqrt, 16)  
+```
+
+---
+## Anonymous Functions
+
+These are functions defined inline without a name, often used as arguments to higher-order functions.
+
+Base R example: 
+```{r anonfun}
+nums <- list(1, 2, 3, 4)
+unlist(lapply(nums, function(x) x^2))
+```
+
+Usage in `purrr`:
+
+```{r purrranon}
+nums <- list(1, 2, 3, 4)
+unlist(map(nums, ~ .x^2))
+```
+
+---
+## Function Environments
+
+Environments are collections of objects (like functions and variables). Each function has its own environment.
+
+Objects created inside a function are local to that function. 
+Objected outside functions are in the global environment. 
+
+```{r envir}
+x <- 10  # Global variable
+
+modify_variable <- function() {
+  x <- 5  # Local variable
+  return(x)
+}
+
+modify_variable() 
+print(x)  
+```
+
+---
+### Debugging Functions
+Common Debugging Tools:
+print()
+cat()
+browser()
+traceback()
+debug()
+trace()
+
+Using browser() 
+```{r browserEx}
+calculate_bmi <- function(weight, height) {
+  browser()
+  bmi <- weight / (height^2)
+  return(bmi)
+}
+```
+Using debug(), works similar to browser, but is initiated outside function.
+Using traceback(), call after get function error. 

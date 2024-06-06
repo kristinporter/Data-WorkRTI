@@ -371,6 +371,4 @@ gt_table <- gt(results_df) %>%
 
 # Example usage:
 outcomes_list <- c("smoking_cessation_6months","smoking_cessation_1year")
-result_table <- estimate_impacts(study_data, outcomes_list, "treatment", c("hospital","nicotine_dependence_imputed","nicotine_dependence_imputed_dummy","previous_quit_attempts"))
-result_table
-```
+result_table <- estimate_impacts(study_data, outcomes_list, "treatment", c("hospital","nicotine_dependence_imputed","n

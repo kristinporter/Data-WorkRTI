@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>User-defined functions in R</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Kristin Porter" />
+    <meta name="date" content="2024-06-07" />
+    <script src="user_defined_functions_files/header-attrs-2.26/header-attrs.js"></script>
+    <link href="user_defined_functions_files/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="user_defined_functions_files/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+    <link href="user_defined_functions_files/panelset-0.3.0/panelset.css" rel="stylesheet" />
+    <script src="user_defined_functions_files/panelset-0.3.0/panelset.js"></script>
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# User-defined functions in R
+]
+.subtitle[
+## Session 4
+]
+.author[
+### Kristin Porter
+]
+.date[
+### June 7, 2024
+]
+
+---
+
+
+&lt;!-- Add CSS in a style block --&gt;
+&lt;style&gt;
+.two-columns {
+  display: flex;
+}
+.column {
+  flex: 1;
+  padding: 10px;
+}
+&lt;/style&gt;
+
+&lt;style&gt;
+  .centered {
+    display: flex;
+    justify-content: center; /* Horizontal centering */
+    align-items: center;    /* Vertical centering */
+    height: 100vh;         /* Full height of the viewport */
+  }
+&lt;/style&gt;
+
+
+
+
+## SAS Macro Comparison
+
+Like SAS macros, R functions...
+- allow for code reuse, reducing redundancy
+- take parameters to make the code flexible and adaptable
+
+**Differences:**
+
+*Text Substitution vs. Functional Programming:*
+- SAS Macros: Operate primarily through text substitution, generating SAS code dynamically before execution.
+- R Functions: Operate within the framework of R’s functional programming paradigm, directly manipulating data and performing calculations.
+
+*Execution Timing:*
+- SAS Macros: Code is generated during the macro processing phase and executed in the subsequent data step or procedure step.
+- R Functions: Code is executed immediately when the function is called.
+
+---
+## Example SAS Macro
+
+This very simple macro takes two arguments: `weight` and `height` in metric units. 
+It calculates and returns `bmi`. 
+
+```
+%macro calculate_bmi(weight, height);
+    %let bmi = %sysevalf(&amp;weight / (&amp;height**2));
+    &amp;bmi
+%mend calculate_bmi;
+
+/* Example usage */
+%let bmi1 = %calculate_bmi(70, 1.75);
+%put &amp;bmi1;
+```
+
+---
+## R function to accomplish same task
+
+This very simple function takes two arguments: `weight` and `height` in metric units. 
+It calculates and returns `bmi`. 
+
+
+```r
+calculate_bmi &lt;- function(weight, height) {
+    bmi &lt;- weight / (height^2)
+    return(bmi)
+}
+
+# Example usage for a single set of arguments
+bmi1 &lt;- calculate_bmi(weight = 70, height = 1.75)
+bmi1 &lt;- calculate_bmi(70,1.75)
+```
+
+Notes: 
+- function name followed by "&lt;- function()"
+- arguments/parameters listed separated by "," inside "()"
+- body of function encloses in "{}" 
+- return statement not required but provides clarity, especially in complex functions 
+- otherwise, the value of the last evaluated expression in the function body is returned by default
+- to call function, pass in argument values in order or define explicitly
+
+---
+## Let's use this function with a data frame
+
+
+```r
+# Creating data frame
+wh.dat &lt;- data.frame(weight = c(65,70,70), height = c(1.75,1.75,1.60))
+```
+
+*Using base R*
+
+```r
+# passing in weight and heigth column
+wh.dat$bmi &lt;- calculate_bmi(weight = wh.dat$weight, height = wh.dat$height)
+wh.dat
+```
+
+```
+##   weight height      bmi
+## 1     65   1.75 21.22449
+## 2     70   1.75 22.85714
+## 3     70   1.60 27.34375
+```
+
+---
+*Using `dplyr`* 
+
+```r
+library(`dplyr`)
+
+# using mutate
+wh.dat &lt;- wh.dat %&gt;% mutate(bmi = calculate_bmi(weight, height))
+```
+
+*Using `purrr`*
+
+```r
+library(purrr)
+
+# using map2
+wh.dat$bmi &lt;- map2_dbl(wh.dat$weight, wh.dat$height, calculate_bmi)
+
+# if we want to use pmap, we need a list instead of a data frame
+wh.dat_list &lt;- as.list(wh.dat[,c("weight","height")])
+# using pmap_dbl instead of pmap, it returns a vector instead of list
+wh.dat$bmi &lt;- pmap_dbl(wh.dat_list, calculate_bmi)
+```
+
+---
+# Let's add to our function
+
+Here we: 
+1. Add an another argument, `system`. Note that we give it a default assignment. If we don't pass in anything, it will use the default. 
+2. Use an `if` `else` sequence.
+3. We add an error message for an unexpected value for `system`. 
+
+```r
+calculate_bmi &lt;- function(weight, height, system = "metric") {
+  if (system == "metric") {
+    bmi &lt;- weight / (height^2)
+  } else if (system == "US") {
+    bmi &lt;- (weight / (height^2)) * 703
+  } else {
+    stop("Invalid system. Use 'metric' or 'US'.")
+  }
+}
+
+# Example usage for a single set of arguments
+bmi2 &lt;- calculate_bmi(70, 1.75, 'US')
+#bmi2 &lt;- calculate_bmi(70, 1.75, 'us')
+```
+
+---
+## Let's add some documentation for our function
+
+I'm using a specific format for my comments, following the framework of the `Roxygen` package. This is not required, but the style provides a good standard. 
+
+
+```r
+#' Calculate Body Mass Index (BMI)
+#'
+#' This function calculates BMI based on the user's weight &amp; height. 
+#'
+#' @param weight Numeric: The weight of the individual in kilograms if using the metric
+#' system, or in pounds if using the US system.
+#' @param height Numeric: The height of the individual in meters if using the metric
+#' system, or in inches if using the US system.
+#' @param system Character: Specifies the measurement system used for the inputs.
+#' Can be either "metric" or "US".
+#'
+#' @return A list containing the calculated BMI and the measurement system used.
+#' @examples
+#' calculate_bmi(70, 1.75, "metric")
+#' calculate_bmi(155, 69, "US")
+#'
+calculate_bmi &lt;- function(weight, height, system) {
+  if (system == "metric") {
+    bmi &lt;- weight / (height^2)
+  } else if (system == "US") {
+    bmi &lt;- (weight / (height^2)) * 703
+  } else {
+    stop("Invalid system. Use 'metric' or 'US'.")
+  }
+  
+  return(list(BMI = bmi, System = system))
+}
+```
+
+---
+## Higher Order Functions
+
+These are functions that take other functions as arguments or return functions as results.
+
+Examples in Base R: apply, lapply, sapply, mapply
+
+
+```r
+square &lt;- function(x) x^2
+nums &lt;- list(1, 2, 3, 4)
+lapply(nums, square)
+```
+
+```
+## [[1]]
+## [1] 1
+## 
+## [[2]]
+## [1] 4
+## 
+## [[3]]
+## [1] 9
+## 
+## [[4]]
+## [1] 16
+```
+
+---
+## Creating Higher-Order Functions
+
+
+```r
+apply_function &lt;- function(f, x) {
+  f(x)
+}
+
+# Here we pass in the baseR function sqrt() for f
+apply_function(sqrt, 16)  
+```
+
+```
+## [1] 4
+```
+
+---
+## Anonymous Functions
+
+These are functions defined inline without a name, often used as arguments to higher-order functions.
+
+Base R example: 
+
+```r
+nums &lt;- list(1, 2, 3, 4)
+unlist(lapply(nums, function(x) x^2))
+```
+
+```
+## [1]  1  4  9 16
+```
+
+Usage in `purrr`:
+
+
+```r
+nums &lt;- list(1, 2, 3, 4)
+unlist(map(nums, ~ .x^2))
+```
+
+```
+## [1]  1  4  9 16
+```
+
+---
+## Function Environments
+
+Environments are collections of objects (like functions and variables). Each function has its own environment.
+
+Objects created inside a function are local to that function. 
+Objected outside functions are in the global environment. 
+
+
+```r
+x &lt;- 10  # Global variable
+
+modify_variable &lt;- function() {
+  x &lt;- 5  # Local variable
+  return(x)
+}
+
+modify_variable() 
+```
+
+```
+## [1] 5
+```
+
+```r
+print(x)  
+```
+
+```
+## [1] 10
+```
+
+---
+### Debugging Functions
+Common Debugging Tools:
+print()
+cat()
+browser()
+traceback()
+debug()
+trace()
+
+Using browser() 
+
+```r
+calculate_bmi &lt;- function(weight, height) {
+  browser()
+  bmi &lt;- weight / (height^2)
+  return(bmi)
+}
+```
+Using debug(), works similar to browser, but is initiated outside function.
+Using traceback(), call after get function error. 
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create();
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
